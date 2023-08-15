@@ -19,9 +19,8 @@ $('#btnRunEarthquakes').click(function() {
             }
         
         },
-        error: function (xhr, ajaxOptions, thrownError) {
-            console.log(xhr.status);
-            console.log(thrownError);
+        error: function () {
+            console.log('error');
         }
     }); 
 });
@@ -41,6 +40,9 @@ $('#btnRunOceanSea').click(function() {
             if (result.status.name == "ok") {
                 $('#oceanSeaValue').html(result['data'].name)
             }
+        },
+        error: function () {
+            console.log('error');
         }
     })
 });
@@ -56,13 +58,14 @@ $('#btnRunTimezone').click(function() {
         },
         success: function(result) {
             console.log(JSON.stringify(result));
-            
 
             if (result.status.name == "ok") {
-                console.log(result['data'].time)
                 $('#timeValue').html(result['data'].time);
                 $('#timeZone').html(result['data'].timezoneId);
             }
+        },
+        error: function () {
+            console.log('error');
         }
     })
 });

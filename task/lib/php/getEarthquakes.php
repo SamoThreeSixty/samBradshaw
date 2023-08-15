@@ -7,7 +7,6 @@
 
     $url ='http://api.geonames.org/earthquakesJSON?north=' . $_REQUEST['nLat'] . "&south=" . $_REQUEST['sLat'] . "&east=" . $_REQUEST['eLat'] . '&west=' . $_REQUEST['wLat'] . '&username=SamoThreeSixty';
 
-
     $ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

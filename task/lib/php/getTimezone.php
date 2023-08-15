@@ -5,8 +5,6 @@
 
 	$executionStartTime = microtime(true);
 	
-    // $url = 'http://api.geonames.org/timezoneJSON?lat=47.01&lng=10.2&username=samothreesixty';
-
 	$url = 'http://api.geonames.org/timezoneJSON?lat=' . $_REQUEST['timeLatitude'] . '&lng=' . $_REQUEST['timeLongitude'] . '&username=samothreesixty';
 
     $ch = curl_init();
