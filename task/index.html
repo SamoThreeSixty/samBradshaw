@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <title>Sams Project</title>
+    </header>
+
+    <body>
+        <h3>Earthquakes</h3>
+        <div>
+            <p>Insert the N, E, S, W lattitudes for result of the largest earthquakes</p>
+            <label>N</label>
+                <input type="number" id="nLat">
+            <label>E</label>
+                <input type="number" id="eLat">
+            <label>S</label>
+                <input type="number" id="sLat">
+            <label>W</label>
+                <input type="number" id="wLat">
+    
+            <button id="btnRunEarthquakes">Run</button>
+            <p>Date & time: <span id="earthquakeDateTime">...</span></p>
+            <p>Magnitude: <span id="earthquakeMagnitude">...</span></p>
+        </div>
+
+        <h3>Name of Ocean / Sea</h3>
+        <div>
+            <p>Insert the lattitude & longitude to return ocean or sea at given value</p>
+            <label>Lattitude</label>
+                <input type="number" id="oceanLattitude">
+            <label>Longitude</label>
+                <input type="number" id="oceanLongitude">
+
+            <button id="btnRunOceanSea">Run</button>
+            <p>Ocean / Sea: <span id="oceanSeaValue">...</span></p>
+        </div>
+
+        <h3>Timezone</h3>
+        <div>
+            <p>Insert the lattitude & longitude to return the current time from given value</p>
+            <label>Lattitude</label>
+                <input type="number" id="timeLatitude">
+            <label>Longitude</label>
+                <input type="number" id="timeLongitude">
+
+            <button id="btnRunTimezone">Run</button>
+            <p>Timezone: <span id="timeZone">...</span></p>
+            <p>Time: <span id="timeValue">...</span></p>
+        </div>
+
+
+
+        <script type="application/javascript" src="lib/js/jquery-2.2.3.min.js"></script>
+		<script type="application/javascript" src="lib/js/script.js"></script>
+    </body>
+</html>
