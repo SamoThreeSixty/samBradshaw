@@ -3,3 +3,16 @@ html, body, #map {
     width: 100vw;
     position: fixed;
 }
+
+
+/* Makes the buttons square */
+.btn-square-md {
+    width: 50px !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    height: 50px !important;
+    text-align: center;
+    justify-content: center;
+    padding: 0px;
+    font-size:12px;
+}
