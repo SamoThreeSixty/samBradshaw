@@ -20,7 +20,9 @@
             <!-- Selection of all the different countries using Alpha 2 codes -->
             <div class="form">
                 <form>
-                    <select class="form-select" aria-label="Select Country" id="countrySelect"></select>
+                    <select class="form-select" aria-label="Select Country" id="countrySelect">
+                        <option selected disabled>Please Select a country</option>
+                    </select>
                 </form>
             </div>
         </nav>
@@ -69,28 +71,26 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modal-title">Country Info -
-                            <span id="country">England</span>
-                        </h5>
+                        <h5 class="modal-title" id="modal-title">Information</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body" style="padding: 10px;">
                         <table class="table">
                             <tr class="table-secondary">
                                 <th>Capital</th>
-                                <td id="capital">London</td>
+                                <td id="capital"></td>
                             </tr>
                             <tr>
                                 <th>Population</th>
-                                <td id="population">a lot of people</td>
+                                <td id="population"></td>
                             <tr class="table-secondary">
                                 <th>Currency</th>
-                                <td id="currency">British Pound - £</td>
+                                <td id="currency"></td>
                             </tr>
                             <tr>
                                 <th>Flag</th>
                                 <td>
-                                    <img id="flag" style="width: 100px;" src="https://flagcdn.com/w320/gb.png"/>
+                                    <img id="flag" style="width: 100px;" src=""/>
                                 </td>
                             </tr>
                         </table>
@@ -106,29 +106,49 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modal-title">Country Info -
-                            <span id="country">England</span>
-                        </h5>
+                        <h5 class="modal-title" id="modal-title">Weather Forecast</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body" style="padding: 10px;">
                         <table class="table">
                             <tr class="table-secondary">
-                                <th>Capital</th>
-                                <td id="capital">London</td>
+                                <th>Today</th>
+                                <td>Cloudy</td>
+                                <td><i class="bi bi-cloudy"></i></td>
                             </tr>
                             <tr>
-                                <th>Population</th>
-                                <td id="population">a lot of people</td>
+                                <th>+1</th>
+                                <td>Cloudy</td>
+                                <td><i class="bi bi-cloudy"></i></td>
                             <tr class="table-secondary">
-                                <th>Currency</th>
-                                <td id="currency">British Pound - £</td>
+                                <th>+2</th>
+                                <td>Cloudy</td>
+                                <td><i class="bi bi-cloudy"></i></td>
                             </tr>
                             <tr>
-                                <th>Flag</th>
-                                <td>
-                                    <img id="flag" style="width: 100px;" src="https://flagcdn.com/w320/gb.png"/>
-                                </td>
+                                <th>+3</th>
+                                <td>Cloudy</td>
+                                <td><i class="bi bi-cloudy"></i></td>
+                            </tr>
+                            <tr class="table-secondary">
+                                <th>+4</th>
+                                <td>Cloudy</td>
+                                <td><i class="bi bi-cloudy"></i></td>
+                            </tr>
+                            <tr>
+                                <th>+5</th>
+                                <td>Cloudy</td>
+                                <td><i class="bi bi-cloudy"></i></td>
+                            </tr>
+                            <tr class="table-secondary">
+                                <th>+6</th>
+                                <td>Cloudy</td>
+                                <td><i class="bi bi-cloudy"></i></td>
+                            </tr>
+                            <tr>
+                                <th>+7</th>
+                                <td>Cloudy</td>
+                                <td><i class="bi bi-cloudy"></i></td>
                             </tr>
                         </table>
                     </div>
@@ -139,35 +159,39 @@
 
         <!--News modal-->
         <!-- Just a copy, needs completeing!!! -->
-        <div class="modal fade" id="newsModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modal-title">Country Info -
-                            <span id="country">England</span>
-                        </h5>
+                        <h5 class="modal-title" id="modal-title">News</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body" style="padding: 10px;">
-                        <table class="table">
-                            <tr class="table-secondary">
-                                <th>Capital</th>
-                                <td id="capital">London</td>
-                            </tr>
-                            <tr>
-                                <th>Population</th>
-                                <td id="population">a lot of people</td>
-                            <tr class="table-secondary">
-                                <th>Currency</th>
-                                <td id="currency">British Pound - £</td>
-                            </tr>
-                            <tr>
-                                <th>Flag</th>
-                                <td>
-                                    <img id="flag" style="width: 100px;" src="https://flagcdn.com/w320/gb.png"/>
-                                </td>
-                            </tr>
-                        </table>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
+                    
+                    
+                    
+                    
+                    
                     </div>
                     <div class="model-footer"></div>
                 </div>
@@ -180,31 +204,31 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modal-title">Country Info -
-                            <span id="country">England</span>
-                        </h5>
+                        <h5 class="modal-title" id="modal-title">Currency Rates</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body" style="padding: 10px;">
                         <table class="table">
-                            <tr class="table-secondary">
-                                <th>Capital</th>
-                                <td id="capital">London</td>
+                            <tr>
+                                <th>Amount</th>
+                                <th>From</th>
+                                <th>To</th>
                             </tr>
                             <tr>
-                                <th>Population</th>
-                                <td id="population">a lot of people</td>
-                            <tr class="table-secondary">
-                                <th>Currency</th>
-                                <td id="currency">British Pound - £</td>
-                            </tr>
-                            <tr>
-                                <th>Flag</th>
                                 <td>
-                                    <img id="flag" style="width: 100px;" src="https://flagcdn.com/w320/gb.png"/>
+                                    <input type="number">
+                                </td>
+                                <td>
+                                    £
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>$</option>
+                                    </select>
                                 </td>
                             </tr>
                         </table>
+                        <h5>Result = <span>£4.50</span></h5>
                     </div>
                     <div class="model-footer"></div>
                 </div>
@@ -217,31 +241,11 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modal-title">Country Info -
-                            <span id="country">England</span>
-                        </h5>
+                        <h5 class="modal-title" id="modal-title">Wiki</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body" style="padding: 10px;">
-                        <table class="table">
-                            <tr class="table-secondary">
-                                <th>Capital</th>
-                                <td id="capital">London</td>
-                            </tr>
-                            <tr>
-                                <th>Population</th>
-                                <td id="population">a lot of people</td>
-                            <tr class="table-secondary">
-                                <th>Currency</th>
-                                <td id="currency">British Pound - £</td>
-                            </tr>
-                            <tr>
-                                <th>Flag</th>
-                                <td>
-                                    <img id="flag" style="width: 100px;" src="https://flagcdn.com/w320/gb.png"/>
-                                </td>
-                            </tr>
-                        </table>
+                        <h1>Work in progress..</h1>
                     </div>
                     <div class="model-footer"></div>
                 </div>
@@ -254,31 +258,11 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modal-title">Country Info -
-                            <span id="country">England</span>
-                        </h5>
+                        <h5 class="modal-title" id="modal-title">Images</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body" style="padding: 10px;">
-                        <table class="table">
-                            <tr class="table-secondary">
-                                <th>Capital</th>
-                                <td id="capital">London</td>
-                            </tr>
-                            <tr>
-                                <th>Population</th>
-                                <td id="population">a lot of people</td>
-                            <tr class="table-secondary">
-                                <th>Currency</th>
-                                <td id="currency">British Pound - £</td>
-                            </tr>
-                            <tr>
-                                <th>Flag</th>
-                                <td>
-                                    <img id="flag" style="width: 100px;" src="https://flagcdn.com/w320/gb.png"/>
-                                </td>
-                            </tr>
-                        </table>
+                        <h1>Work in progress..</h1>
                     </div>
                     <div class="model-footer"></div>
                 </div>
