@@ -88,7 +88,6 @@ $('#countrySelect').on('change', (event) => {
                 const languagesAmount = Object.keys(result.data[0].languages).length;
                 if(languagesAmount > 1) {
                     $('#languageHead').html("Languages");
-                    // $('#capital').html('');
                     for(let i = 0; i < languagesAmount; i++) {
                         const x = document.getElementById("language");
                         var newLi = document.createElement("LI");
@@ -111,7 +110,7 @@ $('#countrySelect').on('change', (event) => {
                 const lat = result.data[0].latlng[0];
                 const lng = result.data[0].latlng[1]
                 map.panTo(new L.LatLng(lat, lng));
-                
+
                 getCountries().then((result) => {
                     const countryAmount = result.features.length;
                     //Search through each one to proivde polygon data
@@ -123,13 +122,49 @@ $('#countrySelect').on('change', (event) => {
                             L.geoJSON(geojson).addTo(map)
                             break;
                         }
-                    };
-                })            
-            }
-        
+                    }
+                });
+                
+
+                //Returning the weather values
+                $.ajax({
+                    url: "libs/php/getWeather.php",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        lat: result.data[0].latlng[0],
+                        lon: result.data[0].latlng[1]
+                    },
+                    success: function(result) {
+                            //Will return 40 x data for every 3h
+                            //Only return every 5 starting at 0
+                            //i.e 0, 5, 10, 15
+                            let count = 0;
+                            for(let i = 0; i <= Object.keys(result.data).length; i = i + 8){                                
+                                if(i === 0) {
+                                    $('#temp1').html(String((result.data[i].main.temp -273.15).toFixed(2)) + "\u00B0C")
+                                    $('#weather1').html(result.data[i].weather[0].main);
+                                    $('#weatherIcon1').attr('src', `https://openweathermap.org/img/wn/${result.data[i].weather[0].icon}@2x.png`)
+                                    count++
+                                } else {
+                                    const key = i - 1;
+                                    $(`#temp${count}`).html(String((result.data[key].main.temp -273.15).toFixed(2)) + "\u00B0C")
+                                    $(`#weather${count}`).html(result.data[i].weather[0].main);
+                                    $(`#weatherIcon${count}`).attr('src', `https://openweathermap.org/img/wn/${result.data[i].weather[0].icon}@2x.png`)
+                                    count++
+                                }
+                            }
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }    
+            })
+        }
+
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log("error")
         }
-    });    
+    })
+    console.log(country)
 });
