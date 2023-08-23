@@ -60,10 +60,48 @@ $('#countrySelect').on('change', (event) => {
 
                 //Update Info Modal
                 $('#country').html(result.data[0].name.common);
-                $('#capital').html(result.data[0].capital[0]);
                 $('#population').html(result.data[0].population.toLocaleString("en-US")); //adds , every 1000
                 $('#currency').html(currency[0][1].name);
                 $('#flag').attr("src",result.data[0].flags.png);
+                $('#area').html(result.data[0].area.toLocaleString("en-US") + "km²") //adds , every 1000
+
+                //Check if more than one capital
+                const capitalAmount = Object.keys(result.data[0].capital).length;
+                if(capitalAmount > 1) {
+                    console.log("more than one capital")
+                    $('#capitalHead').html("Capitals");
+                    $('#capital').html('');
+                    for(let i = 0; i < capitalAmount; i++) {
+                        const x = document.getElementById("capital");
+                        var newLi = document.createElement("LI");
+                        var text = document.createTextNode(result.data[0].capital[i]);
+                        newLi.appendChild(text);
+                        x.appendChild(newLi);
+                    }
+                } else {
+                    $('#capitalHead').html("Capital");
+                    $('#capital').html(result.data[0].capital[0]);
+                }
+
+                
+                //Check if more than one language
+                const languagesAmount = Object.keys(result.data[0].languages).length;
+                if(languagesAmount > 1) {
+                    $('#languageHead').html("Languages");
+                    // $('#capital').html('');
+                    for(let i = 0; i < languagesAmount; i++) {
+                        const x = document.getElementById("language");
+                        var newLi = document.createElement("LI");
+                        var text = document.createTextNode(Object.values(result.data[0].languages)[i]);
+                        newLi.appendChild(text);
+                        x.appendChild(newLi);
+                    }
+                } else {
+                    $('#languageHead').html("Language");
+                    $('#language').html(Object.values(result.data[0].languages)[0]);
+                }
+
+
 
                 //Update currency modal
                 $('#countryCurrency').html(currency[0][1].name);
