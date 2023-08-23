@@ -211,24 +211,30 @@
                         <table class="table">
                             <tr>
                                 <th>Amount</th>
-                                <th>From</th>
-                                <th>To</th>
+                                <td><input type="number" id="startingCurrency"></td>                                                           
                             </tr>
                             <tr>
+                                <th>From</th>
                                 <td>
-                                    <input type="number">
-                                </td>
-                                <td>
-                                    £
-                                </td>
-                                <td>
-                                    <select>
-                                        <option>$</option>
+                                    <select id="selectCurrency">
+                                        <option selected disabled>Please Select a currency</option>
                                     </select>
-                                </td>
+                                </td>                                
+                            </tr>
+                            <tr>
+                                <th>To</th>
+                                <td value="USD" id="countryCurrency">
+                                    USD
+                                </td>                                
                             </tr>
                         </table>
-                        <h5>Result = <span>£4.50</span></h5>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <button class="btn btn-outline-secondary" type="button" id="calculateCurrency">Calculate</button>
+                            </div>
+                            <input id="currencyCalculatorResult" type="text" class="calculator-screen z-depth-1" value="" disabled />
+                          </div>
+                        
                     </div>
                     <div class="model-footer"></div>
                 </div>
@@ -281,5 +287,6 @@
         </script>
         <script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
 		<script type="application/javascript" src="libs/js/script.js"></script>
+        <script type="application/javascript" src="libs/js/functions/currencyCalculator.js"></script>
     </body>
 </html>
