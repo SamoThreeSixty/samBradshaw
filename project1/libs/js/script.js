@@ -1,5 +1,5 @@
 const getCountries = async () => {
-    const response = await fetch('libs/php/getCountries.php');
+    const response = await fetch('libs/data/countries.geojson');
     const json = await response.json();
     return json;
 };
@@ -15,14 +15,13 @@ const getCurrencies = async () => {
 $(document).ready(function () {
     getCountries()
     .then((value) => {
-        value.data.forEach((country) => {
+        value.features.forEach((country) => {
             const x = document.getElementById("countrySelect");
             const option = document.createElement("option");
-            option.text = country.name.common;
-            option.value = country.cca2;
+            option.text = country.properties.ADMIN;
+            option.value = country.properties.ISO_A3;
             x.appendChild(option);
         })
-    
     });
     
     getCurrencies().then((value) => {
@@ -69,12 +68,30 @@ $('#countrySelect').on('change', (event) => {
                 //Update currency modal
                 $('#countryCurrency').html(currency[0][1].name);
                 $('#countryCurrency').attr("value", currency[0][0]);
-                console.log(document.getElementById('countryCurrency'))
+
+                //Leaflet pan to location
+                const lat = result.data[0].latlng[0];
+                const lng = result.data[0].latlng[1]
+                map.panTo(new L.LatLng(lat, lng));
+                
+                getCountries().then((result) => {
+                    const countryAmount = result.features.length;
+                    //Search through each one to proivde polygon data
+                    for(let i = 0; i < countryAmount; i++) {
+                        if(result.features[i].properties.ISO_A3 === $('#countrySelect').val()){
+                            const geojson = result.features[i];
+                            // L.removeLayer(geojson);
+                            map.removeLayer(geojson)
+                            L.geoJSON(geojson).addTo(map)
+                            break;
+                        }
+                    };
+                })            
             }
         
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log("error")
         }
-    }); 
+    });    
 });
