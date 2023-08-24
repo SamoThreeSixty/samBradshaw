@@ -1,3 +1,15 @@
+//Put in own module later
+const convertDate = (date) => {
+    const year = date.slice(0,4);
+    const month = date.slice(5,7);
+    const day = date.slice(8,10);
+
+    var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+    const event = new Date(year, month, day);
+    return event.toLocaleDateString("en-US", options); // Saturday, September 17, 2016
+    
+}
+
 const getCountries = async () => {
     const response = await fetch('libs/data/countries.geojson');
     const json = await response.json();
@@ -36,7 +48,6 @@ $(document).ready(function () {
             option.value = currency[0];
             x.appendChild(option);
         })
-
     });
 });
 
@@ -68,7 +79,6 @@ $('#countrySelect').on('change', (event) => {
                 //Check if more than one capital
                 const capitalAmount = Object.keys(result.data[0].capital).length;
                 if(capitalAmount > 1) {
-                    console.log("more than one capital")
                     $('#capitalHead').html("Capitals");
                     $('#capital').html('');
                     for(let i = 0; i < capitalAmount; i++) {
@@ -88,6 +98,7 @@ $('#countrySelect').on('change', (event) => {
                 const languagesAmount = Object.keys(result.data[0].languages).length;
                 if(languagesAmount > 1) {
                     $('#languageHead').html("Languages");
+                    $('#language').html('');
                     for(let i = 0; i < languagesAmount; i++) {
                         const x = document.getElementById("language");
                         var newLi = document.createElement("LI");
@@ -142,15 +153,17 @@ $('#countrySelect').on('change', (event) => {
                             let count = 0;
                             for(let i = 0; i <= Object.keys(result.data).length; i = i + 8){                                
                                 if(i === 0) {
+                                    $('#weatherDate1').html(convertDate(result.data[i].dt_txt))
                                     $('#temp1').html(String((result.data[i].main.temp -273.15).toFixed(2)) + "\u00B0C")
                                     $('#weather1').html(result.data[i].weather[0].main);
                                     $('#weatherIcon1').attr('src', `https://openweathermap.org/img/wn/${result.data[i].weather[0].icon}@2x.png`)
                                     count++
                                 } else {
                                     const key = i - 1;
+                                    $(`#weatherDate${count}`).html(convertDate(result.data[key].dt_txt));
                                     $(`#temp${count}`).html(String((result.data[key].main.temp -273.15).toFixed(2)) + "\u00B0C")
-                                    $(`#weather${count}`).html(result.data[i].weather[0].main);
-                                    $(`#weatherIcon${count}`).attr('src', `https://openweathermap.org/img/wn/${result.data[i].weather[0].icon}@2x.png`)
+                                    $(`#weather${count}`).html(result.data[key].weather[0].main);
+                                    $(`#weatherIcon${count}`).attr('src', `https://openweathermap.org/img/wn/${result.data[key].weather[0].icon}@2x.png`)
                                     count++
                                 }
                             }
@@ -166,5 +179,4 @@ $('#countrySelect').on('change', (event) => {
             console.log("error")
         }
     })
-    console.log(country)
 });

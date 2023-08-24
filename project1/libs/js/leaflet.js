@@ -29,8 +29,13 @@ var streets = L.tileLayer(
     "Satellite": satellite
   };
   
+navigator.geolocation.getCurrentPosition((position) => {
+  let lat = position.coords.latitude;
+  let long = position.coords.longitude;
+
   var map = L.map("map", {
     layers: [streets]
-  }).setView([54.5, -4], 6);
+  }).setView([lat, long])
+})
   
   var layerControl = L.control.layers(null, basemaps, {position: 'bottomright'}).addTo(map);
