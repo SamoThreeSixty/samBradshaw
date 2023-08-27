@@ -9,6 +9,11 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+        <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
     </head>
 
 
@@ -16,11 +21,10 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-xl navbar-light bg-light justify-content-center navbar-fixed-top">
             <span class="navbar-brand mb-0 h1">Gezetteer</span>
-
             <!-- Selection of all the different countries using Alpha 2 codes -->
             <div class="form">
                 <form>
-                    <select class="form-select" aria-label="Select Country" id="countrySelect">
+                    <select class="form-select" aria-label="Select Country" id="countrySelect" style="width: 300px">
                         <option selected disabled>Please Select a country</option>
                     </select>
                 </form>
@@ -67,15 +71,19 @@
 
         <!--Info modal-->
         <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modal-title">Information</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="model-body" style="padding: 10px;">
+                    <div class="model-body px-2" style="background-color: seashell;">
+                        <div class="mx-auto" style="width: 200px;">
+                            <img id="flag" src="" style="width: 200px;" class="py-3"/>
+                        </div>
+                        
                         <table class="table">
-                            <tr class="table-secondary">
+                            <tr class="table-secondary">                                
                                 <th id="capitalHead">Capital</th>
                                 <td id="capital">
                                     <ul id="capitals" style="margin-bottom: 0px;list-style: none;">
@@ -90,20 +98,14 @@
                                 <td id="currency"></td>
                             </tr>
                             <tr>
-                                <th>Flag</th>
-                                <td>
-                                    <img id="flag" style="width: 100px;" src=""/>
-                                </td>
-                            </tr>
-                            <tr class="table-secondary">
                                 <th id="languageHead">Language</th>
                                 <td id="language">
                                     <ul id="languages" style="margin-bottom: 0px;list-style: none;">
                                     </ul>
                                 </td>
                             </tr>
-                            <tr>
-                                <th>Area</th>
+                            <tr class="table-secondary">
+                                <th >Area</th>
                                 <td id="area"></td>
                             </tr>
                         </table>
@@ -166,7 +168,6 @@
         </div>
 
         <!--News modal-->
-        <!-- Just a copy, needs completeing!!! -->
         <div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -174,36 +175,119 @@
                         <h5 class="modal-title" id="modal-title">News</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="model-body" style="padding: 10px;">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aliquid repellat porro eveniet atque iusto minima numquam natus eligendi in facere temporibus accusantium laborum ad, reprehenderit modi quasi suscipit vitae.</p>
-                    
-                    
-                    
-                    
-                    
-                    </div>
+                    <div class="model-body" style="padding: 10px;" id="newArticles">
+                        <div class="container mb-2 pt-1" style="background-color: seashell; outline: solid black 1px; border-radius: 5%;">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img id="newsImage1" src="" class="w-100" style="border-radius: 15%;">
+                                </div>
+                                <div class="col-8">
+                                    <h6 id="newsTitle1"></h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p id="newsSource1"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <p id="newsDescription1"></p>
+                            </div>
+                        </div>
+                        <div class="container mb-2 pt-1" style="background-color: seashell; outline: solid black 1px; border-radius: 5%;">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img id="newsImage2" src="" class="w-100" style="border-radius: 15%;">
+                                </div>
+                                <div class="col-8">
+                                    <h6 id="newsTitle2"></h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p id="newsSource2"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <p id="newsDescription2"></p>
+                            </div>
+                        </div>
+                        <div class="container mb-2 pt-1" style="background-color: seashell; outline: solid black 1px; border-radius: 5%;">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img id="newsImage3" src="" class="w-100" style="border-radius: 15%;">
+                                </div>
+                                <div class="col-8">
+                                    <h6 id="newsTitle3"></h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p id="newsSource3"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <p id="newsDescription3"></p>
+                            </div>
+                        </div>
+                        <div class="container mb-2 pt-1" style="background-color: seashell; outline: solid black 1px; border-radius: 5%;">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img id="newsImage4" src="" class="w-100" style="border-radius: 15%;">
+                                </div>
+                                <div class="col-8">
+                                    <h6 id="newsTitle4"></h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p id="newsSource4"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <p id="newsDescription4"></p>
+                            </div>
+                        </div>
+                        <div class="container mb-2 pt-1" style="background-color: seashell; outline: solid black 1px; border-radius: 5%;">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img id="newsImage5" src="" class="w-100" style="border-radius: 15%;">
+                                </div>
+                                <div class="col-8">
+                                    <h6 id="newsTitle5"></h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p id="newsSource5"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <p id="newsDescription5"></p>
+                            </div>
+                        </div>
+                        <div class="container mb-2 pt-1" style="background-color: seashell; outline: solid black 1px; border-radius: 5%;">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img id="newsImage6" src="" class="w-100" style="border-radius: 15%;">
+                                </div>
+                                <div class="col-8">
+                                    <h6 id="newsTitle6"></h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p id="newsSource6"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <p id="newsDescription6"></p>
+                            </div>
+                        </div>
                     <div class="model-footer"></div>
                 </div>
             </div>
+        </div>
         </div>
 
         <!--Currency modal-->
@@ -223,17 +307,12 @@
                             </tr>
                             <tr>
                                 <th>From</th>
-                                <td>
-                                    <select id="selectCurrency">
-                                        <option selected disabled>Please Select a currency</option>
-                                    </select>
-                                </td>                                
+                                <td value="USD">USD</td> 
                             </tr>
                             <tr>
-                                <th>To</th>
-                                <td value="USD" id="countryCurrency">
-                                    USD
-                                </td>                                
+                               <th>To</th>
+                                <td id="countryCurrency">
+                                </td>                                  
                             </tr>
                         </table>
                         <div class="input-group mb-3">
@@ -267,16 +346,53 @@
         </div>               
 
         <!--Images modal-->
-        <!-- Just a copy, needs completeing!!! -->
         <div class="modal fade" id="imagesModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modal-title">Images</h5>
+                        <h5 class="modal-title" id="modal-title">&#9679; Images &#9679;</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="model-body" style="padding: 10px;">
-                        <h1>Work in progress..</h1>
+                    <div class="model-body">
+                        <div id="carouselExampleControls" class="carousel slide px-1" data-ride="carousel" style="height: 425px;">
+                            <div class="carousel-inner" style="height: 600px;">
+                              <div class="carousel-item active">
+                                <img class="d-block w-100 c-img" src="" alt="slide1" id="slide1" style="height: 420px; object-fit: cover;">
+                              </div>
+                              <div class="carousel-item">
+                                <img class="d-block w-100 c-img" src="" alt="slide2" id="slide2" style="height: 420px; object-fit: cover;">
+                              </div>
+                              <div class="carousel-item">
+                                <img class="d-block w-100 c-img" src="" alt="slide3" id="slide3" style="height: 420px; object-fit: cover;">
+                              </div>
+                              <div class="carousel-item">
+                                <img class="d-block w-100 c-img" src="" alt="slide4" id="slide4" style="height: 420px; object-fit: cover;">
+                              </div>
+                              <div class="carousel-item">
+                                <img class="d-block w-100 c-img" src="" alt="slide5" id="slide5" style="height: 420px; object-fit: cover;">
+                              </div>
+                              <div class="carousel-item">
+                                <img class="d-block w-100 c-img" src="" alt="slide6" id="slide6" style="height: 420px; object-fit: cover;">
+                              </div>
+                              <div class="carousel-item">
+                                <img class="d-block w-100 c-img" src="" alt="slide7" id="slide7" style="height: 420px; object-fit: cover;">
+                              </div>
+                              <div class="carousel-item">
+                                <img class="d-block w-100 c-img" src="" alt="slide8" id="slide8" style="height: 420px; object-fit: cover;">
+                              </div>
+                              <div class="carousel-item">
+                                <img class="d-block w-100 c-img" src="" alt="slide9" id="slide9" style="height: 420px; object-fit: cover;">
+                              </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="sr-only"></span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="sr-only"></span>
+                            </a>
+                          </div>
                     </div>
                     <div class="model-footer"></div>
                 </div>
@@ -287,7 +403,11 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
         <script type="application/javascript" src="libs/js/leaflet.js"></script>
         <script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
-		<script type="application/javascript" src="libs/js/script.js"></script>
         <script type="application/javascript" src="libs/js/functions/currencyCalculator.js"></script>
+        <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
+        <script src='https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js'></script>
+        <script type="module" src="libs/js/script.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>
 </html>

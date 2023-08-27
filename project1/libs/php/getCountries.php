@@ -1,28 +1,26 @@
 <?php
 
-    ini_set('display_errors', 'On');
-	error_reporting(E_ALL);
+	$countryData = json_decode(file_get_contents("../data/countryBorders.geo.json"), true);
 
-	$executionStartTime = microtime(true);
+	$countries = [];
 
-	$url='https://restcountries.com/v3.1/all';
+    foreach ($countryData['features'] as $feature) {
 
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL, $url);
+        $country = null;
+        $country['iso3'] = $feature['properties']['iso_a3'];
+        $country['iso2'] = $feature['properties']['iso_a2'];
+        $country['name'] = $feature['properties']['name'];
+        $country['geometry'] = $feature['geometry'];
 
-	$result=curl_exec($ch);
+        array_push($countries, $country); 
+   };
 
-	curl_close($ch);
+   usort($countries, function ($item1, $item2) {
 
-	$decode = json_decode($result, true);	
+	return $item1['name'] <=> $item2['name'];
+});
 
-	$output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
-	$output['status']['description'] = "success";
-	$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-	$output['data'] = $decode;
+	$output['data'] = $countries;
 	
 	header('Content-Type: application/json; charset=UTF-8');
 
