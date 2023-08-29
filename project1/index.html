@@ -66,7 +66,7 @@
         </div>
 
         <!-- Preloader display -->
-        <div id=”preloader”></div>
+        <div id="preloader"></div>
                 
         <!--Display Map-->
         <div id="map"></div>
@@ -177,120 +177,113 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body" style="padding: 10px;" id="newArticles">
-                        <div class="container mb-2 pt-1" style="background-color: seashell; outline: solid black 1px; border-radius: 5%;">
+                        <h2 id="noNews" style="display: none;">No news articles</h2>
+                        <div class="row d-flex ">
                             <div class="row">
-                                <div class="col-4">
-                                    <img id="newsImage1" src="" class="w-100" style="border-radius: 15%;">
-                                </div>
-                                <div class="col-8">
-                                    <h6 id="newsTitle1"></h6>
+                            <div class="col">
+                                <!-- News 1 -->
+                                <div id="news1" class="card my-3">
+                                    <img id="newsImage1" src="" class="img-fluid w-100">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h6 id="newsTitle1"></h6>
+                                        </div>
+                                        <div class="card-text">
+                                            <p id="newsDescription1 text-center"></p>
+                                        </div>
+                                        <a id="newsSource1" class="href" target="_blank">Read More</a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <p id="newsSource1"></p>
+                            <div class="col">
+                                <!-- News 2 -->
+                                <div id="news2" class="card my-3">
+                                <img id="newsImage2" src="" class="img-fluid w-100">
+                                <div class="card-body">
+                                    <div class="card-title">
+                                        <h6 id="newsTitle2"></h6>
+                                    </div>
+                                    <div class="card-text">
+                                        <p id="newsDescription2 text-center"></p>
+                                    </div>
+                                    <a id="newsSource2" class="href" target="_blank">Read More</a>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <p id="newsDescription1"></p>
                             </div>
                         </div>
-                        <div class="container mb-2 pt-1" style="background-color: seashell; outline: solid black 1px; border-radius: 5%;">
-                            <div class="row">
-                                <div class="col-4">
-                                    <img id="newsImage2" src="" class="w-100" style="border-radius: 15%;">
-                                </div>
-                                <div class="col-8">
-                                    <h6 id="newsTitle2"></h6>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <!-- News 3 -->
+                                <div id="news3" class="card my-3">
+                                    <img id="newsImage3" src="" class="img-fluid w-100">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h6 id="newsTitle3"></h6>
+                                        </div>
+                                        <div class="card-text">
+                                            <p id="newsDescription3 text-center"></p>
+                                        </div>
+                                        <a id="newsSource3" class="href" target="_blank">Read More</a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <p id="newsSource2"></p>
+                            <div class="col">
+                                <!-- News 4 -->
+                                <div id="news4" class="card my-3">
+                                    <img id="newsImage4" src="" class="img-fluid w-100">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h6 id="newsTitle4" class="text-center"></h6>
+                                        </div>
+                                        <div class="card-text">
+                                            <p id="newsDescription4 text-center"></p>
+                                        </div>
+                                        <a id="newsSource4" class="href" target="_blank">Read More</a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <p id="newsDescription2"></p>
                             </div>
                         </div>
-                        <div class="container mb-2 pt-1" style="background-color: seashell; outline: solid black 1px; border-radius: 5%;">
-                            <div class="row">
-                                <div class="col-4">
-                                    <img id="newsImage3" src="" class="w-100" style="border-radius: 15%;">
-                                </div>
-                                <div class="col-8">
-                                    <h6 id="newsTitle3"></h6>
+                        <div class="row align-items-stretch">
+                            <div class="col">
+                                <!-- News 5 -->
+                                <div id="news5" class="card my-3">
+                                    <img id="newsImage5" src="" class="img-fluid w-100">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h6 id="newsTitle5"></h6>
+                                        </div>
+                                        <div class="card-text">
+                                            <p id="newsDescription5 text-center"></p>
+                                        </div>
+                                        <a id="newsSource5" class="href" target="_blank">Read More</a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <p id="newsSource3"></p>
+                            <div class="col">
+                                <!-- News 6 -->
+                                <div id="news6" class="card my-3">
+                                    <img id="newsImage6" src="" class="img-fluid w-100">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h6 id="newsTitle6"></h6>
+                                        </div>
+                                        <div class="card-text">
+                                            <p id="newsDescription6 text-center"></p>
+                                        </div>
+                                        <a id="newsSource6" class="href" target="_blank">Read More</a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <p id="newsDescription3"></p>
                             </div>
                         </div>
-                        <div class="container mb-2 pt-1" style="background-color: seashell; outline: solid black 1px; border-radius: 5%;">
-                            <div class="row">
-                                <div class="col-4">
-                                    <img id="newsImage4" src="" class="w-100" style="border-radius: 15%;">
-                                </div>
-                                <div class="col-8">
-                                    <h6 id="newsTitle4"></h6>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <p id="newsSource4"></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <p id="newsDescription4"></p>
-                            </div>
-                        </div>
-                        <div class="container mb-2 pt-1" style="background-color: seashell; outline: solid black 1px; border-radius: 5%;">
-                            <div class="row">
-                                <div class="col-4">
-                                    <img id="newsImage5" src="" class="w-100" style="border-radius: 15%;">
-                                </div>
-                                <div class="col-8">
-                                    <h6 id="newsTitle5"></h6>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <p id="newsSource5"></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <p id="newsDescription5"></p>
-                            </div>
-                        </div>
-                        <div class="container mb-2 pt-1" style="background-color: seashell; outline: solid black 1px; border-radius: 5%;">
-                            <div class="row">
-                                <div class="col-4">
-                                    <img id="newsImage6" src="" class="w-100" style="border-radius: 15%;">
-                                </div>
-                                <div class="col-8">
-                                    <h6 id="newsTitle6"></h6>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <p id="newsSource6"></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <p id="newsDescription6"></p>
-                            </div>
-                        </div>
+
+
+
                     <div class="model-footer"></div>
                 </div>
             </div>
         </div>
         </div>
-
+        </div>
         <!--Currency modal-->
         <!-- Just a copy, needs completeing!!! -->
         <div class="modal fade" id="currencyModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
@@ -330,7 +323,6 @@
         </div>
 
          <!--Wiki modal-->
-         <!-- Just a copy, needs completeing!!! -->
          <div class="modal fade" id="wikiModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
@@ -339,7 +331,9 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body" style="padding: 10px;">
-                        <h1>Work in progress..</h1>
+                        <div class="container" id="wikiBody">
+
+                        </div>
                     </div>
                     <div class="model-footer"></div>
                 </div>
@@ -410,6 +404,15 @@
         <script type="module" src="libs/js/script.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        
+        <script>
+            $(window).on('load', function () {
+                console.log($('#preloader').length)
+                if ($('#preloader').length) {
+                    $('#preloader').delay(1000).fadeOut('slow', function () {
+                    $(this).remove();
+                });
+                }
+            })
+        </script>
     </body>
 </html>

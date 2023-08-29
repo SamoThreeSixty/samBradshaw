@@ -14,8 +14,6 @@
 
     $url='api.openweathermap.org/data/2.5/forecast?lat=' . $_REQUEST['lat'] . '&lon=' . $_REQUEST['lon'] . '&units=metric&appid=' . $_ENV['WEATHER_API_KEY'];
 
-    echo $url;
-
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

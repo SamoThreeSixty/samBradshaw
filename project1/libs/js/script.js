@@ -176,7 +176,6 @@ $('#countrySelect').on('change', (event) => {
                                         feature: 'AIRP'
                                     },
                                     success: function(result) {
-
                                         result.data.geonames.forEach((each) => {
                                             if(each.countryCode === iso_a2){
                                                 L.marker([each.lat, each.lng], { icon: airportIcon }).bindPopup(`<b>Airport</b><br>${each.toponymName}`).openPopup().addTo(airportGroup);
@@ -200,8 +199,6 @@ $('#countrySelect').on('change', (event) => {
                                         west: west
                                     },
                                     success: function(result) {
-                                        console.log(result)
-
                                         result.data.earthquakes.forEach((each) => {
                                             L.marker([each.lat, each.lng], { icon: earthquakeIcon }).bindPopup(`<b>Earthquake</b><br>Date= ${convertDate(each.datetime)}</br>Magnitude= ${each.magnitude}`).openPopup().addTo(earthquakeGroup);
                                         })
@@ -223,10 +220,21 @@ $('#countrySelect').on('change', (event) => {
                                         west: west
                                     },
                                     success: function(result) {
-
+                                        $('#wikiBody').html('');
                                         result.data.geonames.forEach((each) => {
                                             if(each.countrycode === iso_a2) {
                                                 L.marker([each.lat, each.lng], { icon: cityIcon }).bindPopup(`<b>${each.name}</b><br>Population ${each.population.toLocaleString("en-US")}</br><a href="http://${each.wikipedia}">Wiki</a>`).openPopup().addTo(cityGroup);
+                                                //add wiki to the wiki modal
+                                                const wiki = document.createElement('div');
+                                                const title = document.createElement('h3');
+                                                title.textContent = each.name;
+                                                const link = document.createElement('a');
+                                                link.textContent = "Wiki";
+                                                link.setAttribute('href', "http://" + each.wikipedia);
+                                                wiki.appendChild(title)
+                                                wiki.appendChild(link)
+
+                                                document.getElementById('wikiBody').appendChild(wiki)
                                             }
                                         })
                                     },
@@ -289,17 +297,27 @@ $('#countrySelect').on('change', (event) => {
                 },
                 success: function(result) {
                     let count = 0;
-                    console.log(result)
+                    
                     result.data.forEach((news) => {
-                        if(news.image !== null && news.author !== null){
-                            if(count === 6){
+                        if(news.image !== null){
+                            //only returns 6 news articles
+                            if(count === 7){
                                 return;
                             } else {
+                            $('#noNews').attr('style', "display: none;");
+                            $(`#news${count}`).attr('style', 'display: block;')
                             $(`#newsImage${count}`).attr('src', news.image);
                             $(`#newsDescription${count}`).html(news.description);
-                            $(`#newsSource${count}`).html("Source: " + news.source);
+                            $(`#newsSource${count}`).attr("href", news.url);
                             $(`#newsTitle${count}`).html(news.title);
                             count++;
+                            }
+                        }
+                        //If there are no news articles
+                        if(count === 0){
+                            $('#noNews').attr('style', "display: block;");
+                            for(let i = 0; i < 7; i++){
+                                $(`#news${i}`).attr('style', 'display: none;')
                             }
                         }
                     })
@@ -361,11 +379,3 @@ $('#countrySelect').on('change', (event) => {
       }
     })
   }).addTo(map);
-
-  $(window).on('load', function () {
-    if ($('#preloader').length) {
-    $('#preloader').delay(1000).fadeOut('slow', function () {
-    $(this).remove();
-    });
-    }
-})
