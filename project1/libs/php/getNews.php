@@ -5,7 +5,7 @@
 
     $executionStartTime = microtime(true);
 
-    $url = 'http://api.mediastack.com/v1/news?access_key=a74a03ce050d24f823f7d8cdbfb5eb37&countries=' . $_REQUEST['country'];
+    $url = 'http://api.mediastack.com/v1/news?access_key=a74a03ce050d24f823f7d8cdbfb5eb37&countries=' . $_REQUEST['country'] . '&sort=published_desc&categories=general';
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

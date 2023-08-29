@@ -200,6 +200,7 @@ $('#countrySelect').on('change', (event) => {
                                         west: west
                                     },
                                     success: function(result) {
+                                        console.log(result)
 
                                         result.data.earthquakes.forEach((each) => {
                                             L.marker([each.lat, each.lng], { icon: earthquakeIcon }).bindPopup(`<b>Earthquake</b><br>Date= ${convertDate(each.datetime)}</br>Magnitude= ${each.magnitude}`).openPopup().addTo(earthquakeGroup);
@@ -360,3 +361,11 @@ $('#countrySelect').on('change', (event) => {
       }
     })
   }).addTo(map);
+
+  $(window).on('load', function () {
+    if ($('#preloader').length) {
+    $('#preloader').delay(1000).fadeOut('slow', function () {
+    $(this).remove();
+    });
+    }
+})

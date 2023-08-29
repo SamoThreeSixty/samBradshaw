@@ -1,11 +1,18 @@
 <?php
 
+	require '../../vendor/autoload.php';
+
+	use Dotenv\Dotenv;
+
+	$dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+	$dotenv->safeLoad();
+
     ini_set('display_errors', 'On');
 	error_reporting(E_ALL);
 
 	$executionStartTime = microtime(true);
 
-	$url= 'https://api.unsplash.com/search/photos?query=' . $_REQUEST['country'] . '&client_id=z-y1SZ-iOlaHE0R1voyWf_IwSgFTbxi_mxVNWE7huvU&page=1&per_page=10';
+	$url= 'https://api.unsplash.com/search/photos?query=' . $_REQUEST['country'] . '&client_id=' . $_ENV['UNSPLASH_USER_ID'] . '&page=1&per_page=10';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

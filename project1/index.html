@@ -4,7 +4,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Gezetteer | Find information about countries</title>
-        <link rel="stylesheet" href="libs/styles/style.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -65,6 +64,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- Preloader display -->
+        <div id=”preloader”></div>
                 
         <!--Display Map-->
         <div id="map"></div>
@@ -81,9 +83,8 @@
                         <div class="mx-auto" style="width: 200px;">
                             <img id="flag" src="" style="width: 200px;" class="py-3"/>
                         </div>
-                        
-                        <table class="table">
-                            <tr class="table-secondary">                                
+                        <table class="table table-striped">
+                            <tr>                                
                                 <th id="capitalHead">Capital</th>
                                 <td id="capital">
                                     <ul id="capitals" style="margin-bottom: 0px;list-style: none;">
@@ -93,7 +94,7 @@
                             <tr>
                                 <th>Population</th>
                                 <td id="population"></td>
-                            <tr class="table-secondary">
+                            <tr>
                                 <th>Currency</th>
                                 <td id="currency"></td>
                             </tr>
@@ -104,7 +105,7 @@
                                     </ul>
                                 </td>
                             </tr>
-                            <tr class="table-secondary">
+                            <tr>
                                 <th >Area</th>
                                 <td id="area"></td>
                             </tr>
@@ -398,7 +399,7 @@
                 </div>
             </div>
         </div>
-
+        <link rel="stylesheet" href="libs/styles/style.css">
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
         <script type="application/javascript" src="libs/js/leaflet.js"></script>
@@ -409,5 +410,6 @@
         <script type="module" src="libs/js/script.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        
     </body>
 </html>

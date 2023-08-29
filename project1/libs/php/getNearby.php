@@ -1,11 +1,18 @@
 <?php
 
+	require '../../vendor/autoload.php';
+
+	use Dotenv\Dotenv;
+
+	$dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+	$dotenv->safeLoad();
+
     ini_set('display_errors', 'On');
 	error_reporting(E_ALL);
 
 	$executionStartTime = microtime(true);
 
-	$url='http://api.geonames.org/findNearbyJSON?lat=' . $_REQUEST['lat'] . '&lng=' . $_REQUEST['lng'] . '&username=SamoThreeSixty&featureCode=' . $_REQUEST['feature'] . '&localCountry=true&radius=300&maxRows=100';
+	$url='http://api.geonames.org/findNearbyJSON?lat=' . $_REQUEST['lat'] . '&lng=' . $_REQUEST['lng'] . '&username=' . $_ENV['GEONAMES_API_KEY'] . '&featureCode=' . $_REQUEST['feature'] . '&localCountry=true&radius=300&maxRows=100';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

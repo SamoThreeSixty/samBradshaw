@@ -1,11 +1,20 @@
 <?php
 
+    require '../../vendor/autoload.php';
+
+    use Dotenv\Dotenv;
+
+    $dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+    $dotenv->safeLoad();
+
     ini_set('display_errors', 'On');
     error_reporting(E_ALL);
 
     $executionStartTime = microtime(true);
 
-    $url='api.openweathermap.org/data/2.5/forecast?lat=' . $_REQUEST['lat'] . '&lon=' . $_REQUEST['lon'] . '&appid=' . 'b3a7a86c578c2840286104eb14df34ef&units=metric';
+    $url='api.openweathermap.org/data/2.5/forecast?lat=' . $_REQUEST['lat'] . '&lon=' . $_REQUEST['lon'] . '&units=metric&appid=' . $_ENV['WEATHER_API_KEY'];
+
+    echo $url;
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

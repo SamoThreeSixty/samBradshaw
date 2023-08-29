@@ -1,11 +1,18 @@
 <?php
 
+	require '../../vendor/autoload.php';
+
+	use Dotenv\Dotenv;
+
+	$dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+	$dotenv->safeLoad();
+
     ini_set('display_errors', 'On');
 	error_reporting(E_ALL);
 
 	$executionStartTime = microtime(true);
 
-	$url='https://openexchangerates.org/api/latest.json?app_id=' . '9372dfdea6e24c968bc1cbfb556a5329';
+	$url='https://openexchangerates.org/api/latest.json?app_id=' . $_ENV['EXCHANGE_RATE_API_KEY'];
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
