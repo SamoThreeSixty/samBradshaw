@@ -18,7 +18,7 @@
 
     <body>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-xl navbar-light bg-light justify-content-center navbar-fixed-top">
+        <nav class="navbar navbar-expand-xl navbar-light bg-light justify-content-center fixed-top">
             <span class="navbar-brand mb-0 h1">Gezetteer</span>
             <!-- Selection of all the different countries using Alpha 2 codes -->
             <div class="form">
@@ -31,7 +31,7 @@
         </nav>
         <!-- Buttons to open modals -->
         <div>
-            <div class="position-relative float-end" style="z-index: 700;padding-left: 10px;right: 10px;">
+            <div id="modalButtons" class="position-relative float-end" style="z-index: 700;padding-left: 10px;right: 10px;">
                 <div class="row-4 mt-2">
                     <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#infoModal">
                         <h1 class="bi bi-info-square"></h1>
@@ -294,10 +294,12 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body" style="padding: 10px;">
+                        <!-- Value for the currency to exchange to -->
+                        <input type="hidden" id="countryCurrencyValue" value=""></input>
                         <table class="table">
                             <tr>
                                 <th>Amount</th>
-                                <td><input type="number" id="startingCurrency"></td>                                                           
+                                <td><input type="number" id="startingCurrency" value="0"></td>                                                           
                             </tr>
                             <tr>
                                 <th>From</th>
@@ -305,17 +307,17 @@
                             </tr>
                             <tr>
                                <th>To</th>
-                                <td id="countryCurrency">
-                                </td>                                  
+                                <td id="countryCurrency"></td>                                  
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="btn btn-outline-secondary" type="button" id="calculateCurrency">Calculate</button>
+                                </td>
+                                <td>
+                                    <input id="currencyCalculatorResult" type="text" class="calculator-screen z-depth-1" value="" disabled />
+                                </td>
                             </tr>
                         </table>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                              <button class="btn btn-outline-secondary" type="button" id="calculateCurrency">Calculate</button>
-                            </div>
-                            <input id="currencyCalculatorResult" type="text" class="calculator-screen z-depth-1" value="" disabled />
-                          </div>
-                        
                     </div>
                     <div class="model-footer"></div>
                 </div>

@@ -51,9 +51,14 @@ html, body {
     }
 
 #map {
-    height: 94.1%;
+    top: 54px;
+    height: calc(100% - 54px);
     width: 100vw;
     position: fixed;
+}
+
+#modalButtons {
+    top:50px;
 }
 
 
@@ -76,3 +81,14 @@ html, body {
 .card:hover {
     transform: scale(0.95);
 }
+
+@media only screen and (max-width: 402px) {
+    #map {
+        top: 88px;
+        height: calc(100% - 88px);
+    }
+
+    #modalButtons {
+        top: 84px;
+    }
+  }

@@ -4,27 +4,31 @@ const getExchangeRates = async () => {
     return result;
 }
 
+$('#calculateCurrency').on('change', function() {
+    alert(this.value)
+})
+
 $('#calculateCurrency').on('click', function() {
     //Value user has given
     const amount = $('#startingCurrency').val();
-
+    
     //API only able to exchange from USD for free, so this is the only option
-    const to = 'USD';
+    const from = 'USD';
 
     //Currency used in chosen country
     // const from = document.getElementById('countryCurrency');
-    const from = $('#countryCurrency').val();
-    console.log(from)
+    const to = $('#countryCurrencyValue').val();
+    console.log(to)
 
 
 
 
-    const exchange_rate = getExchangeRates().then((value) => {
-        console.log(from)
-        const rate = value.data.rates[from];
-        console.log(rate)
+    getExchangeRates().then((value) => {
+        const rate = value.data.rates[to];
+        if(!rate){
+            console.log("Rate not avalible")
+        }
         const newValue = (amount * rate).toFixed(2);
-        console.log(newValue)
         $('#currencyCalculatorResult').val(newValue);
         return rate;
     })

@@ -27,6 +27,7 @@ $(document).ready(function () {
     navigator.geolocation.getCurrentPosition((position) => {
         let lat = position.coords.latitude;
         let lng = position.coords.longitude;
+        console.log('working')
         $.ajax({
             url: 'libs/php/getCountry.php',
             type: 'POST',
@@ -128,7 +129,7 @@ $('#countrySelect').on('change', (event) => {
 
                 //Update currency modal
                 $('#countryCurrency').html(currency[0][1].name);
-                $('#countryCurrency').attr("value", currency[0][0]);
+                $('#countryCurrencyValue').attr("value", currency[0][0]);
 
                 //Leaflet pan to location
                 const lat = result.data[0].latlng[0];
