@@ -27,7 +27,6 @@ $(document).ready(function () {
     navigator.geolocation.getCurrentPosition((position) => {
         let lat = position.coords.latitude;
         let lng = position.coords.longitude;
-        console.log('working')
         $.ajax({
             url: 'libs/php/getCountry.php',
             type: 'POST',
@@ -73,6 +72,8 @@ $('#countrySelect').on('change', (event) => {
             country: country,
         },
         success: function(result) {
+            $('#preloader').show();
+
             JSON.stringify(result);
             const country = result.data[0].name.common.split(" ").join('%20');
             const cca2 = result.data[0].cca2;
@@ -125,11 +126,13 @@ $('#countrySelect').on('change', (event) => {
                     $('#language').html(Object.values(result.data[0].languages)[0]);
                 }
 
-
-
                 //Update currency modal
                 $('#countryCurrency').html(currency[0][1].name);
                 $('#countryCurrencyValue').attr("value", currency[0][0]);
+                $('#countryCurrencySymbolValue').val(currency[0][1].symbol);
+                // Reset current currency values if any
+                $('#startingCurrency').val(0);
+                $('#currencyCalculatorResult').val(0);
 
                 //Leaflet pan to location
                 const lat = result.data[0].latlng[0];
@@ -164,7 +167,7 @@ $('#countrySelect').on('change', (event) => {
                                 const north = bounds.getNorth();
                                 const south = bounds.getSouth();
                                 const east = bounds.getEast();
-                                const west = bounds.getWest();                            
+                                const west = bounds.getWest();                          
 
                                 //Generate airport info
                                 $.ajax({
@@ -179,7 +182,9 @@ $('#countrySelect').on('change', (event) => {
                                     success: function(result) {
                                         result.data.geonames.forEach((each) => {
                                             if(each.countryCode === iso_a2){
-                                                L.marker([each.lat, each.lng], { icon: airportIcon }).bindPopup(`<b>Airport</b><br>${each.toponymName}`).openPopup().addTo(airportGroup);
+                                                L.marker([each.lat, each.lng], { icon: airportIcon }).bindPopup(`
+                                                    <h3 class="text-center">Airport</h3>
+                                                    <p class="text-center">${each.toponymName}</p>`).openPopup().addTo(airportGroup);
                                             }
                                             
                                         })
@@ -201,7 +206,11 @@ $('#countrySelect').on('change', (event) => {
                                     },
                                     success: function(result) {
                                         result.data.earthquakes.forEach((each) => {
-                                            L.marker([each.lat, each.lng], { icon: earthquakeIcon }).bindPopup(`<b>Earthquake</b><br>Date= ${convertDate(each.datetime)}</br>Magnitude= ${each.magnitude}`).openPopup().addTo(earthquakeGroup);
+                                            L.marker([each.lat, each.lng], { icon: earthquakeIcon }).bindPopup(`
+                                                <h4 class="text-center">Earthquake</h4>
+                                                <p class="text-center">${convertDate(each.datetime)}</p>
+                                                <p class="text-center">${each.magnitude} Magnitude</p>`)
+                                                .openPopup().addTo(earthquakeGroup);
                                         })
                                     },
                                     error: function(error){
@@ -221,21 +230,30 @@ $('#countrySelect').on('change', (event) => {
                                         west: west
                                     },
                                     success: function(result) {
-                                        $('#wikiBody').html('');
+                                        $('#wikiTableCitys').html('');
                                         result.data.geonames.forEach((each) => {
                                             if(each.countrycode === iso_a2) {
-                                                L.marker([each.lat, each.lng], { icon: cityIcon }).bindPopup(`<b>${each.name}</b><br>Population ${each.population.toLocaleString("en-US")}</br><a href="http://${each.wikipedia}">Wiki</a>`).openPopup().addTo(cityGroup);
+                                                L.marker([each.lat, each.lng], { icon: cityIcon }).bindPopup(`
+                                                <a style="text-decoration: none; color: black;" href="http://${each.wikipedia}">
+                                                <h3 class="text-center">${each.name}</h3>
+                                                <p class="text-center">Population ${each.population.toLocaleString("en-US")}</p></a>`)
+                                                .openPopup().addTo(cityGroup);
                                                 //add wiki to the wiki modal
-                                                const wiki = document.createElement('div');
-                                                const title = document.createElement('h3');
+                                                const wiki = document.createElement('tr');
+                                                const title = document.createElement('td');
                                                 title.textContent = each.name;
-                                                const link = document.createElement('a');
-                                                link.textContent = "Wiki";
-                                                link.setAttribute('href', "http://" + each.wikipedia);
+                                                const link = document.createElement('td');
+                                                const anchor = document.createElement('a');
+                                                anchor.textContent = "Wiki link";
+                                                anchor.setAttribute('class', 'btn btn-primary btn-sm');
+                                                anchor.setAttribute('href', "http://" + each.wikipedia);
+                                                anchor.setAttribute('target', "_blank");
                                                 wiki.appendChild(title)
+                                                link.appendChild(anchor)
                                                 wiki.appendChild(link)
+                                                
 
-                                                document.getElementById('wikiBody').appendChild(wiki)
+                                                document.getElementById('wikiTableCitys').appendChild(wiki)
                                             }
                                         })
                                     },
@@ -322,7 +340,6 @@ $('#countrySelect').on('change', (event) => {
                             }
                         }
                     })
-                    console.log(count)
                 },
                 error: function(error) {
                     console.log(error)
@@ -358,6 +375,12 @@ $('#countrySelect').on('change', (event) => {
             console.log("error")
         }
     })
+
+    if ($('#preloader').length) {
+        $('#preloader').delay(1000).fadeOut('slow', function () {
+            $(this).hide();
+        });
+    }  
 });
 
   //Button to center map

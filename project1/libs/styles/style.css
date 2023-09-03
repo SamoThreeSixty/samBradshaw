@@ -5,6 +5,19 @@ html, body {
     min-height: 500px;
 }
 
+body {
+    font-family: 'Archivo', sans-serif;
+}
+
+#logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+}
+
+table {
+    padding: 100px;
+}
+
 /* Preloader */
 #preloader {
     position: fixed;
@@ -57,8 +70,12 @@ html, body {
     position: fixed;
 }
 
+#countrySelect{
+    width: 300px;
+}
+
 #modalButtons {
-    top:50px;
+    top: 54px;
 }
 
 
@@ -74,6 +91,8 @@ html, body {
     font-size:12px;
 }
 
+
+/* Animations for the news cards */
 .card {
     transition: all 0.3s;
 }
@@ -82,13 +101,26 @@ html, body {
     transform: scale(0.95);
 }
 
-@media only screen and (max-width: 402px) {
+
+/* Adjustment for when screens cause the nav bar to extend */
+@media only screen and (max-width: 435px) {
     #map {
         top: 88px;
         height: calc(100% - 88px);
     }
 
     #modalButtons {
-        top: 84px;
+        top: 88px;
+    }
+
+    #countrySelect{
+        width: 95vw;
+    }
+    #startingCurrency{
+        width: 100px;
+    }
+
+    #currencyCalculatorResult{
+        width: 100px;
     }
   }

@@ -18,7 +18,9 @@ $('#calculateCurrency').on('click', function() {
     //Currency used in chosen country
     // const from = document.getElementById('countryCurrency');
     const to = $('#countryCurrencyValue').val();
-    console.log(to)
+
+    const symbol = $('#countryCurrencySymbolValue').val();
+
 
 
 
@@ -29,7 +31,9 @@ $('#calculateCurrency').on('click', function() {
             console.log("Rate not avalible")
         }
         const newValue = (amount * rate).toFixed(2);
-        $('#currencyCalculatorResult').val(newValue);
+        const formattedValue = Number(newValue).toLocaleString("en-US");
+        console.log(symbol + ' ' + formattedValue)
+        $('#currencyCalculatorResult').val(symbol + ' ' + formattedValue);
         return rate;
     })
 });
