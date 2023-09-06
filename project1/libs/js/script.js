@@ -64,6 +64,7 @@ L.control.layers(basemaps, markers, {position: 'bottomleft'}).addTo(map);
 //Gets info generated when country is selected
 $('#countrySelect').on('change', (event) => {
     let country = event.target.value;
+
     $.ajax({
         url: "libs/php/getCountryInfo.php",
         type: 'POST',
@@ -180,6 +181,7 @@ $('#countrySelect').on('change', (event) => {
                                         feature: 'AIRP'
                                     },
                                     success: function(result) {
+                                        console.log("Airports Recieved")
                                         result.data.geonames.forEach((each) => {
                                             if(each.countryCode === iso_a2){
                                                 L.marker([each.lat, each.lng], { icon: airportIcon }).bindPopup(`
@@ -190,6 +192,7 @@ $('#countrySelect').on('change', (event) => {
                                         })
                                     },
                                     error: function(error){
+                                        console.log("Airports Error")
                                         console.log(error)
                                     }})
                                     
@@ -205,6 +208,7 @@ $('#countrySelect').on('change', (event) => {
                                         west: west
                                     },
                                     success: function(result) {
+                                        console.log("Earthquake Recieved")
                                         result.data.earthquakes.forEach((each) => {
                                             L.marker([each.lat, each.lng], { icon: earthquakeIcon }).bindPopup(`
                                                 <h4 class="text-center">Earthquake</h4>
@@ -214,6 +218,7 @@ $('#countrySelect').on('change', (event) => {
                                         })
                                     },
                                     error: function(error){
+                                        console.log("Earthquake Error")
                                         console.log(error)
                                     }})
 
@@ -232,12 +237,16 @@ $('#countrySelect').on('change', (event) => {
                                     success: function(result) {
                                         $('#wikiTableCitys').html('');
                                         result.data.geonames.forEach((each) => {
+                                            
                                             if(each.countrycode === iso_a2) {
                                                 L.marker([each.lat, each.lng], { icon: cityIcon }).bindPopup(`
-                                                <a style="text-decoration: none; color: black;" href="http://${each.wikipedia}">
                                                 <h3 class="text-center">${each.name}</h3>
-                                                <p class="text-center">Population ${each.population.toLocaleString("en-US")}</p></a>`)
+                                                <p class="text-center">Population ${each.population.toLocaleString("en-US")}</p>
+                                                <div class="d-flex justify-content-center">
+                                                    <a class="text-center" href="http://${each.wikipedia}">Wiki link</a>
+                                                </div>`)
                                                 .openPopup().addTo(cityGroup);
+
                                                 //add wiki to the wiki modal
                                                 const wiki = document.createElement('tr');
                                                 const title = document.createElement('td');
@@ -251,13 +260,13 @@ $('#countrySelect').on('change', (event) => {
                                                 wiki.appendChild(title)
                                                 link.appendChild(anchor)
                                                 wiki.appendChild(link)
-                                                
-
+                                            
                                                 document.getElementById('wikiTableCitys').appendChild(wiki)
                                             }
                                         })
                                     },
                                     error: function(error){
+                                        console.log("City Error")
                                         console.log(error)
                                     }})
 
@@ -332,6 +341,7 @@ $('#countrySelect').on('change', (event) => {
                             count++;
                             }
                         }
+                        console.log(count)
                         //If there are no news articles
                         if(count === 0){
                             $('#noNews').attr('style', "display: block;");
@@ -368,12 +378,43 @@ $('#countrySelect').on('change', (event) => {
                     console.log(error)
                 }
             })
+
+            // Generate country wiki
+            $.ajax({
+                url: 'libs/php/getWiki.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    country: country
+                },
+                success: function(result) {
+                    for(let i = 0; i < result.data.geonames.length; i++){
+                        if(result.data.geonames[i].feature === "country") {
+                            console.log(result.data.geonames[i])
+                            $('#countryImage').attr('src', result.data.geonames[0].thumbnailImg);
+                            $('#country').html(result.data.geonames[0].title);
+                            $('#countryWikiText').html(result.data.geonames[0].summary.slice(0, -5));
+                            const link = $('<a id="contryWikiLink" class="text-decoration-none">(Read more...)</a>')
+                            $('#countryWikiText').append(link)
+                            $('#contryWikiLink').attr('href', "https://" + result.data.geonames[0].wikipediaUrl)
+                            break;
+                        }
+                    }
+                    
+                },
+                error: function(error) {
+                console.log(error)
+                }
+            })
+            
+
         }
 
         },
         error: function(error) {
             console.log("error")
-        }
+        },
+        async: false
     })
 
     if ($('#preloader').length) {

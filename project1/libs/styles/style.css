@@ -117,10 +117,10 @@ table {
         width: 95vw;
     }
     #startingCurrency{
-        width: 100px;
+        width: 200px;
     }
 
     #currencyCalculatorResult{
-        width: 100px;
+        width: 200px;
     }
   }

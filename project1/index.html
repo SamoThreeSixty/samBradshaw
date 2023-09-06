@@ -182,7 +182,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body" style="padding: 10px;" id="newArticles">
-                        <h2 id="noNews" style="display: none;">No news articles</h2>
+                        <h2 id="noNews">No news articles</h2>
                         <div class="row d-flex">
                             <div class="row">
                             <div class="col">
@@ -331,20 +331,27 @@
 
          <!--Wiki modal-->
          <div class="modal fade" id="wikiModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modal-title">Wiki</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="model-body" style="padding: 10px;">
+                    <div class="model-body text-center" style="padding: 10px;">
+                        <div class="d-flex justify-content-around align-items-center m-4">
+                            <img id="countryImage" src="" style="border-radius: 100%;">
+                            <h3 id="country"></h3>
+                        </div>
+                        <p id="countryWikiText"></p>
                         <table class="table table-striped text-center">
                             <tbody id="wikiTableCitys">
                                 <h4 class="text-center">Citys</h4>
                             </tbody>
                         </table>
                     </div>
-                    <div class="model-footer"></div>
+                    <div class="model-footer text-center">
+                        <button type="button" class="btn btn-secondary mb-4" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    </div>
                 </div>
             </div>
         </div>               
