@@ -10,15 +10,13 @@
         $country['iso3'] = $feature['properties']['iso_a3'];
         $country['iso2'] = $feature['properties']['iso_a2'];
         $country['name'] = $feature['properties']['name'];
-        $country['geometry'] = $feature['geometry'];
 
         array_push($countries, $country); 
-   };
+    };
 
-   usort($countries, function ($item1, $item2) {
-
-	return $item1['name'] <=> $item2['name'];
-});
+    usort($countries, function ($item1, $item2) {
+        return $item1['name'] <=> $item2['name'];
+    });
 
 	$output['data'] = $countries;
 	

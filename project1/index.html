@@ -17,61 +17,23 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@300;500&display=swap" rel="stylesheet">
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="./libs/styles/leaflet.extra-markers.min.css">
+        <script src="./libs/js/leaflet.extra-markers.js"></script>
     </head>
-
 
     <body>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-xl navbar-light bg-light justify-content-center fixed-top">
-            <span id="logo" class="navbar-brand mb-0 h1">Gazetteer</span>
-            <!-- Selection of all the different countries using Alpha 2 codes -->
-            <div class="form">
-                <form>
-                    <select class="form-select" aria-label="Select Country" id="countrySelect">
-                        <option selected disabled>Please Select a country</option>
-                    </select>
-                </form>
-            </div>
-        </nav>
-        <!-- Buttons to open modals -->
-        <div>
-            <div id="modalButtons" class="position-relative float-end" style="z-index: 700;padding-left: 10px;right: 10px;">
-                <div class="row-4 mt-2">
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#infoModal">
-                        <h1 class="bi bi-info-square"></h1>
-                    </button>
-                </div>
-                <div class="row-4 mt-2">
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#weatherModal">
-                        <h1 class="bi bi-cloud-sun"></h1>
-                    </button>
-                </div>
-                <div class="row-4 mt-2">
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#newsModal">
-                        <h1 class="bi bi-newspaper"></h1>
-                    </button>
-                </div>
-                <div class="row-4 mt-2">
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#currencyModal">
-                        <h1 class="bi bi-currency-exchange"></h1>
-                    </button>
-                </div>
-                <div class="row-4 mt-2">
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#wikiModal">
-                        <h1 class="bi bi-wikipedia"></h1>
-                    </button>
-                </div>
-                <div class="row-4 mt-2">
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#imagesModal">
-                        <h1 class="bi bi-images"></h1>
-                    </button>
-                </div>
-            </div>
-        </div>
+        <span class="selectContainer">
+            <!-- Selection of all the different countries using iso2 & iso3 codes -->
+            <form>
+                <select class="countrySelect form-select shadow-lg" aria-label="Select Country"></select>
+                <input class="countryLocation" hidden>
+            </form>
+        </span>
 
         <!-- Preloader display -->
-        <div id="preloader"></div>
+        <!-- <div id="preloader"></div> -->
                 
         <!--Display Map-->
         <div id="map"></div>
@@ -81,38 +43,55 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modal-title">Information</h5>
+                        <h5 class="modal-title" id="modal-title"><i class="bi bi-info fa-lg"></i>At a glance</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="model-body px-2" style="background-color: seashell;">
+                    <div class="model-body px-2">
                         <div class="mx-auto" style="width: 200px;">
-                            <img id="flag" src="" style="width: 200px;" class="py-3"/>
+                            <img id="flag" src="" style="width: 200px;" class="my-3 shadow-lg"/>
                         </div>
-                        <table class="table table-striped text-center">
-                            <tr>                                
-                                <th id="capitalHead">Capital</th>
-                                <td id="capital">
-                                    <ul id="capitals" style="margin-bottom: 0px;list-style: none;">
-                                    </ul>
-                                </td>
+                        <table class="table table-striped">
+                            <tr>
+                                <td class="col-md-1"><i class="bi bi-buildings-fill fa-xl"></i></td>
+                                <td id="capitalHead">Capital</td>
+                                <td class="text-end" id="capital"><ul id="capitals" class="list-inline list-unstyled"></ul></td>
                             </tr>
+
                             <tr>
-                                <th>Population</th>
-                                <td id="population"></td>
-                            <tr>
-                                <th>Currency</th>
-                                <td id="currency"></td>
+                                <td><i class="bi bi-globe-americas fa-xl"></i></i></td>
+                                <td id="continentHead">Continent</td>
+                                <td class="text-end" id="continent"></td>
                             </tr>
+
                             <tr>
-                                <th id="languageHead">Language</th>
-                                <td id="language">
-                                    <ul id="languages" style="margin-bottom: 0px;list-style: none;">
-                                    </ul>
-                                </td>
+                                <td><i class="bi bi-pin-map fa-xl"></i></td>
+                                <td>Region</td>
+                                <td class="text-end" id="region"></td>
                             </tr>
+
                             <tr>
-                                <th >Area</th>
-                                <td id="area"></td>
+                                <td><i class="bi bi-ear-fill fa-xl"></i></i></td>
+                                <td>Languages</td>
+                                <td class="text-end" id="language"><ul id="languages" style="margin-bottom: 0px;list-style: none;"></ul></td>
+                            </tr>
+
+                            
+                            <tr>
+                                <td><i class="bi bi-cash fa-xl"></i></td>
+                                <td>Currency</td>
+                                <td class="text-end" id="currency"></td>
+                            </tr>
+
+                            <tr>
+                                <td><i class="bi bi-rulers fa-xl"></i></td>
+                                <td>Area</td>
+                                <td class="text-end" id="area"></td>
+                            </tr>
+
+                            <tr>
+                                <td><i class="bi bi-people-fill fa-xl"></i></td>
+                                <td>Populatuion</td>
+                                <td class="text-end" id="population"></td>
                             </tr>
                         </table>
                     </div>
@@ -126,47 +105,54 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modal-title">Weather Forecast</h5>
+                        <h5 class="modal-title" id="modal-title"><span id="weatherCity" value="">London</span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body" style="padding: 10px;">
-                        <table class="table table-striped text-center">
-                            <tr>
-                                <th>Day</th>
-                                <th>Temp</th>
-                                <th>Weather</th>
-                                <th>Icon</th>
-                            </tr>
-                            <tr class="table-secondary">
-                                <th id="weatherDate1"></th>
-                                <td id="temp1"></td>
-                                <td id="weather1"></td>
-                                <td><img id="weatherIcon1" style="width: 50px;" src=""></img></td>
-                            </tr>
-                            <tr>
-                                <th id="weatherDate2"></th>
-                                <td id="temp2"></td>
-                                <td id="weather2"></td>
-                                <td><img id="weatherIcon2" style="width: 50px;" src=""></img></td>
-                            <tr class="table-secondary">
-                                <th id="weatherDate3"></th>
-                                <td id="temp3"></td>
-                                <td id="weather3"></td>
-                                <td><img id="weatherIcon3" style="width: 50px;" src=""></img></td>
-                            </tr>
-                            <tr>
-                                <th id="weatherDate4"></th>
-                                <td id="temp4"></td>
-                                <td id="weather4"></td>
-                                <td><img id="weatherIcon4" style="width: 50px;" src=""></img></td>
-                            </tr>
-                            <tr class="table-secondary">
-                                <th id="weatherDate5"></th>
-                                <td id="temp5"></td>
-                                <td id="weather5"></td>
-                                <td><img id="weatherIcon5" style="width: 50px;" src=""></img></td>
-                            </tr>
-                        </table>
+                        <div class="container">
+                            <div class="row shadow my-1 mx-1">
+                                <div class="container d-flex flex-column">
+                                    <div class="row d-flex">
+                                        <h3 class="align-self-start">Today</h3>
+                                    </div>
+                                    <p id="todayWeather">Sunny</p>
+                                    <img id="todayWeatherIcon" class="align-self-center"></img>
+                                </div>
+                                <div class="container d-flex justify-content-around">
+                                    <span id="todayWeatherHigh" class="h5"></span>
+                                    <span id="todayWeatherLow" class="text-secondary"></span>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <div class="col shadow-lg my-1">
+                                        <div class="container d-flex flex-column">
+                                            <h3 id="tomorrowDate"></h3>
+                                            <p id="tomorrowWeather">Sunny</p>
+                                            <img id="tomorrowWeatherIcon" class="align-self-center"></img>
+                                        </div>
+                                        <div class="container d-flex justify-content-around">
+                                            <span id="tomorrowWeatherHigh" class="h5"></span>
+                                            <span id="tomorrowWeatherLow" class="text-secondary"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="col shadow-lg my-1">
+                                        <div class="container d-flex flex-column">
+                                            <h3 id="dayAfterDate"></h3>
+                                            <p id="dayAfterWeather">Sunny</p>
+                                            <img id="dayAfterWeatherIcon" class="align-self-center"></img>
+                                        </div>
+                                        <div class="container d-flex justify-content-around">
+                                            <span id="dayAfterWeatherHigh" class="h5"></span>
+                                            <span id="dayAfterWeatherLow" class="text-secondary"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="model-footer"></div>
                 </div>
@@ -182,107 +168,98 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body" style="padding: 10px;" id="newArticles">
-                        <h2 id="noNews">No news articles</h2>
-                        <div class="row d-flex">
-                            <div class="row">
-                            <div class="col">
-                                <!-- News 1 -->
-                                <div id="news1" class="card my-3">
-                                    <img id="newsImage1" src="" class="img-fluid w-100">
-                                    <div class="card-body">
-                                        <div class="card-title">
-                                            <h6 id="newsTitle1"></h6>
-                                        </div>
-                                        <div class="card-text">
-                                            <p id="newsDescription1 text-center"></p>
-                                        </div>
-                                        <a id="newsSource1" class="href" target="_blank">Read More</a>
-                                    </div>
-                                </div>
+                        <h2 id="noNews">No news articles...</h2>
+                        <!-- News1 -->
+                        <div class="row mb-3 shadow py-3">
+                            <div class="col w-50">
+                                <img id="newsImage1" class="object-fit-cover w-100" src="" alt="">
                             </div>
-                            <div class="col">
-                                <!-- News 2 -->
-                                <div id="news2" class="card my-3">
-                                <img id="newsImage2" src="" class="img-fluid w-100">
-                                <div class="card-body">
-                                    <div class="card-title">
-                                        <h6 id="newsTitle2"></h6>
-                                    </div>
-                                    <div class="card-text">
-                                        <p id="newsDescription2 text-center"></p>
-                                    </div>
-                                    <a id="newsSource2" class="href" target="_blank">Read More</a>
+                            <div class="col d-flex flex-column align-items-start justify-content-between">
+                                <h6 id="newsTitle1"></h6>
+                                <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
+                                    <p id="newsSource1" class="m-0"></p>
+                                    <p id="newsPostedDate1" class="text-secondary m-0"></p>
                                 </div>
                             </div>
                         </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <!-- News 3 -->
-                                <div id="news3" class="card my-3">
-                                    <img id="newsImage3" src="" class="img-fluid w-100">
-                                    <div class="card-body">
-                                        <div class="card-title">
-                                            <h6 id="newsTitle3"></h6>
-                                        </div>
-                                        <div class="card-text">
-                                            <p id="newsDescription3 text-center"></p>
-                                        </div>
-                                        <a id="newsSource3" class="href" target="_blank">Read More</a>
-                                    </div>
-                                </div>
+                        <!-- News2 -->
+                        <div class="row mb-3 shadow py-3">
+                            <div class="col w-50">
+                                <img id="newsImage2" class="object-fit-cover w-100" src="" alt="">
                             </div>
-                            <div class="col">
-                                <!-- News 4 -->
-                                <div id="news4" class="card my-3">
-                                    <img id="newsImage4" src="" class="img-fluid w-100">
-                                    <div class="card-body">
-                                        <div class="card-title">
-                                            <h6 id="newsTitle4" class="text-center"></h6>
-                                        </div>
-                                        <div class="card-text">
-                                            <p id="newsDescription4 text-center"></p>
-                                        </div>
-                                        <a id="newsSource4" class="href" target="_blank">Read More</a>
-                                    </div>
+                            <div class="col d-flex flex-column align-items-start justify-content-between">
+                                <h6 id="newsTitle2"></h6>
+                                <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
+                                    <p id="newsSource2" class="m-0"></p>
+                                    <p id="newsPostedDate2" class="text-secondary m-0"></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="row align-items-stretch">
-                            <div class="col">
-                                <!-- News 5 -->
-                                <div id="news5" class="card my-3">
-                                    <img id="newsImage5" src="" class="img-fluid w-100">
-                                    <div class="card-body">
-                                        <div class="card-title">
-                                            <h6 id="newsTitle5"></h6>
-                                        </div>
-                                        <div class="card-text">
-                                            <p id="newsDescription5 text-center"></p>
-                                        </div>
-                                        <a id="newsSource5" class="href" target="_blank">Read More</a>
-                                    </div>
-                                </div>
+                        <!-- News3 -->
+                        <div class="row mb-3 shadow py-3">
+                            <div class="col w-50">
+                                <img id="newsImage3" class="object-fit-cover w-100" src="" alt="">
                             </div>
-                            <div class="col">
-                                <!-- News 6 -->
-                                <div id="news6" class="card my-3">
-                                    <img id="newsImage6" src="" class="img-fluid w-100">
-                                    <div class="card-body">
-                                        <div class="card-title">
-                                            <h6 id="newsTitle6"></h6>
-                                        </div>
-                                        <div class="card-text">
-                                            <p id="newsDescription6 text-center"></p>
-                                        </div>
-                                        <a id="newsSource6" class="href" target="_blank">Read More</a>
-                                    </div>
+                            <div class="col d-flex flex-column align-items-start justify-content-between">
+                                <h6 id="newsTitle3"></h6>
+                                <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
+                                    <p id="newsSource3" class="m-0"></p>
+                                    <p id="newsPostedDate3" class="text-secondary m-0"></p>
                                 </div>
                             </div>
                         </div>
-
-
-
+                        <!-- News4 -->
+                        <div class="row mb-3 shadow py-3">
+                            <div class="col w-50">
+                                <img id="newsImage4" class="object-fit-cover w-100" src="" alt="">
+                            </div>
+                            <div class="col d-flex flex-column align-items-start justify-content-between">
+                                <h6 id="newsTitle4"></h6>
+                                <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
+                                    <p id="newsSource4" class="m-0"></p>
+                                    <p id="newsPostedDate4" class="text-secondary m-0"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- News5 -->
+                        <div class="row mb-3 shadow py-3">
+                            <div class="col w-50">
+                                <img id="newsImage5" class="object-fit-cover w-100" src="" alt="">
+                            </div>
+                            <div class="col d-flex flex-column align-items-start justify-content-between">
+                                <h6 id="newsTitle5"></h6>
+                                <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
+                                    <p id="newsSource5" class="m-0"></p>
+                                    <p id="newsPostedDate5" class="text-secondary m-0"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- News6 -->
+                        <div class="row mb-3 shadow py-3">
+                            <div class="col w-50">
+                                <img id="newsImage6" class="object-fit-cover w-100" src="" alt="">
+                            </div>
+                            <div class="col d-flex flex-column align-items-start justify-content-between">
+                                <h6 id="newsTitle6"></h6>
+                                <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
+                                    <p id="newsSource6" class="m-0"></p>
+                                    <p id="newsPostedDate6" class="text-secondary m-0"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- News7 -->
+                        <div class="row shadow py-3">
+                            <div class="col w-50">
+                                <img id="newsImage2" class="object-fit-cover w-100" src="" alt="">
+                            </div>
+                            <div class="col d-flex flex-column align-items-start justify-content-between">
+                                <h6 id="newsTitle7"></h6>
+                                <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
+                                    <p id="newsSource7" class="m-0"></p>
+                                    <p id="newsPostedDate7" class="text-secondary m-0"></p>
+                                </div>
+                            </div>
+                        </div>
                     <div class="model-footer"></div>
                 </div>
             </div>
@@ -312,7 +289,9 @@
                             </tr>
                             <tr>
                                <th>To</th>
-                                <td id="countryCurrency"></td>                                  
+                                <td>
+                                    <select class="countryCurrency"></select>
+                                </td>                            
                             </tr>
                             <tr>
                                 <td>
@@ -412,7 +391,6 @@
         <link rel="stylesheet" href="libs/styles/style.css">
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-        <script type="application/javascript" src="libs/js/leaflet.js"></script>
         <script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
         <script type="application/javascript" src="libs/js/functions/currencyCalculator.js"></script>
         <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
@@ -420,7 +398,7 @@
         <script type="module" src="libs/js/script.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script>
+        <!-- <script>
             $(window).on('load', function () {
                 if ($('#preloader').length) {
                     $('#preloader').delay(4000).fadeOut('slow', function () {
@@ -428,6 +406,6 @@
                 });
                 }
             })
-        </script>
+        </script> -->
     </body>
 </html>

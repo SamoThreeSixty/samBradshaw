@@ -1,17 +1,31 @@
 html, body {
-    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.selectContainer {
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+    width: 100%;
+    padding: 11px 0;
+}
+
+.countrySelect {
+    margin: 0 auto;
+    width: 225px;
+}
+
+#map {
+    position: absolute;
     width: 100vw;
-    position: fixed;
-    min-height: 500px;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     font-family: 'Archivo', sans-serif;
-}
-
-#logo {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 22px;
 }
 
 table {
@@ -63,17 +77,6 @@ table {
     }
     }
 
-#map {
-    top: 54px;
-    height: calc(100% - 54px);
-    width: 100vw;
-    position: fixed;
-}
-
-#countrySelect{
-    width: 300px;
-}
-
 #modalButtons {
     top: 54px;
 }
@@ -100,27 +103,3 @@ table {
 .card:hover {
     transform: scale(0.95);
 }
-
-
-/* Adjustment for when screens cause the nav bar to extend */
-@media only screen and (max-width: 435px) {
-    #map {
-        top: 88px;
-        height: calc(100% - 88px);
-    }
-
-    #modalButtons {
-        top: 88px;
-    }
-
-    #countrySelect{
-        width: 95vw;
-    }
-    #startingCurrency{
-        width: 200px;
-    }
-
-    #currencyCalculatorResult{
-        width: 200px;
-    }
-  }

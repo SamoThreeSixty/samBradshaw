@@ -12,7 +12,7 @@
 
     $executionStartTime = microtime(true);
 
-    $url='api.openweathermap.org/data/2.5/forecast?lat=' . $_REQUEST['lat'] . '&lon=' . $_REQUEST['lon'] . '&units=metric&appid=' . $_ENV['WEATHER_API_KEY'];
+    $url= 'http://api.weatherapi.com/v1/forecast.json?key=' . $_ENV['NEW_WEATHER_API_KEY'] . '&days=3&hour=12&lang=en&q=' . $_REQUEST['city'];
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -29,7 +29,26 @@
     $output['status']['name'] = "ok";
     $output['status']['description'] = "success";
     $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-    $output['data'] = $decode['list'];
+
+    //Data for today
+    $output['data'][0]['maxtemp_c'] = $decode['forecast']['forecastday'][0]['day']['maxtemp_c'];
+    $output['data'][0]['mintemp_c'] = $decode['forecast']['forecastday'][0]['day']['mintemp_c'];
+    $output['data'][0]['condition'] = $decode['forecast']['forecastday'][0]['day']['condition']['text'];
+    $output['data'][0]['icon'] = $decode['forecast']['forecastday'][0]['day']['condition']['icon'];
+
+    //Data for tomorrow
+    $output['data'][1]['maxtemp_c'] = $decode['forecast']['forecastday'][1]['day']['maxtemp_c'];
+    $output['data'][1]['mintemp_c'] = $decode['forecast']['forecastday'][1]['day']['mintemp_c'];
+    $output['data'][1]['condition'] = $decode['forecast']['forecastday'][1]['day']['condition']['text'];
+    $output['data'][1]['icon'] = $decode['forecast']['forecastday'][1]['day']['condition']['icon'];
+    $output['data'][1]['time'] = $decode['forecast']['forecastday'][1]['hour'][0]['time'];
+
+    //Data for day after tomorrow
+    $output['data'][2]['maxtemp_c'] = $decode['forecast']['forecastday'][2]['day']['maxtemp_c'];
+    $output['data'][2]['mintemp_c'] = $decode['forecast']['forecastday'][2]['day']['mintemp_c'];
+    $output['data'][2]['condition'] = $decode['forecast']['forecastday'][2]['day']['condition']['text'];
+    $output['data'][2]['icon'] = $decode['forecast']['forecastday'][2]['day']['condition']['icon'];
+    $output['data'][2]['time'] = $decode['forecast']['forecastday'][2]['hour'][0]['time'];
 
     header('Content-Type: application/json; charset=UTF-8');
 

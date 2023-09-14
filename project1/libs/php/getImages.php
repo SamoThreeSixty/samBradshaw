@@ -23,13 +23,18 @@
 
 	curl_close($ch);
 
-	$decode = json_decode($result, true);	
+	$decode = json_decode($result, true);
+	$urls = [];
+
+	foreach($decode['results'] as $image) {
+		array_push($urls, $image['urls']['raw']);
+	}	
 
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "success";
 	$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-	$output['data'] = $decode;
+	$output['data'] = $urls;
 	
 	header('Content-Type: application/json; charset=UTF-8');
 
