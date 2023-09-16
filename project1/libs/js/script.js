@@ -1,6 +1,3 @@
-//Imported Functions
-import convertDate from "./functions/convertDate.js";
-
 // Functions
 
 const selectedCountryIso2 = () => {
@@ -19,7 +16,22 @@ const selectedCountryCapital = () => {
     return $(`#weatherCity`).text().split(", ")[1];
 }
 
-let capital;
+const calculateCurrency = () => {
+    const startingValue = $('#startingCurrency').val();
+    const rate = $('#exchangeRate').find(":selected").val().split(' ')[0];
+    return ((startingValue * rate).toFixed(2)).toLocaleString();
+}
+
+function convertDate(date) {
+    const year = date.slice(0,4);
+    const month = date.slice(5,7);
+    const day = date.slice(8,10);
+
+    var options = { weekday: 'short', month: 'short', day: 'numeric' };
+    const event = new Date(year, (month - 1), day);
+
+    return event.toLocaleDateString(undefined, options);
+}
 
 // This gets all of the countrys ready for selection in the dropdown
 // Want to sort into alphabetical order at some point!!
@@ -42,6 +54,35 @@ $(document).ready(function () {
         }
     })
 
+    //Set the currencys in currency modal
+    $.ajax({
+        url: "libs/php/newgetExchangeRate.php",
+        type: "POST",
+        dataType: "json",
+        success: function(result) {
+            
+
+            // Reset current currency values if any
+            $('#startingCurrency').val(0);
+            $('#currencyCalculatorResult').val(0);
+
+            result.data.forEach((currency) => {
+                const selectCurrencyElement = $('.countryCurrency');
+                const option = document.createElement("option");
+                option.text = currency.name;
+                option.value = currency.currency;
+                option.id = currency.symbol;
+                selectCurrencyElement.append(option);
+            })
+          
+        },
+        error: function(error) {
+            console.log(error)
+        }
+
+        
+    })
+
     //Set current location and trigger the on change function
     try {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -57,15 +98,22 @@ $(document).ready(function () {
                 },
                 success: function(result) {
                     $(`.countrySelect option:contains(${result.data})`).attr('selected', 'selected');
-                    $('.countrySelect').trigger('change')     
+                    $('.countrySelect').trigger('change')    
                 },
                 error: function(error) {
                 }
             })
         });
     } catch (err) {
-        console.log(err.message);
+        $(`.countrySelect option:first`).attr('selected', 'selected');
     }
+
+    if ($('#preloader').length) {
+        $('#preloader').delay(100).fadeOut('slow', function () {
+        $(this).hide();
+    });
+    }
+
 
 });
 
@@ -131,10 +179,12 @@ var airportIcon = L.ExtraMarkers.icon({
     shape: 'square'
 });
 
-L.control.layers(basemaps, markers, {position: 'bottomleft'}).addTo(map);
+L.control.layers(basemaps, markers, {position: 'topright'}).addTo(map);
 
 //Information Button
 L.easyButton('fa-info', function(btn, map){
+    $('#preloader').show();
+
     $.ajax({
         url: "libs/php/getCountryInfo.php",
         type: 'POST',
@@ -212,11 +262,16 @@ L.easyButton('fa-info', function(btn, map){
             console.log(error)
         }})
     $('#infoModal').modal('show');
+
+    $('#preloader').delay(100).fadeOut('slow', function () {
+        $(this).hide();
+    });
 }).addTo(map);
 
 //News Button
-L.easyButton('fa-newspaper-o fa-xl', function(btn, map){
-    console.log("NewsModal")
+L.easyButton('fa-newspaper-o', function(btn, map){
+    $('#preloader').show();
+
     $.ajax({
         url: 'libs/php/getNews.php',
         type: 'POST',
@@ -225,17 +280,20 @@ L.easyButton('fa-newspaper-o fa-xl', function(btn, map){
             country: selectedCountryIso2()
         },
         success: function(result) {
+            for(let i = 0; i < 7; i++){
+                $(`#news${i}`).attr('style', 'display: none;')
+            }
+
             let count = 0;
             
             result.data.forEach((news) => {
-                console.log(news)
                 if(news.image !== null){
                     //only returns 6 news articles
                     if(count === 8){
                         return;
                     } else {
                     $('#noNews').attr('style', "display: none;")
-                    $(`#news${count}`).attr('style', 'display: block;')
+                    $(`#news${count}`).attr('style', 'display: block-inline;')
 
 
 
@@ -247,6 +305,7 @@ L.easyButton('fa-newspaper-o fa-xl', function(btn, map){
                     }
                 }
                 console.log(count)
+                
                 //If there are no news articles
                 if(count === 0){
                     $('#noNews').attr('style', "display: block;");
@@ -260,12 +319,17 @@ L.easyButton('fa-newspaper-o fa-xl', function(btn, map){
             console.log(error)
         }
     })
+
+    $('#preloader').delay(100).fadeOut('slow', function () {
+        $(this).hide();
+    });
     $('#newsModal').modal('show');
 }).addTo(map);
 
 //Weather Button
 L.easyButton('fa-thermometer-empty fa-xl', function(btn, map){
-    console.log("Weather")
+    $('#preloader').show();
+
     $.ajax({
         url: 'libs/php/getWeather.php',
         type: 'POST',
@@ -278,68 +342,62 @@ L.easyButton('fa-thermometer-empty fa-xl', function(btn, map){
             // Update Todays Weather
             $('#todayWeather').html(result.data[0].condition)
             $('#todayWeatherIcon').attr('src', result.data[0].icon)
-            $('#todayWeatherHigh').html(result.data[0].maxtemp_c)
-            $('#todayWeatherLow').html(result.data[0].mintemp_c)
+            $('#todayWeatherHigh').html(result.data[0].maxtemp_c + "&degC")
+            $('#todayWeatherLow').html(result.data[0].mintemp_c + "&degC")
 
             // Update Tomorrows Weather
             $('#tomorrowDate').html(convertDate(result.data[1].time))
             $('#tomorrowWeather').html(result.data[1].condition)
             $('#tomorrowWeatherIcon').attr('src', result.data[1].icon)
-            $('#tomorrowWeatherHigh').html(result.data[1].maxtemp_c)
-            $('#tomorrowWeatherLow').html(result.data[1].mintemp_c)
+            $('#tomorrowWeatherHigh').html(result.data[1].maxtemp_c + "&degC")
+            $('#tomorrowWeatherLow').html(result.data[1].mintemp_c + "&degC")
 
             // Update Day after Weather
             $('#dayAfterDate').html(convertDate(result.data[2].time))
             $('#dayAfterWeather').html(result.data[2].condition)
             $('#dayAfterWeatherIcon').attr('src', result.data[2].icon)
-            $('#dayAfterWeatherHigh').html(result.data[2].maxtemp_c)
-            $('#dayAfterWeatherLow').html(result.data[2].mintemp_c)
+            $('#dayAfterWeatherHigh').html(result.data[2].maxtemp_c + "&degC")
+            $('#dayAfterWeatherLow').html(result.data[2].mintemp_c + "&degC")
         }
     })
 
-
-
+    $('#preloader').delay(100).fadeOut('slow', function () {
+        $(this).hide();
+    });
     $('#weatherModal').modal('show');
 }).addTo(map);
 
 //Currency Button
 L.easyButton('fa-money fa-xl', function(btn, map){
-    console.log("currencyModal")
-    $.ajax({
-        url: "libs/php/newgetExchangeRate.php",
-        type: "POST",
-        dataType: "json",
-        success: function(result) {
-            console.log(result.data)
-            // Reset current currency values if any
-            $('#startingCurrency').val(0);
-            $('#currencyCalculatorResult').val(0);
+    $('#preloader').show();
 
-            result.data.forEach((currency) => {
-                const selectCurrencyElement = $('.countryCurrency');
-                const option = document.createElement("option");
-                option.text = currency.name;
-                option.value = currency.currency;
-                selectCurrencyElement.append(option);
-            })
+    $('#startingCurrency').val(0);
+    $('#currencyCalculatorResult').val(0);
 
-            result.data.forEach((currency) => {
-                $('#countryCurrency').html(currency.name);
-                $('#countryCurrencyValue').attr("value", currency.currency);
-            })
-            
-        },
-        error: function(error) {
-            console.log(error)
-        }
-    })
+    $(`#exchangeRate option[id=${$('#selectedCountryCurrency').val()}]`).attr('selected', 'selected');
+
+    $('#preloader').delay(100).fadeOut('slow', function () {
+        $(this).hide();
+    });
     $('#currencyModal').modal('show');
 }).addTo(map);
 
+// Event handlers on currency caluclator
+$('#startingCurrency').on('input', function () {
+    $('#currencyCalculatorResult').val(calculateCurrency())
+})
+
+$('#exchangeRate').on('change', function () {
+    $('#currencyCalculatorResult').val(calculateCurrency())
+})
+
+
 //Wiki button
 L.easyButton('fa-wikipedia-w fa-xl', function(btn, map){
-    console.log("wikiModal")
+    $('#preloader').show();
+
     const country = $(".countrySelect option:selected").text().split(' ').join('%20');
+
         // Generate country wiki
         $.ajax({
             url: 'libs/php/getWiki.php',
@@ -367,13 +425,19 @@ L.easyButton('fa-wikipedia-w fa-xl', function(btn, map){
             console.log(error)
             }
         })
+
+    $('#preloader').delay(100).fadeOut('slow', function () {
+        $(this).hide();
+    });
     $('#wikiModal').modal('show');
 }).addTo(map);
 
 //Images Button
 L.easyButton('fa-picture-o fa-xl', function(btn, map){
+    $('#preloader').show();
+
     const country = $(".countrySelect option:selected").text().split(' ').join('%20');
-    console.log("imagesModal")
+
     $.ajax({
         url: 'libs/php/getImages.php',
         type: 'POST',
@@ -395,6 +459,10 @@ L.easyButton('fa-picture-o fa-xl', function(btn, map){
             console.log(error)
         }
     })
+
+    $('#preloader').delay(100).fadeOut('slow', function () {
+        $(this).hide();
+    });
     $('#imagesModal').modal('show');
 }).addTo(map);
 
@@ -402,10 +470,50 @@ L.easyButton('fa-picture-o fa-xl', function(btn, map){
 //Setting Button
 L.easyButton('fa-cog fa-xl', function(btn, map){
     console.log("Settings")
+
+    $('#settingsModal').modal('show');
 }).addTo(map);
 
 // Add geoJSON when country is selected
 $('.countrySelect').on('change', (event) => {
+    $('#preloader').show();
+
+    // Icon Loaders
+    // Generates country info on select if this option is chosen (true / false)
+    const showMapIconLoaders = $('#showMapIconLoaders').prop('checked'); 
+    if(showMapIconLoaders) {
+        $('.icon-loader').show();
+    } else {
+        $('.icon-loader').hide();
+    }
+
+    
+    $('#airportLoaderResult').removeClass()
+    $('#airportLoaderResult').addClass("spinner-border spinner-border-sm")
+    $('#cityLoaderResults').removeClass()
+    $('#cityLoaderResults').addClass("spinner-border spinner-border-sm")
+    $('#earthquakeLoaderResults').removeClass()
+    $('#earthquakeLoaderResults').addClass("spinner-border spinner-border-sm")
+
+    $('#airportLoader').removeClass()
+    $('#cityLoader').removeClass()
+    $('#earthquakeLoader').removeClass()
+
+    setTimeout(
+        function() {
+            $('#earthquakeLoader').addClass('icon-loaded')
+        }, 400);
+
+    setTimeout(
+        function() {
+            $('#cityLoader').addClass('icon-loaded')
+        }, 600);
+
+    setTimeout(
+        function() {
+            $('#airportLoader').addClass('icon-loaded')
+        }, 800);
+
     $.ajax({
         url: "libs/php/getCountryBoarders.php",
         type: "POST",
@@ -446,6 +554,11 @@ $('.countrySelect').on('change', (event) => {
                 },
                 success: function(result) {
                     console.log("Earthquake Recieved")
+                    $('#earthquakeLoaderResult').removeClass()
+                    $('#earthquakeLoaderResult').addClass('bi bi-check-square-fill text-success')
+
+
+
                     result.data.earthquakes.forEach((each) => {
                         L.marker([each.lat, each.lng], { icon: earthquakeIcon }).bindTooltip(`
                             <h5 class="text-center">Earthquake</h5>
@@ -453,6 +566,11 @@ $('.countrySelect').on('change', (event) => {
                             <p class="text-center">${each.magnitude} Magnitude</p>`, 
                             {direction: "top", sticky: true}).addTo(earthquakeGroup)
                     })
+
+                    setTimeout(
+                        function () {
+                            $('#earthquakeLoader').addClass('hide-icon')
+                        }, 3000)
                 },
                 error: function(error){
                     console.log("Earthquake Error")
@@ -474,6 +592,10 @@ $('.countrySelect').on('change', (event) => {
                 },
                 success: function(result) {
                     console.log("Citys Recieved")
+                    $('#cityLoaderResult').removeClass()
+                    $('#cityLoaderResult').addClass('bi bi-check-square-fill text-success')
+
+
                     $('#wikiTableCitys').html('');
                     result.data.geonames.forEach((each) => {
                         
@@ -483,6 +605,11 @@ $('.countrySelect').on('change', (event) => {
                             <p class="text-center">(${each.population.toLocaleString("en-US")})</p>`, {direction: "top", sticky: true}).addTo(cityGroup)
                         }
                     })
+
+                    setTimeout(
+                        function () {
+                            $('#cityLoader').addClass('hide-icon')
+                        }, 3000)
                 }
             })
         },
@@ -502,11 +629,85 @@ $('.countrySelect').on('change', (event) => {
             country: selectedCountryIso2()
         },
         success: function(result) {
+            
             const lat = result.data.latlng[0];
             const lng = result.data.latlng[1];
+            
+            // Set country currency in currency modal
+            $('#selectedCountryCurrency').val(Object.keys(result.data.currencies)[0]);
 
-            // Set weather city
+            // Set currency symbol in currency modal
+            $("#selectedCountryCurrency").attr('value', Object.keys(result.data.currencies)[0]);
+
+            // Set weather city in weather modal
             $('#weatherCity').html(result.data.name.common + ', ' + result.data.capital);
+
+
+            // Generates country info on select if this option is chosen (true / false)
+            const showInformationOnLoad = $('#showInformationOnLoad').prop('checked'); 
+            if(showInformationOnLoad) {
+                $('#infoModal').modal('show');
+
+                //converts currency object to an array
+                var obj = result.data.currencies;
+                var currency = Object.keys(obj).map((key) => [key, obj[key]]); 
+                
+                //Check if more than one capital
+                const capitalAmount = Object.keys(result.data.capital).length;
+                if(capitalAmount > 1) {
+                    $('#capitalHead').html("Capitals");
+                    
+                    let capitals = [];
+                    for(let i = 0; i < capitalAmount; i++) {
+                        capitals.push(result.data.capital[i])
+                    }
+                    $('#capital').html(capitals.join(', '));
+                } else {
+                    $('#capitalHead').html("Capital");
+                    $('#capital').html(result.data.capital[0]);
+                }
+
+                // Check if more than one contitnent
+                const continentAmount = result.data.continents.length;
+                if(continentAmount > 1) {
+                    $('#continentHead').html("Continents");
+                    
+                    let continents = [];
+                    for(let i = 0; i < capitalAmount; i++) {
+                        continents.push(result.data.capital[i])
+                    }
+                    $('#continent').html(capitals.join(', '));
+                } else {
+                    $('#continentHead').html("Continent");
+                    $('#continent').html(result.data.continents[0]);
+                }
+
+
+                //Update Info Modal (continent, region(subregion), )
+                $('#continent').html(result.data.continent);
+                $('#region').html(`${result.data.region}(${result.data.subregion})`)
+                $('#population').html(result.data.population.toLocaleString("en-US")); //adds , every 1000
+                $('#currency').html(currency[0][1].name + "   " + currency[0][1].symbol);
+                $('#flag').attr("src",result.data.flags.png);
+                $('#area').html(result.data.area.toLocaleString("en-US") + "km²") //adds , every 1000
+
+            
+                
+                //Check if more than one language
+                const languagesAmount = Object.keys(result.data.languages).length;
+                if(languagesAmount > 1) {
+                    $('#languageHead').html("Languages");
+                    
+                    let languages = [];
+                    for(let i = 0; i < languagesAmount; i++) {
+                        languages.push(Object.values(result.data.languages)[i])
+                    }
+                    $('#language').html(languages.join(', '));
+                } else {
+                    $('#languageHead').html("Language");
+                    $('#language').html(Object.values(result.data.languages)[0]);
+                }
+            }
 
             // Generate airport info
             $.ajax({
@@ -520,6 +721,10 @@ $('.countrySelect').on('change', (event) => {
                 },
                 success: function(result) {
                     console.log("Airports Recieved")
+                    $('#airportLoaderResult').removeClass()
+                    $('#airportLoaderResult').addClass('bi bi-check-square-fill text-success')
+
+                    
                     result.data.geonames.forEach((each) => {
                         if(each.countryCode == selectedCountryIso2()){
                             L.marker([each.lat, each.lng], { icon: airportIcon }).bindTooltip(`
@@ -527,6 +732,11 @@ $('.countrySelect').on('change', (event) => {
                         }
                         
                     })
+
+                    setTimeout(
+                        function () {
+                            $('#airportLoader').addClass('hide-icon')
+                        }, 3000)
                 },
                 error: function(error){
                     console.log("Airports Error")
@@ -539,9 +749,7 @@ $('.countrySelect').on('change', (event) => {
         }
     })
 
-                
-
-    console.log(capital)
-
-    
+    $('#preloader').delay(100).fadeOut('slow', function () {
+        $(this).hide();
+    });
 });

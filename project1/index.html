@@ -13,13 +13,14 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="" />
         <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
         <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@300;500&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="./libs/styles/leaflet.extra-markers.min.css">
-        <script src="./libs/js/leaflet.extra-markers.js"></script>
+        <link rel="stylesheet" href="libs/styles/style.css">
     </head>
 
     <body>
@@ -33,7 +34,7 @@
         </span>
 
         <!-- Preloader display -->
-        <!-- <div id="preloader"></div> -->
+        <div id="preloader"></div>
                 
         <!--Display Map-->
         <div id="map"></div>
@@ -108,9 +109,9 @@
                         <h5 class="modal-title" id="modal-title"><span id="weatherCity" value="">London</span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="model-body" style="padding: 10px;">
+                    <div class="model-body p-2">
                         <div class="container">
-                            <div class="row shadow my-1 mx-1">
+                            <div class="row shadow my-1 mx-1 p-2 rounded">
                                 <div class="container d-flex flex-column">
                                     <div class="row d-flex">
                                         <h3 class="align-self-start">Today</h3>
@@ -124,7 +125,7 @@
                                 </div>
                             </div>
                             <div class="row mt-4">
-                                <div class="col">
+                                <div class="col p-3 rounded">
                                     <div class="col shadow-lg my-1">
                                         <div class="container d-flex flex-column">
                                             <h3 id="tomorrowDate"></h3>
@@ -138,7 +139,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col">
+                                <div class="col p-3 rounded">
                                     <div class="col shadow-lg my-1">
                                         <div class="container d-flex flex-column">
                                             <h3 id="dayAfterDate"></h3>
@@ -170,7 +171,7 @@
                     <div class="model-body" style="padding: 10px;" id="newArticles">
                         <h2 id="noNews">No news articles...</h2>
                         <!-- News1 -->
-                        <div class="row mb-3 shadow py-3">
+                        <div id="news1" class="row mb-3 shadow py-3">
                             <div class="col w-50">
                                 <img id="newsImage1" class="object-fit-cover w-100" src="" alt="">
                             </div>
@@ -183,7 +184,7 @@
                             </div>
                         </div>
                         <!-- News2 -->
-                        <div class="row mb-3 shadow py-3">
+                        <div id="news2" class="row mb-3 shadow py-3">
                             <div class="col w-50">
                                 <img id="newsImage2" class="object-fit-cover w-100" src="" alt="">
                             </div>
@@ -196,7 +197,7 @@
                             </div>
                         </div>
                         <!-- News3 -->
-                        <div class="row mb-3 shadow py-3">
+                        <div id="news3" class="row mb-3 shadow py-3">
                             <div class="col w-50">
                                 <img id="newsImage3" class="object-fit-cover w-100" src="" alt="">
                             </div>
@@ -209,7 +210,7 @@
                             </div>
                         </div>
                         <!-- News4 -->
-                        <div class="row mb-3 shadow py-3">
+                        <div id="news4" class="row mb-3 shadow py-3">
                             <div class="col w-50">
                                 <img id="newsImage4" class="object-fit-cover w-100" src="" alt="">
                             </div>
@@ -222,7 +223,7 @@
                             </div>
                         </div>
                         <!-- News5 -->
-                        <div class="row mb-3 shadow py-3">
+                        <div id="news5" class="row mb-3 shadow py-3">
                             <div class="col w-50">
                                 <img id="newsImage5" class="object-fit-cover w-100" src="" alt="">
                             </div>
@@ -235,7 +236,7 @@
                             </div>
                         </div>
                         <!-- News6 -->
-                        <div class="row mb-3 shadow py-3">
+                        <div id="news6" class="row mb-3 shadow py-3">
                             <div class="col w-50">
                                 <img id="newsImage6" class="object-fit-cover w-100" src="" alt="">
                             </div>
@@ -248,9 +249,9 @@
                             </div>
                         </div>
                         <!-- News7 -->
-                        <div class="row shadow py-3">
+                        <div id="news7" class="row shadow py-3">
                             <div class="col w-50">
-                                <img id="newsImage2" class="object-fit-cover w-100" src="" alt="">
+                                <img id="newsImage7" class="object-fit-cover w-100" src="" alt="">
                             </div>
                             <div class="col d-flex flex-column align-items-start justify-content-between">
                                 <h6 id="newsTitle7"></h6>
@@ -276,32 +277,17 @@
                     </div>
                     <div class="model-body" style="padding: 10px;">
                         <!-- Value & symbol (or text) for the currency to exchange to -->
-                        <input type="hidden" id="countryCurrencyValue" value=""></input>
+                        <input type="hidden" id="selectedCountryCurrency" value=""></input>
                         <input type="hidden" id="countryCurrencySymbolValue" value=""></input>
-                        <table class="table table-striped text-center">
-                            <tr>
-                                <th>Amount</th>
-                                <td><input type="number" id="startingCurrency" value="0"></td>                                                           
-                            </tr>
-                            <tr>
-                                <th>From</th>
-                                <td value="USD">USD</td> 
-                            </tr>
-                            <tr>
-                               <th>To</th>
-                                <td>
-                                    <select class="countryCurrency"></select>
-                                </td>                            
-                            </tr>
-                            <tr>
-                                <td>
-                                    <button class="btn btn-outline-secondary" type="button" id="calculateCurrency">Calculate</button>
-                                </td>
-                                <td>
-                                    <input id="currencyCalculatorResult" value="" disabled style="background-color: white; height: 38px"/>
-                                </td>
-                            </tr>
-                        </table>
+
+                        <label for="startingCurrency">From USD</label>
+                        <input id="startingCurrency" class="form-control form-control-lg mb-2" type="number">
+
+                        <label for="exchangeRate">Convert to</label>
+                        <select id="exchangeRate" class="countryCurrency form-control form-control-lg mb-2"></select>
+
+                        <label for="currencyCalculatorResult">Result</label>
+                        <input id="currencyCalculatorResult" class="form-control form-control-lg mb-2" value="" disabled />
                     </div>
                     <div class="model-footer"></div>
                 </div>
@@ -337,41 +323,41 @@
 
         <!--Images modal-->
         <div class="modal fade" id="imagesModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modal-title">&#9679; Images &#9679;</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="model-body">
-                        <div id="carouselExampleControls" class="carousel slide px-1" data-ride="carousel" style="height: 425px;">
+                        <div id="carouselExampleControls" class="carousel slide px-1" data-ride="carousel" style="height: 605px;">
                             <div class="carousel-inner" style="height: 600px;">
                               <div class="carousel-item active">
-                                <img class="d-block w-100 c-img" src="" alt="slide1" id="slide1" style="height: 420px; object-fit: cover;">
+                                <img class="d-block w-100 c-img" src="" alt="slide1" id="slide1" style="height: 600px; object-fit: cover;">
                               </div>
                               <div class="carousel-item">
-                                <img class="d-block w-100 c-img" src="" alt="slide2" id="slide2" style="height: 420px; object-fit: cover;">
+                                <img class="d-block w-100 c-img" src="" alt="slide2" id="slide2" style="height: 600px; object-fit: cover;">
                               </div>
                               <div class="carousel-item">
-                                <img class="d-block w-100 c-img" src="" alt="slide3" id="slide3" style="height: 420px; object-fit: cover;">
+                                <img class="d-block w-100 c-img" src="" alt="slide3" id="slide3" style="height: 600px; object-fit: cover;">
                               </div>
                               <div class="carousel-item">
-                                <img class="d-block w-100 c-img" src="" alt="slide4" id="slide4" style="height: 420px; object-fit: cover;">
+                                <img class="d-block w-100 c-img" src="" alt="slide4" id="slide4" style="height: 600px; object-fit: cover;">
                               </div>
                               <div class="carousel-item">
-                                <img class="d-block w-100 c-img" src="" alt="slide5" id="slide5" style="height: 420px; object-fit: cover;">
+                                <img class="d-block w-100 c-img" src="" alt="slide5" id="slide5" style="height: 600px; object-fit: cover;">
                               </div>
                               <div class="carousel-item">
-                                <img class="d-block w-100 c-img" src="" alt="slide6" id="slide6" style="height: 420px; object-fit: cover;">
+                                <img class="d-block w-100 c-img" src="" alt="slide6" id="slide6" style="height: 600px; object-fit: cover;">
                               </div>
                               <div class="carousel-item">
-                                <img class="d-block w-100 c-img" src="" alt="slide7" id="slide7" style="height: 420px; object-fit: cover;">
+                                <img class="d-block w-100 c-img" src="" alt="slide7" id="slide7" style="height: 600px; object-fit: cover;">
                               </div>
                               <div class="carousel-item">
-                                <img class="d-block w-100 c-img" src="" alt="slide8" id="slide8" style="height: 420px; object-fit: cover;">
+                                <img class="d-block w-100 c-img" src="" alt="slide8" id="slide8" style="height: 600px; object-fit: cover;">
                               </div>
                               <div class="carousel-item">
-                                <img class="d-block w-100 c-img" src="" alt="slide9" id="slide9" style="height: 420px; object-fit: cover;">
+                                <img class="d-block w-100 c-img" src="" alt="slide9" id="slide9" style="height: 600px; object-fit: cover;">
                               </div>
                             </div>
                             <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -388,24 +374,57 @@
                 </div>
             </div>
         </div>
-        <link rel="stylesheet" href="libs/styles/style.css">
+
+        <!--Settings modal-->
+        <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-title">Settings</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="model-body">
+                        <div class="container m-3">
+                             <div class="row">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="showInformationOnLoad" checked>
+                                    <label class="form-check-label" for="showInformationOnLoad">Display information on country load?</label>
+                                </div>
+                             </div>
+                             <div class="row">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="showMapIconLoaders" checked>
+                                    <label class="form-check-label" for="showMapIconLoaders">Display map icon loaders</label>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="model-footer"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Icon loader -->
+        <div class="icon-loader" >
+            <ul>
+                <li id="airportLoader"><div id="airportLoaderResult" class="spinner-border spinner-border-sm" role="status"></div> Airports</li>
+                <li id="cityLoader"><div id="cityLoaderResult" class="spinner-border spinner-border-sm" role="status"></div> Citys</li>
+                <li id="earthquakeLoader"><div id="earthquakeLoaderResult" class="spinner-border spinner-border-sm" role="status"></div> Earthquakes</li>
+            </ul>
+        </div>
+
+        <!-- 
+            bi bi-check-square-fill text-success
+            bi bi-x-square-fill text-danger
+         -->
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
         <script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
-        <script type="application/javascript" src="libs/js/functions/currencyCalculator.js"></script>
         <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
         <script src='https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js'></script>
         <script type="module" src="libs/js/script.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <!-- <script>
-            $(window).on('load', function () {
-                if ($('#preloader').length) {
-                    $('#preloader').delay(4000).fadeOut('slow', function () {
-                    $(this).hide();
-                });
-                }
-            })
-        </script> -->
+        <script src="./libs/js/leaflet.extra-markers.js"></script>
     </body>
 </html>

@@ -43,6 +43,7 @@
 		foreach($decode1['rates'] as $symbol1 => $value1) {
 			if ($symbol1 == $symbol2) {
 				$newCurrencyAndSymbol['currency'] = $value1;
+				$newCurrencyAndSymbol['symbol'] = $symbol1;
 				$newCurrencyAndSymbol['name'] = $value2;
 				array_push($currencyAndRate, $newCurrencyAndSymbol);
 			}
