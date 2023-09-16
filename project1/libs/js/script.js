@@ -185,82 +185,6 @@ L.control.layers(basemaps, markers, {position: 'topright'}).addTo(map);
 L.easyButton('fa-info', function(btn, map){
     $('#preloader').show();
 
-    $.ajax({
-        url: "libs/php/getCountryInfo.php",
-        type: 'POST',
-        dataType: 'json',
-        data: {
-            country: selectedCountryIso2(),
-        },
-        success: function(result) {
-            console.log(result)
-            
-            // This will change the information for the country
-            if (result.status.name == "ok") {
-                //converts currency object to an array
-                var obj = result.data.currencies;
-                var currency = Object.keys(obj).map((key) => [key, obj[key]]); 
-                
-                //Check if more than one capital
-                const capitalAmount = Object.keys(result.data.capital).length;
-                if(capitalAmount > 1) {
-                    $('#capitalHead').html("Capitals");
-                    
-                    let capitals = [];
-                    for(let i = 0; i < capitalAmount; i++) {
-                        capitals.push(result.data.capital[i])
-                    }
-                    $('#capital').html(capitals.join(', '));
-                } else {
-                    $('#capitalHead').html("Capital");
-                    $('#capital').html(result.data.capital[0]);
-                }
-
-                // Check if more than one contitnent
-                const continentAmount = result.data.continents.length;
-                console.log(continentAmount)
-                if(continentAmount > 1) {
-                    $('#continentHead').html("Continents");
-                    
-                    let continents = [];
-                    for(let i = 0; i < capitalAmount; i++) {
-                        continents.push(result.data.capital[i])
-                    }
-                    $('#continent').html(capitals.join(', '));
-                } else {
-                    $('#continentHead').html("Continent");
-                    $('#continent').html(result.data.continents[0]);
-                }
-
-
-                //Update Info Modal (continent, region(subregion), )
-                $('#continent').html(result.data.continent);
-                $('#region').html(`${result.data.region}(${result.data.subregion})`)
-                $('#population').html(result.data.population.toLocaleString("en-US")); //adds , every 1000
-                $('#currency').html(currency[0][1].name + "   " + currency[0][1].symbol);
-                $('#flag').attr("src",result.data.flags.png);
-                $('#area').html(result.data.area.toLocaleString("en-US") + "km²") //adds , every 1000
-
-               
-                
-                //Check if more than one language
-                const languagesAmount = Object.keys(result.data.languages).length;
-                if(languagesAmount > 1) {
-                    $('#languageHead').html("Languages");
-                    
-                    let languages = [];
-                    for(let i = 0; i < languagesAmount; i++) {
-                        languages.push(Object.values(result.data.languages)[i])
-                    }
-                    $('#language').html(languages.join(', '));
-                } else {
-                    $('#languageHead').html("Language");
-                    $('#language').html(Object.values(result.data.languages)[0]);
-                }
-            }},
-        error: function(error) {
-            console.log(error)
-        }})
     $('#infoModal').modal('show');
 
     $('#preloader').delay(100).fadeOut('slow', function () {
@@ -304,7 +228,6 @@ L.easyButton('fa-newspaper-o', function(btn, map){
                     count++;
                     }
                 }
-                console.log(count)
                 
                 //If there are no news articles
                 if(count === 0){
@@ -338,7 +261,7 @@ L.easyButton('fa-thermometer-empty fa-xl', function(btn, map){
             city: selectedCountryCapital(),
         },
         success: function(result) {
-            console.log(result)
+
             // Update Todays Weather
             $('#todayWeather').html(result.data[0].condition)
             $('#todayWeatherIcon').attr('src', result.data[0].icon)
@@ -553,27 +476,38 @@ $('.countrySelect').on('change', (event) => {
                     west: west
                 },
                 success: function(result) {
-                    console.log("Earthquake Recieved")
-                    $('#earthquakeLoaderResult').removeClass()
-                    $('#earthquakeLoaderResult').addClass('bi bi-check-square-fill text-success')
+                    if(result.data !== null) {
+                        if(result.data.earthquakes.length !== 0) {
+                        $('#earthquakeLoaderResult').removeClass()
+                        $('#earthquakeLoaderResult').addClass('bi bi-check-square-fill text-success')
 
-
-
-                    result.data.earthquakes.forEach((each) => {
-                        L.marker([each.lat, each.lng], { icon: earthquakeIcon }).bindTooltip(`
-                            <h5 class="text-center">Earthquake</h5>
-                            <p class="text-center">${convertDate(each.datetime)}</p>
-                            <p class="text-center">${each.magnitude} Magnitude</p>`, 
-                            {direction: "top", sticky: true}).addTo(earthquakeGroup)
-                    })
+                        result.data.earthquakes.forEach((each) => {
+                            L.marker([each.lat, each.lng], { icon: earthquakeIcon }).bindTooltip(`
+                                <h5 class="text-center">Earthquake</h5>
+                                <p class="text-center">${convertDate(each.datetime)}</p>
+                                <p class="text-center">${each.magnitude} Magnitude</p>`, 
+                                {direction: "top", sticky: true}).addTo(earthquakeGroup)
+                        })
+                        } else {
+                            $('#earthquakeLoaderResult').removeClass()
+                            $('#earthquakeLoaderResult').addClass('bi bi bi-0-square-fill text-danger');
+                        }
+                    } else {
+                        $('#earthquakeLoaderResult').removeClass()
+                        $('#earthquakeLoaderResult').addClass('bi bi-x-square-fill text-danger')
+                        console.log("Earthquake Icons " + result.status.name + " " + result.status.code + " " + result.status.description)
+                    }
 
                     setTimeout(
                         function () {
                             $('#earthquakeLoader').addClass('hide-icon')
                         }, 3000)
+
+
+
                 },
                 error: function(error){
-                    console.log("Earthquake Error")
+                    console.log("Earthquake Icons Error")
                     console.log(error)
                 }
             })
@@ -591,21 +525,25 @@ $('.countrySelect').on('change', (event) => {
                     west: west
                 },
                 success: function(result) {
-                    console.log("Citys Recieved")
-                    $('#cityLoaderResult').removeClass()
-                    $('#cityLoaderResult').addClass('bi bi-check-square-fill text-success')
+                    if(result.data !== null) {
+                        $('#cityLoaderResult').removeClass()
+                        $('#cityLoaderResult').addClass('bi bi-check-square-fill text-success')
 
-
-                    $('#wikiTableCitys').html('');
-                    result.data.geonames.forEach((each) => {
+                        $('#wikiTableCitys').html('');
                         
-                        if(each.countrycode === selectedCountryIso2()) {
-                            L.marker([each.lat, each.lng], { icon: cityIcon }).bindTooltip(`
-                            <h5 class="text-center">${each.name}</h5>
-                            <p class="text-center">(${each.population.toLocaleString("en-US")})</p>`, {direction: "top", sticky: true}).addTo(cityGroup)
-                        }
-                    })
-
+                        result.data.forEach((each) => {
+                            if(each.countrycode === selectedCountryIso2()) {
+                                L.marker([each.lat, each.lng], { icon: cityIcon }).bindTooltip(`
+                                <h5 class="text-center">${each.name}</h5>
+                                <p class="text-center">(${each.population.toLocaleString("en-US")})</p>`, {direction: "top", sticky: true}).addTo(cityGroup)
+                            }
+                        })
+                    } else {
+                        $('#cityLoaderResult').removeClass()
+                        $('#cityLoaderResult').addClass('bi bi-x-square-fill text-danger')
+                        console.log("City Icons " + result.status.name + " " + result.status.code + " " + result.status.description)
+                    }
+                    
                     setTimeout(
                         function () {
                             $('#cityLoader').addClass('hide-icon')
@@ -614,6 +552,7 @@ $('.countrySelect').on('change', (event) => {
             })
         },
         error: function(error) {
+            console.log("City Icons Error")
             console.log(error)
 
         }
@@ -647,67 +586,68 @@ $('.countrySelect').on('change', (event) => {
             const showInformationOnLoad = $('#showInformationOnLoad').prop('checked'); 
             if(showInformationOnLoad) {
                 $('#infoModal').modal('show');
-
-                //converts currency object to an array
-                var obj = result.data.currencies;
-                var currency = Object.keys(obj).map((key) => [key, obj[key]]); 
-                
-                //Check if more than one capital
-                const capitalAmount = Object.keys(result.data.capital).length;
-                if(capitalAmount > 1) {
-                    $('#capitalHead').html("Capitals");
-                    
-                    let capitals = [];
-                    for(let i = 0; i < capitalAmount; i++) {
-                        capitals.push(result.data.capital[i])
-                    }
-                    $('#capital').html(capitals.join(', '));
-                } else {
-                    $('#capitalHead').html("Capital");
-                    $('#capital').html(result.data.capital[0]);
-                }
-
-                // Check if more than one contitnent
-                const continentAmount = result.data.continents.length;
-                if(continentAmount > 1) {
-                    $('#continentHead').html("Continents");
-                    
-                    let continents = [];
-                    for(let i = 0; i < capitalAmount; i++) {
-                        continents.push(result.data.capital[i])
-                    }
-                    $('#continent').html(capitals.join(', '));
-                } else {
-                    $('#continentHead').html("Continent");
-                    $('#continent').html(result.data.continents[0]);
-                }
-
-
-                //Update Info Modal (continent, region(subregion), )
-                $('#continent').html(result.data.continent);
-                $('#region').html(`${result.data.region}(${result.data.subregion})`)
-                $('#population').html(result.data.population.toLocaleString("en-US")); //adds , every 1000
-                $('#currency').html(currency[0][1].name + "   " + currency[0][1].symbol);
-                $('#flag').attr("src",result.data.flags.png);
-                $('#area').html(result.data.area.toLocaleString("en-US") + "km²") //adds , every 1000
-
-            
-                
-                //Check if more than one language
-                const languagesAmount = Object.keys(result.data.languages).length;
-                if(languagesAmount > 1) {
-                    $('#languageHead').html("Languages");
-                    
-                    let languages = [];
-                    for(let i = 0; i < languagesAmount; i++) {
-                        languages.push(Object.values(result.data.languages)[i])
-                    }
-                    $('#language').html(languages.join(', '));
-                } else {
-                    $('#languageHead').html("Language");
-                    $('#language').html(Object.values(result.data.languages)[0]);
-                }
             }
+
+            //converts currency object to an array
+            var obj = result.data.currencies;
+            var currency = Object.keys(obj).map((key) => [key, obj[key]]); 
+            
+            //Check if more than one capital
+            const capitalAmount = Object.keys(result.data.capital).length;
+            if(capitalAmount > 1) {
+                $('#capitalHead').html("Capitals");
+                
+                let capitals = [];
+                for(let i = 0; i < capitalAmount; i++) {
+                    capitals.push(result.data.capital[i])
+                }
+                $('#capital').html(capitals.join(', '));
+            } else {
+                $('#capitalHead').html("Capital");
+                $('#capital').html(result.data.capital[0]);
+            }
+
+            // Check if more than one contitnent
+            const continentAmount = result.data.continents.length;
+            if(continentAmount > 1) {
+                $('#continentHead').html("Continents");
+                
+                let continents = [];
+                for(let i = 0; i < capitalAmount; i++) {
+                    continents.push(result.data.capital[i])
+                }
+                $('#continent').html(continents.join(', '));
+            } else {
+                $('#continentHead').html("Continent");
+                $('#continent').html(result.data.continents[0]);
+            }
+
+
+            //Update Info Modal (continent, region(subregion), )
+            $('#continent').html(result.data.continent);
+            $('#region').html(`${result.data.region}(${result.data.subregion})`)
+            $('#population').html(result.data.population.toLocaleString("en-US")); //adds , every 1000
+            $('#currency').html(currency[0][1].name + "   " + currency[0][1].symbol);
+            $('#flag').attr("src",result.data.flags.png);
+            $('#area').html(result.data.area.toLocaleString("en-US") + "km²") //adds , every 1000
+
+        
+            
+            //Check if more than one language
+            const languagesAmount = Object.keys(result.data.languages).length;
+            if(languagesAmount > 1) {
+                $('#languageHead').html("Languages");
+                
+                let languages = [];
+                for(let i = 0; i < languagesAmount; i++) {
+                    languages.push(Object.values(result.data.languages)[i])
+                }
+                $('#language').html(languages.join(', '));
+            } else {
+                $('#languageHead').html("Language");
+                $('#language').html(Object.values(result.data.languages)[0]);
+            }
+            
 
             // Generate airport info
             $.ajax({
@@ -717,26 +657,29 @@ $('.countrySelect').on('change', (event) => {
                 data: {
                     lat: lat,
                     lng: lng,
-                    feature: 'AIRP'
+                    feature: 'AIRP',
                 },
                 success: function(result) {
-                    console.log("Airports Recieved")
                     $('#airportLoaderResult').removeClass()
                     $('#airportLoaderResult').addClass('bi bi-check-square-fill text-success')
-
                     
-                    result.data.geonames.forEach((each) => {
-                        if(each.countryCode == selectedCountryIso2()){
-                            L.marker([each.lat, each.lng], { icon: airportIcon }).bindTooltip(`
-                            <h5 class="text-center">${each.toponymName}</h5>`, {direction: "top", sticky: true}).addTo(airportGroup);
-                        }
-                        
-                    })
+                    if(result.data !== null) {
+                        result.data.forEach((each) => {
+                            if(each.countryCode == selectedCountryIso2()){
+                                L.marker([each.lat, each.lng], { icon: airportIcon }).bindTooltip(`
+                                <h5 class="text-center">${each.name}</h5>`, {direction: "top", sticky: true}).addTo(airportGroup);
+                            }
+                        })
+                    } else {
+                        $('#airportLoaderResult').removeClass()
+                        $('#airportLoaderResult').addClass('bi bi-x-square-fill text-danger')
+                        console.log("Airport Icon " + result.status.name + " " + result.status.code + " " + result.status.description)
+                    }
 
                     setTimeout(
                         function () {
                             $('#airportLoader').addClass('hide-icon')
-                        }, 3000)
+                        }, 2200)
                 },
                 error: function(error){
                     console.log("Airports Error")

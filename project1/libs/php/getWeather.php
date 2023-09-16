@@ -14,6 +14,9 @@
 
     $url= 'http://api.weatherapi.com/v1/forecast.json?key=' . $_ENV['NEW_WEATHER_API_KEY'] . '&days=3&hour=12&lang=en&q=' . $_REQUEST['city'];
 
+    header('Content-Type: application/json; charset=UTF-8');
+    header('Access-Control-Allow-Origin: *');
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

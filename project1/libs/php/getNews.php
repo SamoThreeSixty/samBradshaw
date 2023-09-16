@@ -14,6 +14,9 @@
 
     $url = 'https://newsdata.io/api/1/news?apikey=' . $_ENV['NEWS_DATA_IO_KEY'] . '&country=' . $_REQUEST['country'] . '&image=1';
 
+    header('Content-Type: application/json; charset=UTF-8');
+    header('Access-Control-Allow-Origin: *');
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -37,8 +40,6 @@
         $output['data'][$i]['source_id'] = $decode['results'][$i]['source_id'];
         $output['data'][$i]['link'] = $decode['results'][$i]['link'];
     }
-
-    header('Content-Type: application/json; charset=UTF-8');
 
     echo json_encode($output); 
 
