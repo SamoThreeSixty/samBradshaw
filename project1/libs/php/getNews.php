@@ -22,23 +22,54 @@
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_URL, $url);
 
-    $result=curl_exec($ch);
+    $result = curl_exec($ch);
+    $cURLERROR = curl_errno($ch);
 
     curl_close($ch);
 
-    $decode = json_decode($result, true);	
+    if($cURLERROR) {
+        $output['status']['code'] = $cURLERROR;
+		$output['status']['name'] = "Faliure - cURL";
+		$output['status']['description'] = curl_strerror($cURLERROR);
+		$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+		$output['data'] = null;
+    } else {
+        $decode = json_decode($result, true);
 
-    $output['status']['code'] = "200";
-    $output['status']['name'] = "ok";
-    $output['status']['description'] = "success";
-    $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+        if(json_last_error() !== JSON_ERROR_NONE) {
+            $output['status']['code'] = json_last_error();
+			$output['status']['name'] = "Faliure - JSON";
+			$output['status']['description'] = "success";
+			$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+			$output['data'] = null;
+        } elseif($decode['status'] !== 'success') {
+            // Check for api fault
+            $output['status']['code'] = $decode['results']['code'];
+			$output['status']['name'] = "Faliure - API";
+			$output['status']['description'] = $decode['results']['message'];
+			$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+            $output['data'] = null;
+        } else {
+            $output['status']['code'] = "200";
+            $output['status']['name'] = "ok";
+            $output['status']['description'] = "success";
+            $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
 
-    for ($i = 0; $i <= 9; $i++) {
-        $output['data'][$i]['image_url'] = $decode['results'][$i]['image_url'];
-        $output['data'][$i]['title'] = $decode['results'][$i]['title'];
-        $output['data'][$i]['pubDate'] = $decode['results'][$i]['pubDate'];
-        $output['data'][$i]['source_id'] = $decode['results'][$i]['source_id'];
-        $output['data'][$i]['link'] = $decode['results'][$i]['link'];
+            $prevNewsArticle = [];
+        
+            for ($i = 0; $i <= 9; $i++) {
+                if(($decode['results'][$i]['image_url'] !== null) && (in_array($decode['results'][$i]['title'], $prevNewsArticle) == false)) {
+
+                    $output['data'][$i]['image_url'] = $decode['results'][$i]['image_url'];
+                    $output['data'][$i]['title'] = $decode['results'][$i]['title'];
+                    $output['data'][$i]['pubDate'] = $decode['results'][$i]['pubDate'];
+                    $output['data'][$i]['source_id'] = $decode['results'][$i]['source_id'];
+                    $output['data'][$i]['link'] = $decode['results'][$i]['link'];
+
+                    array_push($prevNewsArticle, $decode['results'][$i]['title']);
+                }
+            }
+        }
     }
 
     echo json_encode($output); 

@@ -137,11 +137,20 @@ var map = L.map('map',  {
 
 const options = {
     polygonOptions: {
-    fillColor: '#fff',
-    color: '#000',
+    fillColor: '#F1DDFF',
+    color: '#8D14DC',
     weight: 2,
     opacity: 1,
-    fillOpacity: 0.5}
+    fillOpacity: 0.5
+    },
+
+    style: {
+        fillColor: '#F1DDFF',
+        color: '#8D14DC',
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.5
+    }
 }
 
 let featureGroup; //Country marker
@@ -204,48 +213,53 @@ L.easyButton('fa-newspaper-o', function(btn, map){
             country: selectedCountryIso2()
         },
         success: function(result) {
-            for(let i = 0; i < 7; i++){
+
+            // Hide all avalible news articles
+            for(let i = 1; i <= 7; i++){
                 $(`#news${i}`).attr('style', 'display: none;')
             }
 
-            let count = 0;
+            if(result.data == null) {
+                $('#preloader').delay(100).fadeOut('slow', function () {
+                    $(this).hide();
+                })
+                $('#noNews').attr('style', "display: block;");
+            } else {
+                let newsCount = 0;
+
+                // Configure to be an array
+                Object.keys(result.data)
             
-            result.data.forEach((news) => {
-                if(news.image !== null){
-                    //only returns 6 news articles
-                    if(count === 8){
-                        return;
-                    } else {
-                    $('#noNews').attr('style', "display: none;")
-                    $(`#news${count}`).attr('style', 'display: block-inline;')
+                result.data.forEach((news) => {
+                    // Only works if there is an image
+                    if(news.image !== null){
+                        //only returns 6 news articles
+                        if(newsCount === 8){
+                            return;
+                        } else {
+                        $('#noNews').attr('style', "display: none;")
+                        $(`#news${newsCount}`).attr('style', 'display: block-inline;')
 
 
 
-                    $(`#newsImage${count}`).attr('src', news.image_url);
-                    $(`#newsPostedDate${count}`).html(convertDate(news.pubDate));
-                    $(`#newsSource${count}`).html(news.source_id);
-                    $(`#newsTitle${count}`).html(news.title);
-                    count++;
+                        $(`#newsImage${newsCount}`).attr('src', news.image_url);
+                        $(`#newsPostedDate${newsCount}`).html(convertDate(news.pubDate));
+                        $(`#newsSource${newsCount}`).html(news.source_id);
+                        $(`#newsTitle${newsCount}`).html(news.title);
+                        newsCount++;
+                        }
                     }
-                }
-                
-                //If there are no news articles
-                if(count === 0){
-                    $('#noNews').attr('style', "display: block;");
-                    for(let i = 0; i < 7; i++){
-                        $(`#news${i}`).attr('style', 'display: none;')
-                    }
-                }
+
+                $('#preloader').delay(100).fadeOut('slow', function () {
+                    $(this).hide();
+                });
             })
+        }
         },
         error: function(error) {
             console.log(error)
         }
     })
-
-    $('#preloader').delay(100).fadeOut('slow', function () {
-        $(this).hide();
-    });
     $('#newsModal').modal('show');
 }).addTo(map);
 
@@ -281,12 +295,14 @@ L.easyButton('fa-thermometer-empty fa-xl', function(btn, map){
             $('#dayAfterWeatherIcon').attr('src', result.data[2].icon)
             $('#dayAfterWeatherHigh').html(result.data[2].maxtemp_c + "&degC")
             $('#dayAfterWeatherLow').html(result.data[2].mintemp_c + "&degC")
+
+            $('#preloader').delay(100).fadeOut('slow', function () {
+            $(this).hide();
+            });
         }
     })
 
-    $('#preloader').delay(100).fadeOut('slow', function () {
-        $(this).hide();
-    });
+    
     $('#weatherModal').modal('show');
 }).addTo(map);
 
@@ -294,7 +310,7 @@ L.easyButton('fa-thermometer-empty fa-xl', function(btn, map){
 L.easyButton('fa-money fa-xl', function(btn, map){
     $('#preloader').show();
 
-    $('#startingCurrency').val(0);
+    $('#startingCurrency').val(0.00);
     $('#currencyCalculatorResult').val(0);
 
     $(`#exchangeRate option[id=${$('#selectedCountryCurrency').val()}]`).attr('selected', 'selected');
@@ -327,31 +343,25 @@ L.easyButton('fa-wikipedia-w fa-xl', function(btn, map){
             type: 'POST',
             dataType: 'json',
             data: {
-                country: country
+                country: country,
+                countryCode: selectedCountryIso2()
             },
             success: function(result) {
-                console.log(result)
-                for(let i = 0; i < result.data.geonames.length; i++){
-                    if(result.data.geonames[i].feature === "country") {
-                        console.log(result.data.geonames[i])
-                        $('#countryImage').attr('src', result.data.geonames[i].thumbnailImg);
-                        $('#country').html(result.data.geonames[i].title);
-                        $('#countryWikiText').html(result.data.geonames[i].summary.slice(0, -5));
-                        const link = $('<a id="contryWikiLink" class="text-decoration-none">(Read more...)</a>')
-                        $('#countryWikiText').append(link)
-                        $('#contryWikiLink').attr('href', "https://" + result.data.geonames[0].wikipediaUrl)
-                        break;
-                    }
-                }
+                $('#countryImage').attr('src', result.data.thumbnailImg);
+                $('#country').html(result.data.title);
+                $('#countryWikiText').html(result.data.summary.slice(0, -5));
+                const link = $('<a id="contryWikiLink" class="text-decoration-none">(Read more...)</a>')
+                $('#countryWikiText').append(link)
+                $('#contryWikiLink').attr('href', "https://" + result.data.wikipediaUrl)
+
+                $('#preloader').delay(100).fadeOut('slow', function () {
+                    $(this).hide();
+                });
             },
             error: function(error) {
             console.log(error)
             }
         })
-
-    $('#preloader').delay(100).fadeOut('slow', function () {
-        $(this).hide();
-    });
     $('#wikiModal').modal('show');
 }).addTo(map);
 
@@ -377,15 +387,15 @@ L.easyButton('fa-picture-o fa-xl', function(btn, map){
                     $(`#slide${i}`).attr('src', result.data[i])
                 }
             }
+
+            $('#preloader').delay(100).fadeOut('slow', function () {
+                $(this).hide();
+            });
         },
         error: function(error) {
             console.log(error)
         }
     })
-
-    $('#preloader').delay(100).fadeOut('slow', function () {
-        $(this).hide();
-    });
     $('#imagesModal').modal('show');
 }).addTo(map);
 
@@ -400,6 +410,23 @@ L.easyButton('fa-cog fa-xl', function(btn, map){
 // Add geoJSON when country is selected
 $('.countrySelect').on('change', (event) => {
     $('#preloader').show();
+
+
+    // Unsure of how to remove timeouts when the map has been reset before they have completed...
+
+    // if(typeof earthquakeIconsTimeout !== 'undefined') {
+    //     console.log("earthquake")
+    //     clearTimeout(earthquakeIconsTimeout);
+    // }
+    // if(typeof  airportIconsTimeout !== 'undefined') {
+    //     console.log("airport")
+    //     clearTimeout(airportIconsTimeout);
+    // }
+    // if(typeof  cityIconsTimeout !== 'undefined') {
+    //     console.log("city")
+    //     clearTimeout(cityIconsTimeout);
+    // }
+    
 
     // Icon Loaders
     // Generates country info on select if this option is chosen (true / false)
@@ -452,11 +479,14 @@ $('.countrySelect').on('change', (event) => {
                 cityGroup.clearLayers();
             }
 
-            featureGroup = L.geoJSON(result.data[0]).addTo(map);
-            map.fitBounds(featureGroup.getBounds());
+            featureGroup = L.geoJSON(result.data[0], {
+                style: options.style
+            }).addTo(map);
+            const bounds = featureGroup.getBounds();
+
+            map.fitBounds(bounds);
             
             // Icons
-            const bounds = featureGroup.getBounds();
             const north = bounds.getNorth();
             const south = bounds.getSouth();
             const east = bounds.getEast();
@@ -498,10 +528,10 @@ $('.countrySelect').on('change', (event) => {
                         console.log("Earthquake Icons " + result.status.name + " " + result.status.code + " " + result.status.description)
                     }
 
-                    setTimeout(
+                    const earthquakeIconsTimeout = setTimeout(
                         function () {
                             $('#earthquakeLoader').addClass('hide-icon')
-                        }, 3000)
+                        }, 5000)
 
 
 
@@ -544,10 +574,10 @@ $('.countrySelect').on('change', (event) => {
                         console.log("City Icons " + result.status.name + " " + result.status.code + " " + result.status.description)
                     }
                     
-                    setTimeout(
+                    const cityIconsTimeout = setTimeout(
                         function () {
                             $('#cityLoader').addClass('hide-icon')
-                        }, 3000)
+                        }, 5000)
                 }
             })
         },
@@ -576,7 +606,7 @@ $('.countrySelect').on('change', (event) => {
             $('#selectedCountryCurrency').val(Object.keys(result.data.currencies)[0]);
 
             // Set currency symbol in currency modal
-            $("#selectedCountryCurrency").attr('value', Object.keys(result.data.currencies)[0]);
+            // $("#countryCurrencySymbolValue").val(Object.values(result.data.currencies)[0].symbol);
 
             // Set weather city in weather modal
             $('#weatherCity').html(result.data.name.common + ', ' + result.data.capital);
@@ -676,10 +706,10 @@ $('.countrySelect').on('change', (event) => {
                         console.log("Airport Icon " + result.status.name + " " + result.status.code + " " + result.status.description)
                     }
 
-                    setTimeout(
+                    const airportIconsTimeout = setTimeout(
                         function () {
                             $('#airportLoader').addClass('hide-icon')
-                        }, 2200)
+                        }, 5000)
                 },
                 error: function(error){
                     console.log("Airports Error")
