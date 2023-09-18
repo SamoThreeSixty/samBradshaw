@@ -56,6 +56,7 @@
             $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
 
             $prevNewsArticle = [];
+            $counter = 0;
         
             for ($i = 0; $i <= 9; $i++) {
                 if(($decode['results'][$i]['image_url'] !== null) && (in_array($decode['results'][$i]['title'], $prevNewsArticle) == false)) {

@@ -228,7 +228,8 @@ L.easyButton('fa-newspaper-o', function(btn, map){
                 let newsCount = 0;
 
                 // Configure to be an array
-                Object.keys(result.data)
+                Object.entries(result.data);
+                console.log(result.data)
             
                 result.data.forEach((news) => {
                     // Only works if there is an image
@@ -258,6 +259,9 @@ L.easyButton('fa-newspaper-o', function(btn, map){
         },
         error: function(error) {
             console.log(error)
+            $('#preloader').delay(100).fadeOut('slow', function () {
+                $(this).hide();
+            });
         }
     })
     $('#newsModal').modal('show');
@@ -298,6 +302,11 @@ L.easyButton('fa-thermometer-empty fa-xl', function(btn, map){
 
             $('#preloader').delay(100).fadeOut('slow', function () {
             $(this).hide();
+            });
+        }, error: function(error) {
+            console.log(error);
+            $('#preloader').delay(100).fadeOut('slow', function () {
+                $(this).hide();
             });
         }
     })
@@ -360,6 +369,9 @@ L.easyButton('fa-wikipedia-w fa-xl', function(btn, map){
             },
             error: function(error) {
             console.log(error)
+            $('#preloader').delay(100).fadeOut('slow', function () {
+                $(this).hide();
+            });
             }
         })
     $('#wikiModal').modal('show');
@@ -394,6 +406,9 @@ L.easyButton('fa-picture-o fa-xl', function(btn, map){
         },
         error: function(error) {
             console.log(error)
+            $('#preloader').delay(100).fadeOut('slow', function () {
+                $(this).hide();
+            });
         }
     })
     $('#imagesModal').modal('show');
@@ -402,8 +417,6 @@ L.easyButton('fa-picture-o fa-xl', function(btn, map){
 
 //Setting Button
 L.easyButton('fa-cog fa-xl', function(btn, map){
-    console.log("Settings")
-
     $('#settingsModal').modal('show');
 }).addTo(map);
 

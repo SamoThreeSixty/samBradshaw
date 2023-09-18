@@ -19,7 +19,7 @@ html, body {
 #map {
     position: absolute;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     margin: 0;
     padding: 0;
 }
@@ -150,5 +150,11 @@ table {
 @media screen and (max-width: 417px) {
     .icon-loader {
         bottom: 2.2rem;
+    }
+
+    .day-temps {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 0;
     }
 }

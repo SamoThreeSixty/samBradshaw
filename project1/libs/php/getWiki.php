@@ -10,23 +10,23 @@
     ini_set('display_errors', 'On');
 	error_reporting(E_ALL);
 
-	header('Content-Type: application/json; charset=UTF-8');
-	header('Allow-Access-Control-Origin: *');
-
 	$executionStartTime = microtime(true);
-
+	
 	$url='http://api.geonames.org/wikipediaSearchJSON?q=' . $_REQUEST['country'] . '&username=' . $_ENV['GEONAMES_API_KEY']; 
+	
+	header('Content-Type: application/json; charset=UTF-8');
+	header('Access-Control-Allow-Origin: *');
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_URL, $url);
 
-	curl_close($ch);
-
 	$result = curl_exec($ch);
 	$cURLERROR = curl_errno($ch);
-
+	
+	curl_close($ch);
+	
 	if($cURLERROR) {
 		$output['status']['code'] = $cURLERROR;
 		$output['status']['name'] = "Faliure - cURL";
