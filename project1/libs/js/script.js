@@ -228,8 +228,7 @@ L.easyButton('fa-newspaper-o', function(btn, map){
                 let newsCount = 0;
 
                 // Configure to be an array
-                Object.entries(result.data);
-                console.log(result.data)
+                const resultArry = Object.entries(result.data);
             
                 result.data.forEach((news) => {
                     // Only works if there is an image
