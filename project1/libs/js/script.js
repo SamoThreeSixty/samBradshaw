@@ -73,35 +73,6 @@ $(document).ready(function () {
         }
     })
 
-    //Set the currencys in currency modal
-    $.ajax({
-        url: "libs/php/newgetExchangeRate.php",
-        type: "POST",
-        dataType: "json",
-        success: function(result) {
-            
-
-            // Reset current currency values if any
-            $('#startingCurrency').val(0);
-            $('#currencyCalculatorResult').val(0);
-
-            result.data.forEach((currency) => {
-                const selectCurrencyElement = $('.countryCurrency');
-                const option = document.createElement("option");
-                option.text = currency.name;
-                option.value = currency.currency;
-                option.id = currency.symbol;
-                selectCurrencyElement.append(option);
-            })
-          
-        },
-        error: function(error) {
-            console.log(error)
-        }
-
-        
-    })
-
     //Set current location and trigger the on change function
     try {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -320,10 +291,9 @@ $('#newsModal').on('show.bs.modal', function(btn, map){
             }
 
             if(result.data == null) {
-                $('#preloader').delay(100).fadeOut('slow', function () {
-                    $(this).hide();
-                })
                 $('#noNews').attr('style', "display: block;");
+
+                $('#news-modal-loader').addClass('fadeOut');
             } else {
                 let newsCount = 0;
 
@@ -347,14 +317,12 @@ $('#newsModal').on('show.bs.modal', function(btn, map){
                         newsCount++;
                         }
                     }
-            })
-        }
-        },
-        error: function(error) {
-            console.log(error)
+                })
+
+                $('#news-modal-loader').addClass('fadeOut');
+            }
         }
     })
-    $('#news-modal-loader').addClass('fadeOut');
 })
 
 $('#newsModal').on('hidden.bs.modal', function(btn, map){
@@ -396,9 +364,9 @@ $('#weatherModal').on('show.bs.modal', function(btn, map){
             $('#dayAfterWeatherHigh').html(Math.round(result.data[2].maxtemp_c) + "&degC")
             $('#dayAfterWeatherLow').html(Math.round(result.data[2].mintemp_c) + "&degC")
 
+            $('#weather-modal-loader').addClass('fadeOut');
         }
     })
-    $('#weather-modal-loader').addClass('fadeOut');
 })
 
 $('#weatherModal').on('hidden.bs.modal', function(btn, map){
@@ -414,9 +382,32 @@ $('#currencyModal').on('show.bs.modal', function(){
     $('#startingCurrency').val(0.00);
     $('#currencyCalculatorResult').val(0);
 
-    $(`#exchangeRate option[id=${$('#selectedCountryCurrency').val()}]`).attr('selected', 'selected');
+    //Set the currencys in currency modal
+    $.ajax({
+        url: "libs/php/newgetExchangeRate.php",
+        type: "POST",
+        dataType: "json",
+        success: function(result) {
+            
 
-    $('#currency-modal-loader').addClass('fadeOut');
+            // Reset current currency values if any
+            $('#startingCurrency').val(0);
+            $('#currencyCalculatorResult').val(0);
+
+            result.data.forEach((currency) => {
+                const selectCurrencyElement = $('.countryCurrency');
+                const option = document.createElement("option");
+                option.text = currency.name;
+                option.value = currency.currency;
+                option.id = currency.symbol;
+                selectCurrencyElement.append(option);
+            })
+
+            $(`#exchangeRate option[id=${$('#selectedCountryCurrency').val()}]`).attr('selected', 'selected');
+            
+            $('#currency-modal-loader').addClass('fadeOut');
+        }        
+    }) 
 })
 
 $('#currencyModal').on('hidden.bs.modal', function(){
@@ -459,12 +450,10 @@ $('#wikiModal').on('show.bs.modal', function(){
                 $('#preloader').delay(100).fadeOut('slow', function () {
                     $(this).hide();
                 });
-            },
-            error: function(error) {
-            console.log(error)
+                
+                $('#wiki-modal-loader').addClass('fadeOut');
             }
         })
-        $('#wiki-modal-loader').addClass('fadeOut');
 })
 
 $('#wikiModal').on('hidden.bs.modal', function(){
@@ -493,12 +482,9 @@ $('#imagesModal').on('show.bs.modal', function(btn, map){
                     $(`#slide${i}`).attr('src', result.data[i])
                 }
             }
-        },
-        error: function(error) {
-            console.log(error)
+            $('#images-modal-loader').addClass('fadeOut');
         }
     })
-    $('#images-modal-loader').addClass('fadeOut');
 })
 
 $('#imagesModal').on('hidden.bs.modal', function(btn, map){
