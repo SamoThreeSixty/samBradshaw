@@ -314,6 +314,7 @@ $('#newsModal').on('show.bs.modal', function(btn, map){
                         $(`#newsPostedDate${newsCount}`).html(returnDateFull(news.pubDate));
                         $(`#newsSource${newsCount}`).html(news.source_id);
                         $(`#newsTitle${newsCount}`).html(news.title);
+                        $(`#newsLink${newsCount}`).attr('href', news.link);
                         newsCount++;
                         }
                     }

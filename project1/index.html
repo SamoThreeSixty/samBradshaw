@@ -121,45 +121,41 @@
                         <div id="weather-modal-loader" class="modal-loader"></div>
 
                         <div class="container">
-                            <div class="row shadow my-1 mx-1 p-2 rounded">
+                            <div class="row shadow my-1 p-2 rounded">
                                 <div class="container d-flex flex-column">
                                     <div class="row d-flex">
                                         <h3 class="align-self-start">Today</h3>
                                     </div>
                                     <p id="todayWeather">Sunny</p>
-                                    <img id="todayWeatherIcon" class="align-self-center" class="align-self-center"></img>
+                                    <img id="todayWeatherIcon" class="align-self-center"></img>
                                 </div>
                                 <div class="container d-flex justify-content-around">
                                     <span id="todayWeatherHigh" class="h5"></span>
                                     <span id="todayWeatherLow" class="text-secondary"></span>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col p-1 rounded">
-                                    <div class="col shadow-lg my-1">
-                                        <div class="container d-flex flex-column">
-                                            <h3 id="tomorrowDate"></h3>
-                                            <p id="tomorrowWeather">Sunny</p>
-                                            <img id="tomorrowWeatherIcon" class="align-self-center"></img>
-                                        </div>
-                                        <div class="container d-flex justify-content-around day-temps">
-                                            <span id="tomorrowWeatherHigh" class="h5"></span>
-                                            <span id="tomorrowWeatherLow" class="text-secondary"></span>
-                                        </div>
+                            <div class="row justify-content-around">
+                                <div class="col p-1 rounded shadow-lg m-1">
+                                    <div class="container d-flex flex-column">
+                                        <h3 id="tomorrowDate"></h3>
+                                        <p id="tomorrowWeather"></p>
+                                        <img id="tomorrowWeatherIcon" class="align-self-center"></img>
+                                    </div>
+                                    <div class="container d-flex flex-column align-items-center day-temps">
+                                        <span id="tomorrowWeatherHigh" class="h5"></span>
+                                        <span id="tomorrowWeatherLow" class="text-secondary"></span>
                                     </div>
                                 </div>
-
-                                <div class="col p-1 rounded">
-                                    <div class="col shadow-lg my-1">
-                                        <div class="container d-flex flex-column">
-                                            <h3 id="dayAfterDate"></h3>
-                                            <p id="dayAfterWeather">Sunny</p>
-                                            <img id="dayAfterWeatherIcon" class="align-self-center"></img>
-                                        </div>
-                                        <div class="container d-flex justify-content-around day-temps">
-                                            <span id="dayAfterWeatherHigh" class="h5"></span>
-                                            <span id="dayAfterWeatherLow" class="text-secondary"></span>
-                                        </div>
+                                
+                                <div class="col p-1 rounded shadow-lg m-1">
+                                    <div class="container d-flex flex-column">
+                                        <h3 id="dayAfterDate"></h3>
+                                        <p id="dayAfterWeather"></p>
+                                        <img id="dayAfterWeatherIcon" class="align-self-center"></img>
+                                    </div>
+                                    <div class="container d-flex flex-column align-items-center day-temps">
+                                        <span id="dayAfterWeatherHigh" class="h5"></span>
+                                        <span id="dayAfterWeatherLow" class="text-secondary"></span>
                                     </div>
                                 </div>
                             </div>
@@ -172,13 +168,13 @@
 
         <!--News modal-->
         <div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
-            <div class="modal-dialog  modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modal-title">News</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="model-body" id="newArticles">
+                    <div class="model-body overflow-auto" id="newArticles">
 
                         <div id="news-modal-loader" class="modal-loader"></div>
 
@@ -189,7 +185,7 @@
                                 <img id="newsImage1" class="object-fit-cover w-100" src="" alt="">
                             </div>
                             <div class="col d-flex flex-column align-items-start justify-content-between">
-                                <h6 id="newsTitle1"></h6>
+                                <a id="newsLink1" target="_blank" class="link-dark"><h6 id="newsTitle1"></h6></a>
                                 <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
                                     <p id="newsSource1" class="m-0"></p>
                                     <p id="newsPostedDate1" class="text-secondary m-0"></p>
@@ -202,7 +198,7 @@
                                 <img id="newsImage2" class="object-fit-cover w-100" src="" alt="">
                             </div>
                             <div class="col d-flex flex-column align-items-start justify-content-between">
-                                <h6 id="newsTitle2"></h6>
+                                <a id="newsLink2" target="_blank" class="link-dark"><h6 id="newsTitle2"></h6></a>
                                 <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
                                     <p id="newsSource2" class="m-0"></p>
                                     <p id="newsPostedDate2" class="text-secondary m-0"></p>
@@ -215,7 +211,7 @@
                                 <img id="newsImage3" class="object-fit-cover w-100 h-100" src="" alt="">
                             </div>
                             <div class="col d-flex flex-column align-items-start justify-content-between">
-                                <h6 id="newsTitle3"></h6>
+                                <a id="newsLink3" target="_blank" class="link-dark"><h6 id="newsTitle3"></h6></a>
                                 <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
                                     <p id="newsSource3" class="m-0"></p>
                                     <p id="newsPostedDate3" class="text-secondary m-0"></p>
@@ -228,7 +224,7 @@
                                 <img id="newsImage4" class="object-fit-cover w-100" src="" alt="">
                             </div>
                             <div class="col d-flex flex-column align-items-start justify-content-between">
-                                <h6 id="newsTitle4"></h6>
+                                <a id="newsLink4" target="_blank" class="link-dark"><h6 id="newsTitle4"></h6></a>
                                 <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
                                     <p id="newsSource4" class="m-0"></p>
                                     <p id="newsPostedDate4" class="text-secondary m-0"></p>
@@ -241,7 +237,7 @@
                                 <img id="newsImage5" class="object-fit-cover w-100" src="" alt="">
                             </div>
                             <div class="col d-flex flex-column align-items-start justify-content-between">
-                                <h6 id="newsTitle5"></h6>
+                                <a id="newsLink5" target="_blank" class="link-dark"><h6 id="newsTitle5"></h6></a>
                                 <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
                                     <p id="newsSource5" class="m-0"></p>
                                     <p id="newsPostedDate5" class="text-secondary m-0"></p>
@@ -254,7 +250,7 @@
                                 <img id="newsImage6" class="object-fit-cover w-100" src="" alt="">
                             </div>
                             <div class="col d-flex flex-column align-items-start justify-content-between">
-                                <h6 id="newsTitle6"></h6>
+                                <a id="newsLink6" target="_blank" class="link-dark"><h6 id="newsTitle6"></h6></a>
                                 <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
                                     <p id="newsSource6" class="m-0"></p>
                                     <p id="newsPostedDate6" class="text-secondary m-0"></p>
@@ -267,7 +263,7 @@
                                 <img id="newsImage7" class="object-fit-cover w-100" src="" alt="">
                             </div>
                             <div class="col d-flex flex-column align-items-start justify-content-between">
-                                <h6 id="newsTitle7"></h6>
+                                <a id="newsLink7" target="_blank" class="link-dark"><h6 id="newsTitle7"></h6></a>
                                 <div class="d-flex flex-column aligh-items-start m-0 justify-content-end">
                                     <p id="newsSource7" class="m-0"></p>
                                     <p id="newsPostedDate7" class="text-secondary m-0"></p>
@@ -280,6 +276,7 @@
         </div>
         </div>
         </div>
+
         <!--Currency modal-->
         <div class="modal fade" id="currencyModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -329,9 +326,9 @@
                         <div id="wiki-modal-loader" class="modal-loader"></div>
 
 
-                        <div class="d-flex justify-content-around align-items-center m-4">
-                            <img id="countryImage" class="rounded" src="" >
+                        <div class="d-flex justify-content-around align-items-center mb-1">
                             <h3 id="country"></h3>
+                            <img id="countryImage" class="rounded" src="" >
                         </div>
                         <p id="countryWikiText"></p>
                     </div>
