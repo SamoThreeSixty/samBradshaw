@@ -549,7 +549,7 @@ $('.countrySelect').on('change', () => {
                     west: west
                 },
                 success: function(result) {
-                    if(result.data !== null) {
+                    if(result.status.code === '200') {
                         if(result.data.earthquakes.length !== 0) {
 
                         result.data.earthquakes.forEach((each) => {
@@ -570,8 +570,7 @@ $('.countrySelect').on('change', () => {
                     } else {
                         if($('#showMapIconLoaders').prop('checked')) {
                             addToast("Error loading earthquakes")  
-                        }  
-                        console.log("Earthquake Icons " + result.status.name + " " + result.status.code + " " + result.status.description)
+                        }
                     }
                 },
                 error: function(error){
@@ -598,22 +597,27 @@ $('.countrySelect').on('change', () => {
                     west: west
                 },
                 success: function(result) {
-                    if(result.data !== null) {                        
-                        result.data.forEach((each) => {
-                            if(each.countrycode === selectedCountryIso2()) {
-                                L.marker([each.lat, each.lng], { icon: cityIcon }).bindTooltip(`
-                                <h5 class="text-center">${each.name}</h5>
-                                <p class="text-center">(${each.population.toLocaleString("en-US")})</p>`, {direction: "top", sticky: true}).addTo(cityGroup)
-                            }
-                        })
-                        if($('#showMapIconLoaders').prop('checked')) {
+                    if(result.status.code === '200') {
+                        if(result.data.length !== 0) {
+                            result.data.forEach((each) => {
+                                if(each.countrycode === selectedCountryIso2()) {
+                                    L.marker([each.lat, each.lng], { icon: cityIcon }).bindTooltip(`
+                                    <h5 class="text-center">${each.name}</h5>
+                                    <p class="text-center">(${each.population.toLocaleString("en-US")})</p>`, {direction: "top", sticky: true}).addTo(cityGroup)
+                                }
+                            })
+                            if($('#showMapIconLoaders').prop('checked')) {
                             addToast("Citys Loaded")  
-                        }
+                            }
+                        } else {
+                            if($('#showMapIconLoaders').prop('checked')) {
+                                addToast("No Citys to load")  
+                                }
+                        }     
                     } else {
                         if($('#showMapIconLoaders').prop('checked')) {
                             addToast("Error loading Citys")  
                         }
-                        console.log("City Icons " + result.status.name + " " + result.status.code + " " + result.status.description)
                     }
                 }
             })
@@ -652,27 +656,29 @@ $('.countrySelect').on('change', () => {
                     feature: 'AIRP',
                 },
                 success: function(result) {                    
-                    if(result.data !== null) {
-                        result.data.forEach((each) => {
-                            if(each.countryCode == selectedCountryIso2()){
-                                L.marker([each.lat, each.lng], { icon: airportIcon }).bindTooltip(`
-                                <h5 class="text-center">${each.name}</h5>`, {direction: "top", sticky: true}).addTo(airportGroup);
+                    if(result.status.code === '200') {
+                        if(result.data.length !== 0) {
+                            result.data.forEach((each) => {
+                                if(each.countryCode == selectedCountryIso2()){
+                                    L.marker([each.lat, each.lng], { icon: airportIcon }).bindTooltip(`
+                                    <h5 class="text-center">${each.name}</h5>`, {direction: "top", sticky: true}).addTo(airportGroup);
+                                }
+                            });
+                            if($('#showMapIconLoaders').prop('checked')) {
+                                addToast("Airports Loaded")  
+                            }    
+                        } else {
+                            if($('#showMapIconLoaders').prop('checked')) {
+                                addToast("No Airports to load")  
                             }
-                        });
-                        if($('#showMapIconLoaders').prop('checked')) {
-                            addToast("Airports Loaded")  
                         }
                     } else {
                         if($('#showMapIconLoaders').prop('checked')) {
                             addToast("Error loading Airports")  
                         }
-                        console.log("Airport Icon " + result.status.name + " " + result.status.code + " " + result.status.description)
                     }
                 }
             })
-        },
-        error: function(err){
-            console.log(err)
         }
     })
 });
