@@ -19,10 +19,12 @@
             </div>
 
             <div id="sidebar-content" class="hidden">
+                <!-- Logo -->
                 <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">Company Directory</div>
 
+                <!-- Table Select -->
                 <div class="list-group list-group-flush my-3">
-                    <ul class="nav flex-column" id="myTab" role="tablist">
+                    <ul class="nav flex-column border-bottom" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active d-flex align-items-center" id="personnelBtn" data-bs-toggle="tab" data-bs-target="#personnel-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
                                 <i class="fa-solid fa-person fa-lg fa-fw"></i><span class="ms-3">Personnel</span>
@@ -33,17 +35,180 @@
                                 <i class="fa-solid fa-building fa-lg fa-fw"></i><span class="ms-3">Departments</span>
                             </button>
                         </li>
-                        <li class="nav-item" role="presentation">
+                        <li class="nav-item pb-3" role="presentation">
                             <button class="nav-link d-flex align-items-center" id="locationsBtn" data-bs-toggle="tab" data-bs-target="#locations-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
                                 <i class="fa-solid fa-map-location-dot fa-lg fa-fw"></i><span class="ms-3">Locations</span>
                             </button>
                         </li>
                     </ul>
-                </div>
-                
-                <!-- Filter options -->
-                <div id="filter-options">
 
+                    <!-- Filter -->
+                    <div id="fliter-section" class="tab-content">
+                        <a class="text-decoration-none link-secondary ms-3 pt-4 mb-2" data-bs-toggle="collapse" href="#filter" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="fa-solid fa-filter fa-lg fa-fw me-2"></i>Filter<i id="departmentArrow" class="arrow ms-2 fa-solid fa-caret-up"></i>
+                        </a>
+
+                        <div class="collapse ms-5 ps-2" id="filter">
+
+                            <a class="text-decoration-none link-secondary mb-2" data-bs-toggle="collapse" href="#departments" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                Departments<i id="departmentArrow" class="arrow ms-2 fa-solid fa-caret-up"></i></br>
+                            </a>
+
+                            <div class="collapse ms-5" id="departments">
+                                <div class="form-check">
+                                    <input class="form-check-input | allDepartments" type="checkbox" value="" id="allDepartmentsSelected" checked>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        All
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllDepartments" type="checkbox" value="Human Resources" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Human Resources
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllDepartments" type="checkbox" value="Sales" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Sales
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllDepartments" type="checkbox" value="Marketing" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Marketing
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllDepartments" type="checkbox" value="Legal" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Legal
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllDepartments" type="checkbox" value="Services" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Services
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllDepartments" type="checkbox" value="Research and Development" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Research and Development
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllDepartments" type="checkbox" value="Product Management" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Product Management
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllDepartments" type="checkbox" value="Training" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Training
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllDepartments" type="checkbox" value="Support" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Support
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllDepartments" type="checkbox" value="Engineering" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Engineering
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllDepartments" type="checkbox" value="Accounting" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Accounting
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllDepartments" type="checkbox" value="Business Development" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Business Development
+                                    </label>
+                                </div>
+                            </div>
+
+                            
+                            <a class="text-decoration-none link-secondary mb-2" data-bs-toggle="collapse" href="#locations" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                Locations<i id="locationArrow" class="arrow ms-2 fa-solid fa-caret-up"></i></br>
+                            </a>
+
+                            <div class="collapse ms-5" id="locations">
+                                <div class="form-check">
+                                    <input class="form-check-input | allLocations" type="checkbox" value="" id="allLocationsSelected" checked>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        All
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllLocations" type="checkbox" value="London" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        London
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllLocations" type="checkbox" value="New York" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        New York
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllLocations" type="checkbox" value="Paris" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Paris
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllLocations" type="checkbox" value="Munich" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Munich
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input | notAllLocations" type="checkbox" value="Rome" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Rome
+                                    </label>
+                                </div>
+                            </div>
+
+                            
+                            <a class="text-decoration-none link-secondary mb-2" data-bs-toggle="collapse" href="#orderBy" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                Order By<i id="orderByArrow" class="arrow ms-2 fa-solid fa-caret-up"></i></br>
+                            </a>
+
+                            <div class="collapse ms-5" id="orderBy">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Name Ascending
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Filter -->
+                
+
+
+                <!-- Footer -->
+                <div id="footer" class="border-top">
+                    <figure class="text-center">
+                        <blockquote class="blockquote">
+                          <p>Designed by Sam Bradshaw</p>
+                        </blockquote>
+                        <figcaption class="blockquote-footer">
+                          Version 1.0
+                        </figcaption>
+                      </figure>
                 </div>
             </div>
         </div>
@@ -83,10 +248,7 @@
                             <th class="d-flex justify-content-end p-1">
                                 <button id="refreshBtn" class="btn">
                                     <i class="fa-solid fa-refresh fa-fw"></i>
-                                </button>
-                                <button id="filterBtn" type="button" class="btn">
-                                    <i class="fa-solid fa-filter fa-fw"></i>
-                                </button>          
+                                </button>       
                                 <button id="addBtn" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#addPersonnelModal">
                                     <i class="fa-solid fa-plus fa-fw"></i>
                                 </button>
@@ -108,10 +270,7 @@
                         <th class="d-flex justify-content-end p-1">
                             <button id="refreshBtn" class="btn">
                                 <i class="fa-solid fa-refresh fa-fw"></i>
-                            </button>
-                            <button id="filterBtn" type="button" class="btn">
-                                <i class="fa-solid fa-filter fa-fw"></i>
-                            </button>          
+                            </button>   
                             <button id="addBtn" type="button" class="btn">
                                 <i class="fa-solid fa-plus fa-fw"></i>
                             </button>
@@ -132,10 +291,7 @@
                             <th class="d-flex justify-content-end p-1">
                                 <button id="refreshBtn" class="btn">
                                     <i class="fa-solid fa-refresh fa-fw"></i>
-                                </button>
-                                <button id="filterBtn" type="button" class="btn">
-                                    <i class="fa-solid fa-filter fa-fw"></i>
-                                </button>          
+                                </button>       
                                 <button id="addBtn" type="button" class="btn">
                                     <i class="fa-solid fa-plus fa-fw"></i>
                                 </button>
@@ -151,14 +307,6 @@
         </div>
         <!-- /PageContent -->
     </div>  
-
-
-    <!-- Footer -->
-    <footer class="border-top text-center fw-bold">
-        <p class="fw-light my-3">Company Directory version 1.0</p>
-    </footer>
-    <!-- /Footer -->
-
 
     <!-- Employee Modal -->
            <!-- Add Employee -->

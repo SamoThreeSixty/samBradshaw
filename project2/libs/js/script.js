@@ -1,7 +1,85 @@
+// Functions
+const getFilteredDepartments = () => {
+  const count = $('#departments').children().length;
+
+  let searchArry = [];
+  const childrenArry = $('#departments').children();
+
+  if($('#allDepartmentsSelected').prop("checked")) {
+    for(let i = 1; i < count; i++) {
+      searchArry.push(childrenArry[i].children[0].value)
+    }
+
+    return searchArry;
+  }
+  
+  for(let i = 0; i < count; i++) {
+    if(childrenArry[i].children[0].checked) {
+      searchArry.push(childrenArry[i].children[0].value)
+    } 
+  }
+
+  if(count === searchArry.length) {
+    return searchArry
+  } else {
+    return searchArry;
+  }
+};
+
+const getFilteredLocations = () => {
+  const count = $('#locations').children().length;
+
+  let searchArry = [];
+  const childrenArry = $('#locations').children();
+
+  if($('#allLocationsSelected').prop("checked")) {
+    for(let i = 1; i < count; i++) {
+      searchArry.push(childrenArry[i].children[0].value)
+    }
+
+    return searchArry;
+  }
+
+  for(let i = 0; i < count; i++) {
+    if(childrenArry[i].children[0].checked) {
+      searchArry.push(childrenArry[i].children[0].value)
+    } 
+  }
+
+  if(count === searchArry.length) {
+    return searchArry
+  } else {
+    return searchArry;
+  }
+};
+
+
+// Setup
 $(function() {
   $('#searchInp').val('')
+  $("#refreshBtn").trigger("click");
+})
 
-  $( "#refreshBtn" ).trigger( "click" );
+// For toggle 
+$('.allDepartments').on('click', function() {
+  if($('.allDepartments').prop('checked')){
+    $('.notAllDepartments').prop('checked', false)
+  }
+})
+$('.notAllDepartments').on('click', function() {
+  if($('.allDepartments').prop('checked')){
+    $('.allDepartments').prop('checked', false)
+  }
+})
+$('.allLocations').on('click', function() {
+  if($('.allLocations').prop('checked')){
+    $('.notAllLocations').prop('checked', false)
+  }
+})
+$('.notAllLocations').on('click', function() {
+  if($('.allLocations').prop('checked')){
+    $('.allLocations').prop('checked', false)
+  }
 })
 
 $('#menu-toggle').on("click", function() {
@@ -17,11 +95,9 @@ $('#menu-toggle').on("click", function() {
 })
 
 $("#searchInp").on("keyup", function () {
-
-  
   if($('#searchInp').val() !== null) {
     $.ajax({
-        url: 'libs/php/findByName.php',
+        url: 'libs/php/getBySearch.php',
         type: 'json',
         method: 'POST',
         data: {
@@ -89,63 +165,67 @@ $('#locationsBtn').on('click', function() {
   $( "#refreshBtn" ).trigger( "click" );
 })
 
-$('#refreshBtn').on("click", function() {
-})
-
-$("#refreshBtn").click(function () {  
+// Refresh Button Function
+$('#refreshBtn').on("click", function() { 
+  // Loads Personnel Table if selected
   if ($("#personnelBtn").hasClass("active")) {
-    // Loads Personnel if selected
     $.ajax({
-      url: 'libs/php/getAll.php',
+      url: 'libs/php/getAllPersonnel.php',
       method: 'GET',
       dataType: "json",
       success: function(result) {       
         if(result.data !== null) {
           $('#employee-table').html(`<tr></tr>`)
+          const department = getFilteredDepartments();
+          const location = getFilteredLocations();
+
+          console.log(department)
+          console.log(location)
 
           result.data.forEach((employee) => {
-            $('#employee-table tr:last').after(`
-            <tr>
-            <td class="align-middle text-nowrap">
-              ${employee.lastName}, ${employee.firstName}
-            </td>
-            <td class="align-middle text-nowrap d-none d-md-table-cell">
-              ${employee.department}
-            </td>
-            <td class="align-middle text-nowrap d-none d-md-table-cell">
-              ${employee.location}
-            </td>
-            <td class="align-middle text-nowrap d-none d-md-table-cell">
-              ${employee.email}
-            </td>
-            <td class="text-end text-nowrap d-none d-md-table-cell">
-              ${employee.jobTitle}
-            </td>
-            <td class="align-middle text-end text-nowrap pe-2">
-              <div class="btn-group dropstart">
-                <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                </button>
-                <ul class="dropdown-menu" style="max-width: 100px;">
-                  <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id="${employee.id}">
-                    <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p> 
-                  </li>
-                  <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id="${employee.id}">
-                    <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
-                  </li>
-                </ul>
-              </div>
-            </td>
-          </tr>
+            if(department.includes(employee.department) && location.includes(employee.location)) {
+                  $('#employee-table tr:last').after(`
+                <tr>
+                <td class="align-middle text-nowrap">
+                  ${employee.lastName}, ${employee.firstName}
+                </td>
+                <td class="align-middle text-nowrap d-none d-md-table-cell">
+                  ${employee.department}
+                </td>
+                <td class="align-middle text-nowrap d-none d-md-table-cell">
+                  ${employee.location}
+                </td>
+                <td class="align-middle text-nowrap d-none d-md-table-cell">
+                  ${employee.email}
+                </td>
+                <td class="text-end text-nowrap d-none d-md-table-cell">
+                  ${employee.jobTitle}
+                </td>
+                <td class="align-middle text-end text-nowrap pe-2">
+                  <div class="btn-group dropstart">
+                    <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu" style="max-width: 100px;">
+                      <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id="${employee.id}">
+                        <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p> 
+                      </li>
+                      <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id="${employee.id}">
+                        <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
             `);
+            }
           })
         }
       }
     })
   } else {
-    
+    // Loads Departments Table if selected
     if ($("#departmentsBtn").hasClass("active")) {
-      // Loads Departments if selected
       $.ajax({
         url: 'libs/php/getAllDepartments.php',
         method: 'GET',
@@ -185,8 +265,7 @@ $("#refreshBtn").click(function () {
         }
       })      
     } else {
-      // Loads Locations if selected
-      console.log("location clicked")
+      // Loads Locations Table if selected
       $.ajax({
         url: 'libs/php/getAllLocations.php',
         method: "GET",
@@ -268,7 +347,7 @@ $("#addPersonnelForm").on("submit", function (e) {
   e.preventDefault();
 
   $.ajax({
-    url: 'libs/php/addEmployee.php',
+    url: 'libs/php/insertEmployee.php',
     type: 'POST',
     dataType: 'json',
     data: {
@@ -390,7 +469,7 @@ $('#deletePersonnelForm').on('submit', function(e) {
     console.log("ok")
 
     $.ajax({
-      url: 'libs/php/deleteEmployee.php',
+      url: 'libs/php/deleteEmployeeByID.php',
       type: 'POST',
       dataType: 'json',
       data: {
