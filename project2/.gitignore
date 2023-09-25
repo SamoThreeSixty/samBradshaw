@@ -1,0 +1,2 @@
+#Ignore enviromentals for config
+.env
