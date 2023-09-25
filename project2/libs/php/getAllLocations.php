@@ -34,7 +34,7 @@
 
 	// SQL does not accept parameters and so is not prepared
 
-	$query = 'SELECT location.id, location.name FROM location';
+	$query = 'SELECT location.id, location.name FROM location ORDER BY location.name;';
 
 	$result = $conn->query($query);
 	

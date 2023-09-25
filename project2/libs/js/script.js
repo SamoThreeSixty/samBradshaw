@@ -1,3 +1,25 @@
+const input = document.querySelector(".clear-input")
+const clearButton = document.querySelector(".clear-input-button")
+
+const handleInputChange = (e) => {
+if (e.target.value && !input.classList.contains("clear-input--touched")) {
+input.classList.add("clear-input--touched")
+} else if (!e.target.value && input.classList.contains("clear-input--touched")) {
+input.classList.remove("clear-input--touched")
+}
+}
+
+const handleButtonClick = (e) => {
+input.value = ''
+input.focus()
+input.classList.remove("clear-input--touched")
+$("#refreshBtn").trigger("click");
+}
+
+clearButton.addEventListener("click", handleButtonClick)
+input.addEventListener("input", handleInputChange)
+
+
 // Functions
 const getFilteredDepartments = () => {
   const count = $('#departments').children().length;
@@ -65,20 +87,50 @@ $('.allDepartments').on('click', function() {
   if($('.allDepartments').prop('checked')){
     $('.notAllDepartments').prop('checked', false)
   }
+  $("#refreshBtn").trigger("click");
 })
 $('.notAllDepartments').on('click', function() {
   if($('.allDepartments').prop('checked')){
     $('.allDepartments').prop('checked', false)
   }
+  $("#refreshBtn").trigger("click");
 })
 $('.allLocations').on('click', function() {
   if($('.allLocations').prop('checked')){
     $('.notAllLocations').prop('checked', false)
   }
+  $("#refreshBtn").trigger("click");
 })
 $('.notAllLocations').on('click', function() {
   if($('.allLocations').prop('checked')){
     $('.allLocations').prop('checked', false)
+  }
+  $("#refreshBtn").trigger("click");
+})
+$('#orderBy input').on('change', function() {
+  $("#refreshBtn").trigger("click");
+})
+
+$('.filterDropdown').on('click', function() {
+  const expanded = $(this).attr('aria-expanded');
+  console.log(expanded)
+
+  if($(this).prop('id') == 'filterIcon'){
+    if(expanded === "true"){
+      $(this).find('i:last-child').removeClass('arrowRight')
+      $(this).find('i:last-child').addClass('arrowDown')
+    } else {
+      $(this).find('i:last-child').removeClass('arrowDown')
+      $(this).find('i:last-child').addClass('arrowRight')
+    }
+  } else {
+    if(expanded === "true"){
+      $(this).find('i').removeClass('arrowRight')
+      $(this).find('i').addClass('arrowDown')
+    } else {
+      $(this).find('i').removeClass('arrowDown')
+      $(this).find('i').addClass('arrowRight')
+    }
   }
 })
 
@@ -142,9 +194,8 @@ $("#searchInp").on("keyup", function () {
               </tr>
             `);
           });
-        }, error: function(error) {
-          console.log(error)
-        }})
+        }
+      })
   } else {
     $( "#refreshBtn" ).trigger("click");
   }
@@ -171,16 +222,16 @@ $('#refreshBtn').on("click", function() {
   if ($("#personnelBtn").hasClass("active")) {
     $.ajax({
       url: 'libs/php/getAllPersonnel.php',
-      method: 'GET',
+      method: 'POST',
       dataType: "json",
+      data: {
+        orderBy: $('#orderBy input:radio:checked').val(),
+      },
       success: function(result) {       
         if(result.data !== null) {
           $('#employee-table').html(`<tr></tr>`)
           const department = getFilteredDepartments();
           const location = getFilteredLocations();
-
-          console.log(department)
-          console.log(location)
 
           result.data.forEach((employee) => {
             if(department.includes(employee.department) && location.includes(employee.location)) {
@@ -320,7 +371,6 @@ $("#addPersonnelModal").on("show.bs.modal", function (e) {
 
       if (resultCode == 200) {
         result.data.forEach((department) => {
-          console.log(department.name)
           $("#addPersonnelDepartment").append(
             $("<option>", {
               value: department.id,
@@ -358,14 +408,9 @@ $("#addPersonnelForm").on("submit", function (e) {
       departmentID: $('#addPersonnelDepartment').val()
     },
     success: function(result) {
-      console.log(result)
-
       $('#addPersonnelModal').modal('hide');
 
       $("#refreshBtn").trigger("click");
-    },
-    error: function(error){
-      console.log(error)
     }
   })
 })
@@ -466,8 +511,6 @@ $('#deletePersonnelForm').on('submit', function(e) {
   e.preventDefault()
 
   if($('#exampleRadios1').is(':checked')){
-    console.log("ok")
-
     $.ajax({
       url: 'libs/php/deleteEmployeeByID.php',
       type: 'POST',
@@ -476,8 +519,6 @@ $('#deletePersonnelForm').on('submit', function(e) {
         id: $('#deletePersonnelEmployeeID').val(),
       },
       success: function(result) {
-        console.log(result)
-
         $('#deletePersonnelModal').modal('hide');
 
         $("#refreshBtn").trigger("click");

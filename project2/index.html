@@ -13,9 +13,9 @@
 <body>
     <div class="d-flex position-relative" id="wrapper">
         <!-- Sidebar -->
-        <div class="bg-white px-3 hide-sidebar" id="sidebar-wrapper">
+        <div class="bg-white hide-sidebar" id="sidebar-wrapper">
             <div class="rounded shadow-sm" id="menu-toggle">
-                <i class="fas fa-align-left primary-text fs-4 me-3"></i>
+                <i class="fas fa-align-left primary-text fs-4 py-1 mx-2"></i>
             </div>
 
             <div id="sidebar-content" class="hidden">
@@ -44,14 +44,14 @@
 
                     <!-- Filter -->
                     <div id="fliter-section" class="tab-content">
-                        <a class="text-decoration-none link-secondary ms-3 pt-4 mb-2" data-bs-toggle="collapse" href="#filter" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            <i class="fa-solid fa-filter fa-lg fa-fw me-2"></i>Filter<i id="departmentArrow" class="arrow ms-2 fa-solid fa-caret-up"></i>
+                        <a id="filterIcon" class="text-decoration-none link-secondary ms-3 pt-5 mb-2 | filterDropdown" data-bs-toggle="collapse" href="#filter" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="fa-solid fa-filter fa-lg fa-fw me-2"></i>Filter<i id="departmentArrow" class="arrowRight ms-2 fa-solid fa-caret-up"></i>
                         </a>
 
                         <div class="collapse ms-5 ps-2" id="filter">
 
-                            <a class="text-decoration-none link-secondary mb-2" data-bs-toggle="collapse" href="#departments" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                Departments<i id="departmentArrow" class="arrow ms-2 fa-solid fa-caret-up"></i></br>
+                            <a class="text-decoration-none link-secondary | filterDropdown" data-bs-toggle="collapse" href="#departments" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                Departments<i id="departmentArrow" class="arrowRight my-3 ms-2 fa-solid fa-caret-up"></i></br>
                             </a>
 
                             <div class="collapse ms-5" id="departments">
@@ -136,8 +136,8 @@
                             </div>
 
                             
-                            <a class="text-decoration-none link-secondary mb-2" data-bs-toggle="collapse" href="#locations" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                Locations<i id="locationArrow" class="arrow ms-2 fa-solid fa-caret-up"></i></br>
+                            <a class="text-decoration-none link-secondary mb-2 | filterDropdown" data-bs-toggle="collapse" href="#locations" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                Locations<i id="locationArrow" class="arrowRight my-3 ms-2 fa-solid fa-caret-up"></i></br>
                             </a>
 
                             <div class="collapse ms-5" id="locations">
@@ -180,15 +180,33 @@
                             </div>
 
                             
-                            <a class="text-decoration-none link-secondary mb-2" data-bs-toggle="collapse" href="#orderBy" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                Order By<i id="orderByArrow" class="arrow ms-2 fa-solid fa-caret-up"></i></br>
+                            <a class="text-decoration-none link-secondary mb-2 | filterDropdown" data-bs-toggle="collapse" href="#orderBy" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                Order By<i id="orderByArrow" class="arrowRight my-3 ms-2 fa-solid fa-caret-up"></i></br>
                             </a>
 
                             <div class="collapse ms-5" id="orderBy">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" value="p.firstName" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
-                                        Name Ascending
+                                        First Name
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" value="p.lastName" id="flexCheckDefault" checked>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Last Name
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" value="d.name" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Department
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" value="l.name" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Location
                                     </label>
                                 </div>
                             </div>
@@ -197,8 +215,6 @@
                 </div>
                 <!-- /Filter -->
                 
-
-
                 <!-- Footer -->
                 <div id="footer" class="border-top">
                     <figure class="text-center">
@@ -218,8 +234,9 @@
         <div class="bg-white w-100 mx-1 shadow-sm" id="page-content-wrapper">
             <nav class="border-bottom navbar navbar-expand-lg navbar-light bg-transparent ps-5 pe-3 d-flex flex-nowrap">
 
-                    <div class="p-0 px-1 flex-fill">
-                        <input id="searchInp" class="form-control" placeholder="search">
+                    <div class="p-0 px-1 flex-fill position-relative clear-input-container">
+                        <input id="searchInp" type="search" placeholder="Search..." class="form-control clear-input">
+                        <button class="clear-input-button" aria-label="Clear input" title="Clear input">×</button>
                     </div>
                     <div class="p-0 px-1">
                         <select id="searchBy" class="form-select" style="min-width: 150px;">
