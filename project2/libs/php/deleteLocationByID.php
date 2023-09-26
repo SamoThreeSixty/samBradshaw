@@ -27,7 +27,7 @@
         exit;
     }
 
-    $query = $conn->prepare('DELETE FROM personnel WHERE id = ?;');
+    $query = $conn->prepare('DELETE FROM location WHERE id = ?;');
 
     $query->bind_param("i", $_REQUEST['id']);
 

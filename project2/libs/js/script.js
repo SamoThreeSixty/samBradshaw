@@ -78,6 +78,10 @@ const getFilteredLocations = () => {
 
 // Setup
 $(function() {
+  if(document.documentElement.clientWidth >= 1280) {
+    $('#menu-toggle').trigger('click')
+  } 
+
   $('#searchInp').val('')
   $("#refreshBtn").trigger("click");
 })
@@ -113,7 +117,6 @@ $('#orderBy input').on('change', function() {
 
 $('.filterDropdown').on('click', function() {
   const expanded = $(this).attr('aria-expanded');
-  console.log(expanded)
 
   if($(this).prop('id') == 'filterIcon'){
     if(expanded === "true"){
@@ -285,32 +288,37 @@ $('#refreshBtn').on("click", function() {
           if(result.data !== null) {
             $('#department-table').html(`<tr></tr>`)
 
-            result.data.forEach((department) => {
-              $('#department-table tr:last').after(`
-              <tr>
-                <td class="align-middle text-nowrap">
-                  ${department.name}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                  ${department.location}
-                </td>
-                <td class="align-middle text-end text-nowrap pe-2">
-                  <div class="btn-group dropstart">
-                    <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                    <ul class="dropdown-menu" style="max-width: 100px;">
-                      <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" data-id="${department.id}">
-                        <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p>
-                      </li>
-                      <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteDepartmentModal" data-id="${department.id}">
-                        <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-              </tr> 
-              `);
+            const department = getFilteredDepartments();
+            const location = getFilteredLocations();
+
+            result.data.forEach((departments) => {
+              if(department.includes(departments.name) && location.includes(departments.location)) {
+                $('#department-table tr:last').after(`
+                <tr>
+                  <td class="align-middle text-nowrap">
+                    ${departments.name}
+                  </td>
+                  <td class="align-middle text-nowrap d-none d-md-table-cell">
+                    ${departments.location}
+                  </td>
+                  <td class="align-middle text-end text-nowrap pe-2">
+                    <div class="btn-group dropstart">
+                      <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                      </button>
+                      <ul class="dropdown-menu" style="max-width: 100px;">
+                        <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" data-id="${departments.id}">
+                          <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p>
+                        </li>
+                        <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteDepartmentModal" data-id="${departments.id}">
+                          <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr> 
+                `);
+              }
             })
           }
         }
@@ -323,30 +331,34 @@ $('#refreshBtn').on("click", function() {
         success: function(result) {
           if(result.data !== null) {
             $('#location-table').html('<tr></tr>');
+
+          const location = getFilteredLocations();
           
-          result.data.forEach((location) => {
-            $('#location-table tr:last').after(`
-              <tr>
-                <td class="align-middle text-nowrap">
-                   ${location.name}
-                </td>
-                <td class="align-middle text-end text-nowrap pe-2">
-                  <div class="btn-group dropstart">
-                    <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                    <ul class="dropdown-menu" style="max-width: 100px;">
-                      <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id="${location.id}">
-                        <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p>
-                      </li>
-                      <li class="dropdown-item m-0" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id="${location.id}">
-                        <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
-              `)
+          result.data.forEach((locations) => {
+            if(location.includes(locations.name)) {
+              $('#location-table tr:last').after(`
+                <tr>
+                  <td class="align-middle text-nowrap">
+                    ${locations.name}
+                  </td>
+                  <td class="align-middle text-end text-nowrap pe-2">
+                    <div class="btn-group dropstart">
+                      <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                      </button>
+                      <ul class="dropdown-menu" style="max-width: 100px;">
+                        <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editLocationModal" data-id="${locations.id}">
+                          <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p>
+                        </li>
+                        <li class="dropdown-item m-0" data-bs-toggle="modal" data-bs-target="#deleteLocationModal" data-id="${locations.id}">
+                          <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+                `)
+              }
             })
           }
         }
@@ -357,6 +369,8 @@ $('#refreshBtn').on("click", function() {
   }
   
 });
+
+// Personnel Modals
 
 $("#addPersonnelModal").on("show.bs.modal", function (e) {
   $.ajax({
@@ -370,6 +384,8 @@ $("#addPersonnelModal").on("show.bs.modal", function (e) {
       var resultCode = result.status.code;
 
       if (resultCode == 200) {
+        $("#addPersonnelDepartment").html('')
+
         result.data.forEach((department) => {
           $("#addPersonnelDepartment").append(
             $("<option>", {
@@ -463,10 +479,7 @@ $("#editPersonnelModal").on("show.bs.modal", function (e) {
   });
 });
 
-
-// Executes when the form button with type="submit" is clicked
 $("#editPersonnelForm").on("submit", function (e) {
-  // stop the default browser behviour
   e.preventDefault();
 
   $.ajax({
@@ -486,13 +499,12 @@ $("#editPersonnelForm").on("submit", function (e) {
       $("#refreshBtn").trigger("click");
     }
   })
-  
 });
 
 $("#deletePersonnelModal").on("show.bs.modal", function (e) {
   $('#deletePersonnelEmployeeID').val($(e.relatedTarget).attr("data-id"))
 
-  $('#exampleRadios2').prop( "checked", true );
+  $('#deletePersonnelRadio2').prop( "checked", true );
 
   $.ajax({
     url: 'libs/php/getPersonnelByID.php',
@@ -510,7 +522,7 @@ $("#deletePersonnelModal").on("show.bs.modal", function (e) {
 $('#deletePersonnelForm').on('submit', function(e) {
   e.preventDefault()
 
-  if($('#exampleRadios1').is(':checked')){
+  if($('#deletePersonnelRadio1').is(':checked')){
     $.ajax({
       url: 'libs/php/deleteEmployeeByID.php',
       type: 'POST',
@@ -524,8 +536,258 @@ $('#deletePersonnelForm').on('submit', function(e) {
         $("#refreshBtn").trigger("click");
       }
     })
-  } else {
-    alert("please select yes");
   }
 })
 
+
+
+// Department Modals
+$('#addDepartmentModal').on("show.bs.modal", function() {
+  $.ajax({
+    url: 'libs/php/getAllLocations.php',
+    type: "GET",
+    dataType: "json",
+    success: function (result) {
+      var resultCode = result.status.code;
+
+      if (resultCode == 200) {
+        $("#addDepartmentLocation").html('')
+
+        result.data.forEach((location) => {
+          $("#addDepartmentLocation").append(
+            $("<option>", {
+              value: location.id,
+              text: location.name
+            })
+          );
+        })
+      }
+    }
+  })
+})
+
+$('#addDepartmentForm').on('submit', function(e) {
+  e.preventDefault()
+
+  $.ajax({
+    url: 'libs/php/insertDepartment.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      name: $('#addDepartmentName').val(),
+      locationID: $('#addDepartmentLocation').val()
+    },
+    success: function () {
+      $('#addDepartmentModal').modal('hide');
+
+      $("#refreshBtn").trigger("click");
+    }
+  })
+})
+
+$('#editDepartmentModal').on('show.bs.modal', function(e) {
+  $('#editDepartmentID').val($(e.relatedTarget).attr("data-id"))
+  $.ajax({
+    url: 'libs/php/getDepartmentByID.php',
+    method: 'POST',
+    dataType: 'json',
+    data: {
+      id: $('#editDepartmentID').val()
+    },
+    success: function(result) {
+      $('#editDepartmentName').val(result.data[0].name)
+    }
+  })
+
+  $.ajax({
+    url: 'libs/php/getAllLocations.php',
+    type: "GET",
+    dataType: "json",
+    success: function (result) {
+      var resultCode = result.status.code;
+
+      if (resultCode == 200) {
+        $("#editDepartmentLocation").html('')
+
+        result.data.forEach((location) => {
+          $("#editDepartmentLocation").append(
+            $("<option>", {
+              value: location.id,
+              text: location.name
+            })
+          );
+        })
+
+        $.ajax({
+          url: 'libs/php/getDepartmentByID.php',
+          method: 'POST',
+          dataType: 'json',
+          data: {
+            id: $('#editDepartmentID').val()
+          },
+          success: function(result) {
+            $(`#editDepartmentLocation`).val(result.data[0].locationID).trigger('change');
+          }
+        })
+      }
+
+
+    }
+  })
+})
+
+$('#editDepartmentForm').on('submit', function(e) {
+  e.preventDefault()
+
+  $.ajax({
+    url: 'libs/php/updateDepartment.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      name: $('#editDepartmentName').val() ,
+      location: $('#editDepartmentLocation').val(),
+      id: $('#editDepartmentID').val()
+    },
+    success: function() {
+      $('#editDepartmentModal').modal('hide')
+
+      $('#refreshBtn').trigger('click')
+    }
+  })
+
+})
+
+
+
+
+
+
+$('#deleteDepartmentModal').on("show.bs.modal", function(e) {
+  $('#deleteDepartmentID').val($(e.relatedTarget).attr("data-id"))
+
+  $('#deleteDepartmentRadio2').prop( "checked", true );
+
+  $.ajax({
+    url: 'libs/php/getDepartmentByID.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: $('#deleteDepartmentID').val()
+    },
+    success: function(result) {
+      $('#deleteDepartmentName').html(result.data[0].name)
+    }
+  })
+
+})
+
+$('#deleteDepartmentForm').on("submit", function(e) {
+  e.preventDefault();
+
+  if($('#deleteDepartmentRadio1').is(':checked')){
+    $.ajax({
+      url: 'libs/php/deleteDepartmentByID.php',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        id: $('#deleteDepartmentID').val(),
+      },
+      success: function(result) {
+        $('#deleteDepartmentModal').modal('hide');
+
+        $("#refreshBtn").trigger("click");
+      }
+    })
+  }
+})
+
+// Location Modals
+$('#addLocationForm').on('submit', function(e) {
+  e.preventDefault()
+  
+  $.ajax({
+    url: 'libs/php/insertLocation.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      name: $('#addLocationName').val()
+    },
+    success: function() {
+      $('#addLocationModal').modal('hide')
+    }
+  })
+})
+
+$('#editLocationModal').on('show.bs.modal', function(e) {
+  $('#editLocationID').val($(e.relatedTarget).attr("data-id"))
+
+  $.ajax({
+    url: 'libs/php/getLocationByID.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: $('#editLocationID').val()
+    },
+    success: function(result) {
+      $('#editLocationName').val(result.data[0].name)
+    }
+  })
+})
+
+$('#editLocationForm').on('submit', function(e) {
+  e.preventDefault();
+
+  $.ajax({
+    url: 'libs/php/updateLocation.php',
+    method: 'POST',
+    dataType: 'json',
+    data: {
+      location: $('#editLocationName').val(),
+      id:  $('#editLocationID').val()
+    },
+    success: function(result) {
+      $('#editLocationModal').modal('hide');
+
+      $("#refreshBtn").trigger("click");
+    }
+  })
+})
+
+$('#deleteLocationModal').on('show.bs.modal', function(e) {
+  $('#deleteLocationID').val($(e.relatedTarget).attr("data-id"))
+
+  $('#deleteLocationRadio2').prop( "checked", true );
+
+  $.ajax({
+    url: 'libs/php/getLocationByID.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: $('#deleteLocationID').val()
+    },
+    success: function(result) {
+      $('#deleteLocationID').html(result.data[0].id)
+      $('#deleteLocationName').html(result.data[0].name)
+    }
+  })
+})
+
+$('#deleteLocationForm').on("submit", function(e) {
+  e.preventDefault();
+
+  if($('#deleteLocationRadio1').is(':checked')){
+    $.ajax({
+      url: 'libs/php/deleteLocationByID.php',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        id: $('#deleteLocationID').val(),
+      },
+      success: function(result) {
+        $('#deleteLocationModal').modal('hide');
+
+        $("#refreshBtn").trigger("click");
+      }
+    })
+  }
+})
