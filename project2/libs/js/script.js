@@ -204,7 +204,6 @@ $('.allDepartments').on('click', function() {
 })
 
 $(document.body).on('click', '.notAllDepartments', function() {
-  console.log("clicked")
   if($('.allDepartments').prop('checked')){
     $('.allDepartments').prop('checked', false)
   }
@@ -720,7 +719,7 @@ $('#editDepartmentForm').on('submit', function(e) {
 $('#deleteDepartmentModal').on("show.bs.modal", function(e) {
   $('#deleteDepartmentID').val($(e.relatedTarget).attr("data-id"))
 
-  $('#departmentDependancy ul').html('');
+  $('#departmentDependancyList ul').html('');
 
   $('#deleteDepartmentRadio2').prop( "checked", true );
 
@@ -811,6 +810,8 @@ $('#addLocationForm').on('submit', function(e) {
     },
     success: function() {
       $('#addLocationModal').modal('hide')
+
+      $("#refreshBtn").trigger("click");
     }
   })
 })
@@ -853,7 +854,11 @@ $('#editLocationForm').on('submit', function(e) {
 $('#deleteLocationModal').on('show.bs.modal', function(e) {
   $('#deleteLocationID').val($(e.relatedTarget).attr("data-id"))
 
+  $('#locationDependancyList ul').html('');
+
   $('#deleteLocationRadio2').prop( "checked", true );
+
+  $('#locationDependancyList').collapse('hide')
 
   $.ajax({
     url: 'libs/php/getLocationByID.php',
@@ -863,10 +868,46 @@ $('#deleteLocationModal').on('show.bs.modal', function(e) {
       id: $('#deleteLocationID').val()
     },
     success: function(result) {
-      $('#deleteLocationID').html(result.data[0].id)
       $('#deleteLocationName').html(result.data[0].name)
+
+      $.ajax({
+        url: 'libs/php/getAllDepartmentsByLocationID.php',
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          id: $('#deleteLocationID').val()
+        },
+        success: function(result) {
+          console.log(result)
+          if(result.status.code == 200){
+            if(result.data.length > 0) {
+              console.log(result.data)
+              $('#locationDependancy').removeClass('d-none');
+              $('#deleteLocationBtn').addClass('disabled')
+
+              $('#locationDependancysAmount').html(`${result.data.length}`)
+
+              result.data.forEach((dependancy) => {
+                $('#locationDependancyList ul').append(`<li class="list-group-item">${dependancy.name}</li>`);
+              })
+
+            } else {
+              $('#locationNoDependancy').removeClass('d-none');
+              $('#deleteLocationBtn').removeClass('disabled')
+            }
+          }
+        }      
+      })
     }
   })
+})
+
+$('#deleteLocationModal').on("hide.bs.modal", function(e) {
+  setTimeout(() => {
+    $('#locationDependancy').addClass('d-none');
+    $('#locationNoDependancy').addClass('d-none');
+  }, 500)
+  
 })
 
 $('#deleteLocationForm').on("submit", function(e) {

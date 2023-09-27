@@ -459,6 +459,7 @@
                     </div>  
                 </div>
             </div>
+        </div>
 
 
     <!-- Location Modal -->
@@ -524,6 +525,25 @@
                         </div>
                         <div class="modal-body">
 
+                        <input type="hidden" id="deleteLocationID">
+
+                        <div id="locationDependancy" class="d-none">
+                            <p>Unable to delete <strong><span class="text-center strong" id="deleteLocationName"></span></strong> due to associated dependancys below:</p>
+
+                            <div>
+                                <a class="btn btn-light w-100" data-bs-toggle="collapse" href="#locationDependancyList" role="button" aria-expanded="false" aria-controls="locationDependancyList">
+                                    <span id="locationDependancysAmount" class="badge bg-primary rounded-pill"></span> Departments
+                                </a>
+
+                                <div class="collapse" id="locationDependancyList">
+                                    <ul class="list-group list-group-flush"></ul>
+                                </div>
+                            </div>                        
+
+                            <p class="mt-2">Please make sure that these are resolved before you can delete this location</p>
+                        </div>
+
+                        <div id="locationNoDependancy" class="d-none">
                             <form id="deleteLocationForm">
 
                                 <input type="hidden" id="deleteLocationID">
@@ -544,9 +564,10 @@
                                 
                             </form>
                         </div>
+                        </div>
 
                         <div class="modal-footer">
-                            <button id="editPersonnelFormSubmit" type="submit" form="deleteLocationForm" class="btn btn-outline-primary btn-sm myBtn">DELETE</button>
+                            <button id="deleteLocationBtn" type="submit" form="deleteLocationForm" class="btn btn-outline-primary btn-sm myBtn">DELETE</button>
                             <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
                         </div>
                     </div>  

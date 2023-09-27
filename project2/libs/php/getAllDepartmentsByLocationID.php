@@ -34,9 +34,13 @@
 
 	// SQL does not accept parameters and so is not prepared
 
-	$query = 'SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) ORDER BY ' . $_REQUEST['orderBy'] . ';';
+	$query = $conn->prepare('SELECT d.name, l.id as location FROM department d LEFT JOIN location l ON (l.id = d.locationID) WHERE l.id = ? ORDER BY d.name;');
 
-	$result = $conn->query($query);
+	$query->bind_param('i', $_REQUEST['id']);
+
+	$query->execute();
+
+	$result = $query->get_result();
 	
 	if (!$result) {
 
