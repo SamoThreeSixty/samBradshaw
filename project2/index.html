@@ -11,14 +11,14 @@
     <link rel="stylesheet" href="./libs/styles/style.css">
 </head>
 <body>
-    <div class="d-flex position-relative container-xxl" id="wrapper">
+    <div class="d-flex position-relative" id="wrapper">
         <!-- Sidebar -->
-        <div class="bg-white hide-sidebar" id="sidebar-wrapper">
+        <div class="bg-white" id="sidebar-wrapper">
             <div class="rounded shadow-sm" id="menu-toggle">
                 <i class="fas fa-align-left primary-text fs-4 py-1 mx-2"></i>
             </div>
 
-            <div id="sidebar-content" class="hidden">
+            <div id="sidebar-content">
                 <!-- Logo -->
                 <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">Company Directory</div>
 
@@ -109,20 +109,20 @@
                                 </div>
                             </div>
                         </div>
+                    </div> 
+                    <!-- /Filter -->
+                    
+                    <!-- Footer -->
+                    <div id="footer" class="border-top">
+                        <figure class="text-center">
+                            <blockquote class="blockquote">
+                            <p>Designed by Sam Bradshaw</p>
+                            </blockquote>
+                            <figcaption class="blockquote-footer">
+                            Version 1.0
+                            </figcaption>
+                        </figure>
                     </div>
-                </div>
-                <!-- /Filter -->
-                
-                <!-- Footer -->
-                <div id="footer" class="border-top">
-                    <figure class="text-center">
-                        <blockquote class="blockquote">
-                          <p>Designed by Sam Bradshaw</p>
-                        </blockquote>
-                        <figcaption class="blockquote-footer">
-                          Version 1.0
-                        </figcaption>
-                      </figure>
                 </div>
             </div>
         </div>
@@ -158,7 +158,7 @@
                             <th class="d-none d-md-table-cell">Department</th>
                             <th class="d-none d-md-table-cell">Location</th>
                             <th class="d-none d-md-table-cell">Email</th>
-                            <th class="d-none d-md-table-cell">Job Title</th>
+                            <th class="d-none d-md-table-cell" style="min-width: 85px;">Job Title</th>
                             <th class="d-flex justify-content-end p-1">
                                 <button id="refreshBtn" class="btn">
                                     <i class="fa-solid fa-refresh fa-fw"></i>
@@ -409,11 +409,29 @@
                 <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content shadow"> 
                         <div class="modal-header bg-danger bg-gradient text-white">
-                            <h5 class="modal-title">Delete employee</h5>
+                            <h5 class="modal-title">Delete department</h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                        <input type="hidden" id="deleteDepartmentID">
 
+                        <div id="departmentDependancy" class="d-none">
+                            <p>Unable to delete <strong><span class="text-center strong" id="deleteDepartmentName"></span></strong> due to associated dependancys below:</p>
+
+                            <div>
+                                <a class="btn btn-light w-100" data-bs-toggle="collapse" href="#departmentDependancyList" role="button" aria-expanded="false" aria-controls="departmentDependancyList">
+                                    <span id="dependancysAmount" class="badge bg-primary rounded-pill"></span> Employees
+                                </a>
+
+                                <div class="collapse" id="departmentDependancyList">
+                                    <ul class="list-group list-group-flush"></ul>
+                                </div>
+                            </div>                        
+
+                            <p class="mt-2">Please make sure that these are resolved before you can delete this department</p>
+                        </div>
+
+                        <div id="departmentNoDependancy" class="d-none">
                             <form id="deleteDepartmentForm">
 
                                 <input type="hidden" id="deleteDepartmentID">
@@ -434,9 +452,8 @@
                                 
                             </form>
                         </div>
-
                         <div class="modal-footer">
-                            <button id="editPersonnelFormSubmit" type="submit" form="deleteDepartmentForm" class="btn btn-outline-primary btn-sm myBtn">DELETE</button>
+                            <button id="deleteDepartmentBtn" type="submit" form="deleteDepartmentForm" class="btn btn-outline-primary btn-sm myBtn">DELETE</button>
                             <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
                         </div>
                     </div>  
@@ -544,6 +561,5 @@
     <script src="./node_modules/jquery/dist/jquery.js"></script>
     <script src='./node_modules/bootstrap/dist/js/bootstrap.bundle.js'></script>
     <script type="text/javascript" src="./libs/js/script.js"></script>
-
 </body>
 </html>
