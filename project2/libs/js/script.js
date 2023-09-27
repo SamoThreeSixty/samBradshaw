@@ -1,12 +1,14 @@
+// Input clear button
+
 const input = document.querySelector(".clear-input")
 const clearButton = document.querySelector(".clear-input-button")
 
 const handleInputChange = (e) => {
-if (e.target.value && !input.classList.contains("clear-input--touched")) {
-input.classList.add("clear-input--touched")
-} else if (!e.target.value && input.classList.contains("clear-input--touched")) {
-input.classList.remove("clear-input--touched")
-}
+  if (e.target.value && !input.classList.contains("clear-input--touched")) {
+    input.classList.add("clear-input--touched")
+  } else if (!e.target.value && input.classList.contains("clear-input--touched")) {
+    input.classList.remove("clear-input--touched")
+  }
 }
 
 const handleButtonClick = (e) => {
@@ -21,18 +23,18 @@ input.addEventListener("input", handleInputChange)
 
 
 // Functions
-const getFilteredDepartments = () => {
-  const count = $('#departments').children().length;
+const checkFilter = (filter) => {
+  const count = $(`#${filter.toLowerCase()}`).children().length;
 
   let searchArry = [];
-  const childrenArry = $('#departments').children();
+  const childrenArry = $(`#${filter.toLowerCase()}`).children();
 
-  if($('#allDepartmentsSelected').prop("checked")) {
+  if($(`#all${filter}Selected`).prop("checked")) {
     for(let i = 1; i < count; i++) {
       searchArry.push(childrenArry[i].children[0].value)
     }
 
-    return searchArry;
+    return false;
   }
   
   for(let i = 0; i < count; i++) {
@@ -42,45 +44,151 @@ const getFilteredDepartments = () => {
   }
 
   if(count === searchArry.length) {
-    return searchArry
+    return false;
   } else {
     return searchArry;
   }
-};
+}
 
-const getFilteredLocations = () => {
-  const count = $('#locations').children().length;
+const insertEmployeeTable = (employee) => {
+  return $('#employee-table tr:last').after(`
+      <tr>
+      <td class="align-middle text-nowrap">
+        ${employee.lastName}, ${employee.firstName}
+      </td>
+      <td class="align-middle text-nowrap d-none d-md-table-cell">
+        ${employee.department}
+      </td>
+      <td class="align-middle text-nowrap d-none d-md-table-cell">
+        ${employee.location}
+      </td>
+      <td class="align-middle text-nowrap d-none d-md-table-cell">
+        ${employee.email}
+      </td>
+      <td class="align-middle text-nowrap d-none d-md-table-cell">
+        ${employee.jobTitle}
+      </td>
+      <td class="align-middle text-end text-nowrap pe-2">
+        <div class="btn-group dropstart">
+          <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+          <ul class="dropdown-menu" style="max-width: 100px;">
+            <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id="${employee.id}">
+              <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p> 
+            </li>
+            <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id="${employee.id}">
+              <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
+            </li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  `);
+}
 
-  let searchArry = [];
-  const childrenArry = $('#locations').children();
+const insertDepartmentsTable = (departments) => {
+  return $('#department-table tr:last').after(`
+    <tr>
+      <td class="align-middle text-nowrap">
+        ${departments.name}
+      </td>
+      <td class="align-middle text-nowrap d-none d-md-table-cell">
+        ${departments.location}
+      </td>
+      <td class="align-middle text-end text-nowrap pe-2">
+        <div class="btn-group dropstart">
+          <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+          <ul class="dropdown-menu" style="max-width: 100px;">
+            <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" data-id="${departments.id}">
+              <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p>
+            </li>
+            <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteDepartmentModal" data-id="${departments.id}">
+              <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
+            </li>
+          </ul>
+        </div>
+      </td>
+    </tr> 
+  `);
+}
 
-  if($('#allLocationsSelected').prop("checked")) {
-    for(let i = 1; i < count; i++) {
-      searchArry.push(childrenArry[i].children[0].value)
-    }
-
-    return searchArry;
-  }
-
-  for(let i = 0; i < count; i++) {
-    if(childrenArry[i].children[0].checked) {
-      searchArry.push(childrenArry[i].children[0].value)
-    } 
-  }
-
-  if(count === searchArry.length) {
-    return searchArry
-  } else {
-    return searchArry;
-  }
-};
-
+const insertLocationsTable = (locations) => {
+  $('#location-table tr:last').after(`
+    <tr>
+      <td class="align-middle text-nowrap">
+        ${locations.name}
+      </td>
+      <td class="align-middle text-end text-nowrap pe-2">
+        <div class="btn-group dropstart">
+          <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+          <ul class="dropdown-menu" style="max-width: 100px;">
+            <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editLocationModal" data-id="${locations.id}">
+              <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p>
+            </li>
+            <li class="dropdown-item m-0" data-bs-toggle="modal" data-bs-target="#deleteLocationModal" data-id="${locations.id}">
+              <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
+            </li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  `)
+}
 
 // Setup
 $(function() {
   if(document.documentElement.clientWidth >= 1280) {
     $('#menu-toggle').trigger('click')
-  } 
+  }
+
+  // Set up departments toggle options
+  $.ajax({
+    url: 'libs/php/getAllDepartments.php',
+    method: 'GET',
+    type: 'json',
+    success: function(result) {
+      if(result.status.code == 200) {
+        result.data.forEach((department) => {
+          $('#departments div:last').after(`
+            <div class="form-check">
+              <input class="form-check-input | notAllDepartments" type="checkbox" value="${department.name}" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                    ${department.name}
+              </label>
+            </div>
+          `)
+
+        })
+      }
+    }
+  })
+
+  // Set up locations toggle options
+  $.ajax({
+    url: 'libs/php/getAllLocations.php',
+    method: 'GET',
+    type: 'json',
+    success: function(result) {
+      if(result.status.code == 200) {
+        result.data.forEach((location) => {
+          $('#locations div:last').after(`
+            <div class="form-check">
+              <input class="form-check-input | notAllLocations" type="checkbox" value="${location.name}" id="flexCheckChecked">
+              <label class="form-check-label" for="flexCheckChecked">
+                ${location.name}
+              </label>
+            </div>
+          `)
+
+        })
+      }
+    }
+  })
 
   $('#searchInp').val('')
   $("#refreshBtn").trigger("click");
@@ -162,40 +270,7 @@ $("#searchInp").on("keyup", function () {
         success: function(result) {
           $('#employee-table').html(`<tr></tr>`)
           result.data.forEach((employee) => {
-            $('#employee-table tr:last').after(`
-                <tr>
-                <td class="align-middle text-nowrap">
-                  ${employee.lastName}, ${employee.firstName}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                  ${employee.department}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                  ${employee.location}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                  ${employee.email}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                  ${employee.jobTitle}
-                </td>
-                <td class="align-middle text-end text-nowrap pe-2">
-                  <div class="btn-group dropstart">
-                    <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                    <ul class="dropdown-menu" style="max-width: 100px;">
-                      <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id="${employee.id}">
-                        <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p> 
-                      </li>
-                      <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id="${employee.id}">
-                        <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
-            `);
+            insertEmployeeTable(employee)
           });
         }
       })
@@ -233,47 +308,37 @@ $('#refreshBtn').on("click", function() {
       success: function(result) {       
         if(result.data !== null) {
           $('#employee-table').html(`<tr></tr>`)
-          const department = getFilteredDepartments();
-          const location = getFilteredLocations();
 
-          result.data.forEach((employee) => {
-            if(department.includes(employee.department) && location.includes(employee.location)) {
-                  $('#employee-table tr:last').after(`
-                <tr>
-                <td class="align-middle text-nowrap">
-                  ${employee.lastName}, ${employee.firstName}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                  ${employee.department}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                  ${employee.location}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                  ${employee.email}
-                </td>
-                <td class="text-end text-nowrap d-none d-md-table-cell">
-                  ${employee.jobTitle}
-                </td>
-                <td class="align-middle text-end text-nowrap pe-2">
-                  <div class="btn-group dropstart">
-                    <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                    <ul class="dropdown-menu" style="max-width: 100px;">
-                      <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id="${employee.id}">
-                        <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p> 
-                      </li>
-                      <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id="${employee.id}">
-                        <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
-            `);
-            }
-          })
+          const department = checkFilter('Departments');
+          const location = checkFilter('Locations');
+
+          if(!department && !location){
+            // Both selected ALL
+            result.data.forEach((employee) => {
+              insertEmployeeTable(employee)
+            })
+          } else if (!department && (location !== false)) {
+            // Filter locations
+            result.data.forEach((employee) => {
+              if(location.includes(employee.location)) {
+                insertEmployeeTable(employee);
+              }
+            })
+          } else if ((department !== false) && !location) {
+            // Filter departments
+            result.data.forEach((employee) => {
+              if(department.includes(employee.department)) {
+                insertEmployeeTable(employee);
+              }
+            })
+          } else { 
+            // Filter departments and locations
+            result.data.forEach((employee) => {
+              if(department.includes(employee.department) && location.includes(employee.location)) {
+                insertEmployeeTable(employee);
+              }
+            })
+          }
         }
       }
     })
@@ -288,38 +353,36 @@ $('#refreshBtn').on("click", function() {
           if(result.data !== null) {
             $('#department-table').html(`<tr></tr>`)
 
-            const department = getFilteredDepartments();
-            const location = getFilteredLocations();
+            const department = checkFilter('Departments');
+            const location = checkFilter('Locations');
 
-            result.data.forEach((departments) => {
-              if(department.includes(departments.name) && location.includes(departments.location)) {
-                $('#department-table tr:last').after(`
-                <tr>
-                  <td class="align-middle text-nowrap">
-                    ${departments.name}
-                  </td>
-                  <td class="align-middle text-nowrap d-none d-md-table-cell">
-                    ${departments.location}
-                  </td>
-                  <td class="align-middle text-end text-nowrap pe-2">
-                    <div class="btn-group dropstart">
-                      <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="fa-solid fa-ellipsis-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu" style="max-width: 100px;">
-                        <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" data-id="${departments.id}">
-                          <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p>
-                        </li>
-                        <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteDepartmentModal" data-id="${departments.id}">
-                          <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                </tr> 
-                `);
-              }
-            })
+            if(!department && !location){
+              // Both selected ALL
+              result.data.forEach((departments) => {
+                insertDepartmentsTable(departments)
+              })
+            } else if (!department && (location !== false)) {
+              // Filter locations
+              result.data.forEach((departments) => {
+                if(location.includes(departments.location)) {
+                  insertDepartmentsTable(departments);
+                }
+              })
+            } else if ((department !== false) && !location) {
+              // Filter departments
+              result.data.forEach((departments) => {
+                if(department.includes(departments.name)) {
+                  insertDepartmentsTable(departments);
+                }
+              })
+            } else { 
+              // Filter departments and locations
+              result.data.forEach((departments) => {
+                if(department.includes(departments.name) && location.includes(departments.location)) {
+                  insertDepartmentsTable(departments);
+                }
+              })
+            }
           }
         }
       })      
@@ -332,34 +395,19 @@ $('#refreshBtn').on("click", function() {
           if(result.data !== null) {
             $('#location-table').html('<tr></tr>');
 
-          const location = getFilteredLocations();
-          
-          result.data.forEach((locations) => {
-            if(location.includes(locations.name)) {
-              $('#location-table tr:last').after(`
-                <tr>
-                  <td class="align-middle text-nowrap">
-                    ${locations.name}
-                  </td>
-                  <td class="align-middle text-end text-nowrap pe-2">
-                    <div class="btn-group dropstart">
-                      <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="fa-solid fa-ellipsis-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu" style="max-width: 100px;">
-                        <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editLocationModal" data-id="${locations.id}">
-                          <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p>
-                        </li>
-                        <li class="dropdown-item m-0" data-bs-toggle="modal" data-bs-target="#deleteLocationModal" data-id="${locations.id}">
-                          <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
-                `)
-              }
-            })
+            const location = checkFilter('Locations');
+            
+            if(!location) {
+              result.data.forEach((locations) => {
+                insertLocationsTable(locations);
+              })
+            } else {
+              result.data.forEach((locations) => {
+                if(location.includes(locations.name)) {
+                  insertLocationsTable(locations);
+                }
+              })
+            }
           }
         }
       })
