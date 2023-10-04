@@ -36,7 +36,7 @@
 
 	$query = $conn->prepare('SELECT d.name, l.id as location FROM department d LEFT JOIN location l ON (l.id = d.locationID) WHERE l.id = ? ORDER BY d.name;');
 
-	$query->bind_param('i', $_REQUEST['id']);
+	$query->bind_param('i', $_POST['id']);
 
 	$query->execute();
 

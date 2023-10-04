@@ -34,7 +34,7 @@
 
 	$query = $conn->prepare('UPDATE department SET name = ?, locationID = ? WHERE id = ?;');
 
-	$query->bind_param("ssi", $_REQUEST['name'], $_REQUEST['location'], $_REQUEST['id'], );
+	$query->bind_param("ssi", $_POST['name'], $_POST['location'], $_POST['id'], );
 
 	$query->execute();
 	

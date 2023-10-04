@@ -38,7 +38,7 @@
 
     $query = $conn->prepare('INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID, id) VALUES (?, ?, ?, ?, ?, ?);');
 
-    $query->bind_param('ssssii', $_REQUEST['firstName'],  $_REQUEST['lastName'],  $_REQUEST['jobTitle'],  $_REQUEST['email'], $_REQUEST['departmentID'], $newID);
+    $query->bind_param('ssssii', $_POST['firstName'],  $_POST['lastName'],  $_POST['jobTitle'],  $_POST['email'], $_POST['departmentID'], $newID);
 
     $query->execute();
 

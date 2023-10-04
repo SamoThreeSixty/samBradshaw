@@ -36,7 +36,7 @@
 
 	$query = $conn->prepare('SELECT p.lastName, p.firstName, d.id as department FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) WHERE d.id = ? ORDER BY p.firstName;');
 
-	$query->bind_param('i', $_REQUEST['id']);
+	$query->bind_param('i', $_POST['id']);
 
 	$query->execute();
 

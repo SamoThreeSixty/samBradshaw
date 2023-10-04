@@ -34,7 +34,7 @@
 
 	$query = $conn->prepare('INSERT INTO location (name) VALUES(?)');
 
-	$query->bind_param("s", $_REQUEST['name']);
+	$query->bind_param("s", $_POST['name']);
 
 	$query->execute();
 	
