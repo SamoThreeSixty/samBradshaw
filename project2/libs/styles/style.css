@@ -15,10 +15,11 @@ body {
 }
 
 .tab-content {
-  height: 100%; 
+  height: calc(100% - 55px);
   overflow: hidden; 
   overflow-y: scroll;
 }
+
 
 /* Search Section */
 
