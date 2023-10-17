@@ -34,9 +34,12 @@
 
 	// SQL does not accept parameters and so is not prepared
 
-	$query = $conn->prepare('SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) WHERE ' . $_REQUEST['searchBy'] .' LIKE ?;');
+	$query = $conn->prepare('SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) 
+							WHERE p.firstName LIKE ? OR
+							p.lastName LIKE ? OR
+							p.email LIKE ?;');
 
-	$query->bind_param('s', $_POST['searchRequest']);
+	$query->bind_param('sss', $_POST['searchRequest'], $_POST['searchRequest'], $_POST['searchRequest']);
 	
 	$query->execute();
 

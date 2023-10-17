@@ -12,10 +12,10 @@ const handleInputChange = (e) => {
 }
 
 const handleButtonClick = (e) => {
-input.value = ''
-input.focus()
-input.classList.remove("clear-input--touched")
-$("#refreshBtn").trigger("click");
+  input.value = ''
+  input.focus()
+  input.classList.remove("clear-input--touched")
+  refreshTable();
 }
 
 clearButton.addEventListener("click", handleButtonClick)
@@ -45,6 +45,126 @@ const checkFilter = (filter) => {
   }
 
   return searchArry;
+}
+
+const refreshTable = () => {
+    // Loads Personnel Table if selected
+    if ($("#personnelBtn").hasClass("active")) {
+      $.ajax({
+        url: 'libs/php/getAllPersonnel.php',
+        method: 'POST',
+        dataType: "json",
+        data: {
+          orderBy: $('#orderBy input:radio:checked').val(),
+        },
+        success: function(result) {       
+          if(result.data !== null) {
+            $('#employee-table').html(`<tr></tr>`)
+  
+            const department = checkFilter('Departments');
+            const location = checkFilter('Locations');
+  
+            if(!department && !location){
+              // Both selected ALL
+              result.data.forEach((employee) => {
+                insertEmployeeTable(employee)
+              })
+            } else if (!department && (location !== false)) {
+              // Filter locations
+              result.data.forEach((employee) => {
+                if(location.includes(employee.location)) {
+                  insertEmployeeTable(employee);
+                }
+              })
+            } else if ((department !== false) && !location) {
+              // Filter departments
+              result.data.forEach((employee) => {
+                if(department.includes(employee.department)) {
+                  insertEmployeeTable(employee);
+                }
+              })
+            } else { 
+              // Filter departments and locations
+              result.data.forEach((employee) => {
+                if(department.includes(employee.department) && location.includes(employee.location)) {
+                  insertEmployeeTable(employee);
+                }
+              })
+            }
+          }
+        }
+      })
+    } else {
+      // Loads Departments Table if selected
+      if ($("#departmentsBtn").hasClass("active")) {
+        $.ajax({
+          url: 'libs/php/getAllDepartments.php',
+          method: 'GET',
+          dataType: "json",
+          success: function(result) {
+            if(result.data !== null) {
+              $('#department-table').html(`<tr></tr>`)
+  
+              const department = checkFilter('Departments');
+              const location = checkFilter('Locations');
+  
+              if(!department && !location){
+                // Both selected ALL
+                result.data.forEach((departments) => {
+                  insertDepartmentsTable(departments)
+                })
+              } else if (!department && (location !== false)) {
+                // Filter locations
+                result.data.forEach((departments) => {
+                  if(location.includes(departments.location)) {
+                    insertDepartmentsTable(departments);
+                  }
+                })
+              } else if ((department !== false) && !location) {
+                // Filter departments
+                result.data.forEach((departments) => {
+                  if(department.includes(departments.name)) {
+                    insertDepartmentsTable(departments);
+                  }
+                })
+              } else { 
+                // Filter departments and locations
+                result.data.forEach((departments) => {
+                  if(department.includes(departments.name) && location.includes(departments.location)) {
+                    insertDepartmentsTable(departments);
+                  }
+                })
+              }
+            }
+          }
+        })      
+      } else {
+        // Loads Locations Table if selected
+        $.ajax({
+          url: 'libs/php/getAllLocations.php',
+          method: "GET",
+          success: function(result) {
+            if(result.data !== null) {
+              $('#location-table').html('<tr></tr>');
+  
+              const location = checkFilter('Locations');
+              
+              if(!location) {
+                result.data.forEach((locations) => {
+                  insertLocationsTable(locations);
+                })
+              } else {
+                result.data.forEach((locations) => {
+                  if(location.includes(locations.name)) {
+                    insertLocationsTable(locations);
+                  }
+                })
+              }
+            }
+          }
+        })
+      }
+    }
 }
 
 const insertEmployeeTable = (employee) => {
@@ -192,7 +312,7 @@ $(function() {
   })
 
   $('#searchInp').val('')
-  $("#refreshBtn").trigger("click");
+  refreshTable();
 })
 
 // For toggle 
@@ -200,32 +320,32 @@ $('.allDepartments').on('click', function() {
   if($('.allDepartments').prop('checked')){
     $('.notAllDepartments').prop('checked', false)
   }
-  $("#refreshBtn").trigger("click");
+  refreshTable();
 })
 
 $(document.body).on('click', '.notAllDepartments', function() {
   if($('.allDepartments').prop('checked')){
     $('.allDepartments').prop('checked', false)
   }
-  $("#refreshBtn").trigger("click");
+  refreshTable();
 })
 
 $('.allLocations').on('click', function() {
   if($('.allLocations').prop('checked')){
     $('.notAllLocations').prop('checked', false)
   }
-  $("#refreshBtn").trigger("click");
+  refreshTable();
 })
 
 $(document.body).on('click', '.notAllLocations', function() {
   if($('.allLocations').prop('checked')){
     $('.allLocations').prop('checked', false)
   }
-  $("#refreshBtn").trigger("click");
+  refreshTable();
 })
 
 $('#orderBy input').on('change', function() {
-  $("#refreshBtn").trigger("click");
+  refreshTable();
 })
 
 $('.filterDropdown').on('click', function() {
@@ -278,7 +398,6 @@ $("#searchInp").on("keyup", function () {
         type: 'json',
         method: 'POST',
         data: {
-          searchBy: "p." + $('#searchBy').val(),
           searchRequest: `%${$('#searchInp').val()}%`
         },
         success: function(result) {
@@ -289,7 +408,7 @@ $("#searchInp").on("keyup", function () {
         }
       })
   } else {
-    $("#refreshBtn").trigger("click");
+    refreshTable();
   }
   
   
@@ -297,136 +416,35 @@ $("#searchInp").on("keyup", function () {
 
 // Triggers load when any of the buttons are pressed
 $('#personnelBtn').on('click', function() {
-  $("#refreshBtn").trigger( "click" );
+  refreshTable();
+  if(document.documentElement.clientWidth <= 1280) {
+    $('#sidebar-content').addClass('hidden')
+    $('#sidebar-wrapper').removeClass("show-sidebar")
+    $('#sidebar-wrapper').addClass('hide-sidebar')
+  }
 })
 
 $('#departmentsBtn').on('click', function() {
-  $("#refreshBtn").trigger( "click" );
+  refreshTable();
+  if(document.documentElement.clientWidth <= 1280) {
+    $('#sidebar-content').addClass('hidden')
+    $('#sidebar-wrapper').removeClass("show-sidebar")
+    $('#sidebar-wrapper').addClass('hide-sidebar')
+  }
 })
 
 $('#locationsBtn').on('click', function() {
-  $("#refreshBtn").trigger( "click" );
+  refreshTable();
+  if(document.documentElement.clientWidth <= 1280) {
+    $('#sidebar-content').addClass('hidden')
+    $('#sidebar-wrapper').removeClass("show-sidebar")
+    $('#sidebar-wrapper').addClass('hide-sidebar')
+  }
 })
 
 // Refresh Button Function
 $('#refreshBtn').on("click", function() { 
-  // Loads Personnel Table if selected
-  if ($("#personnelBtn").hasClass("active")) {
-    $.ajax({
-      url: 'libs/php/getAllPersonnel.php',
-      method: 'POST',
-      dataType: "json",
-      data: {
-        orderBy: $('#orderBy input:radio:checked').val(),
-      },
-      success: function(result) {       
-        if(result.data !== null) {
-          $('#employee-table').html(`<tr></tr>`)
-
-          const department = checkFilter('Departments');
-          const location = checkFilter('Locations');
-
-          if(!department && !location){
-            // Both selected ALL
-            result.data.forEach((employee) => {
-              insertEmployeeTable(employee)
-            })
-          } else if (!department && (location !== false)) {
-            // Filter locations
-            result.data.forEach((employee) => {
-              if(location.includes(employee.location)) {
-                insertEmployeeTable(employee);
-              }
-            })
-          } else if ((department !== false) && !location) {
-            // Filter departments
-            result.data.forEach((employee) => {
-              if(department.includes(employee.department)) {
-                insertEmployeeTable(employee);
-              }
-            })
-          } else { 
-            // Filter departments and locations
-            result.data.forEach((employee) => {
-              if(department.includes(employee.department) && location.includes(employee.location)) {
-                insertEmployeeTable(employee);
-              }
-            })
-          }
-        }
-      }
-    })
-  } else {
-    // Loads Departments Table if selected
-    if ($("#departmentsBtn").hasClass("active")) {
-      $.ajax({
-        url: 'libs/php/getAllDepartments.php',
-        method: 'GET',
-        dataType: "json",
-        success: function(result) {
-          if(result.data !== null) {
-            $('#department-table').html(`<tr></tr>`)
-
-            const department = checkFilter('Departments');
-            const location = checkFilter('Locations');
-
-            if(!department && !location){
-              // Both selected ALL
-              result.data.forEach((departments) => {
-                insertDepartmentsTable(departments)
-              })
-            } else if (!department && (location !== false)) {
-              // Filter locations
-              result.data.forEach((departments) => {
-                if(location.includes(departments.location)) {
-                  insertDepartmentsTable(departments);
-                }
-              })
-            } else if ((department !== false) && !location) {
-              // Filter departments
-              result.data.forEach((departments) => {
-                if(department.includes(departments.name)) {
-                  insertDepartmentsTable(departments);
-                }
-              })
-            } else { 
-              // Filter departments and locations
-              result.data.forEach((departments) => {
-                if(department.includes(departments.name) && location.includes(departments.location)) {
-                  insertDepartmentsTable(departments);
-                }
-              })
-            }
-          }
-        }
-      })      
-    } else {
-      // Loads Locations Table if selected
-      $.ajax({
-        url: 'libs/php/getAllLocations.php',
-        method: "GET",
-        success: function(result) {
-          if(result.data !== null) {
-            $('#location-table').html('<tr></tr>');
-
-            const location = checkFilter('Locations');
-            
-            if(!location) {
-              result.data.forEach((locations) => {
-                insertLocationsTable(locations);
-              })
-            } else {
-              result.data.forEach((locations) => {
-                if(location.includes(locations.name)) {
-                  insertLocationsTable(locations);
-                }
-              })
-            }
-          }
-        }
-      })
-    }
-  }
+  refreshTable();
 });
 
 // Personnel Modals
@@ -485,7 +503,7 @@ $("#addPersonnelForm").on("submit", function (e) {
     success: function(result) {
       $('#addPersonnelModal').modal('hide');
 
-      $("#refreshBtn").trigger("click");
+      refreshTable();
     }
   })
 })
@@ -555,7 +573,7 @@ $("#editPersonnelForm").on("submit", function (e) {
     success: function(result) {
       $('#editPersonnelModal').modal('hide');
 
-      $("#refreshBtn").trigger("click");
+      refreshTable();
     }
   })
 });
@@ -592,7 +610,7 @@ $('#deletePersonnelForm').on('submit', function(e) {
       success: function(result) {
         $('#deletePersonnelModal').modal('hide');
 
-        $("#refreshBtn").trigger("click");
+        refreshTable();
       }
     })
   }
@@ -639,7 +657,7 @@ $('#addDepartmentForm').on('submit', function(e) {
     success: function () {
       $('#addDepartmentModal').modal('hide');
 
-      $("#refreshBtn").trigger("click");
+      refreshTable();
     }
   })
 })
@@ -710,7 +728,7 @@ $('#editDepartmentForm').on('submit', function(e) {
     success: function() {
       $('#editDepartmentModal').modal('hide')
 
-      $('#refreshBtn').trigger('click')
+      refreshTable();
     }
   })
 
@@ -791,7 +809,7 @@ $('#deleteDepartmentForm').on("submit", function(e) {
       success: function(result) {
         $('#deleteDepartmentModal').modal('hide');
 
-        $("#refreshBtn").trigger("click");
+        refreshTable();
       }
     })
   }
@@ -811,7 +829,7 @@ $('#addLocationForm').on('submit', function(e) {
     success: function() {
       $('#addLocationModal').modal('hide')
 
-      $("#refreshBtn").trigger("click");
+      refreshTable();
     }
   })
 })
@@ -846,7 +864,7 @@ $('#editLocationForm').on('submit', function(e) {
     success: function(result) {
       $('#editLocationModal').modal('hide');
 
-      $("#refreshBtn").trigger("click");
+      refreshTable();
     }
   })
 })
@@ -924,7 +942,7 @@ $('#deleteLocationForm').on("submit", function(e) {
       success: function(result) {
         $('#deleteLocationModal').modal('hide');
 
-        $("#refreshBtn").trigger("click");
+        refreshTable();
       }
     })
   }
