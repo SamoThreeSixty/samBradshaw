@@ -312,26 +312,14 @@
 
                                 <input type="hidden" id="deletePersonnelEmployeeID">
 
-                                <p>Are you sure you want to <strong>perminantly delete</strong>:</p>
-                                <p span class="text-center" id="deleteEmployeeName"></p>
-                                
-                                <div class="d-flex justify-content-around w-50 mx-auto">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="personnelRadios" id="deletePersonnelRadio1" value="YES">
-                                        <label class="form-check-label" for="exampleRadios1">YES</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="personnelRadios" id="deletePersonnelRadio2" value="NO" checked>
-                                        <label class="form-check-label" for="exampleRadios2">NO</label>
-                                    </div>
-                                </div>
+                                <p>Are you sure that you want to remove the entry for <strong id="deleteEmployeeName">perminantly delete</strong>?</p>
                                 
                             </form>
                         </div>
 
                         <div class="modal-footer">
-                            <button id="editPersonnelFormSubmit" type="submit" form="deletePersonnelForm" class="btn btn-outline-primary btn-sm myBtn">DELETE</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                            <button id="editPersonnelFormSubmit" type="submit" form="deletePersonnelForm" class="btn btn-outline-primary btn-sm myBtn">YES</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">NO</button>
                         </div>
                     </div>  
                 </div>
@@ -375,23 +363,23 @@
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                        <form id="editDepartmentForm">
-                            <input type="hidden" id="editDepartmentID">
+                            <form id="editDepartmentForm">
+                                <input type="hidden" id="editDepartmentID">
 
 
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="editDepartmentName" placeholder="First name" required>
-                                <label for="editDepartmentName">Department</label>
-                            </div>
-                            <div class="form-floating">
-                                <select class="form-select" id="editDepartmentLocation" placeholder="Department"></select>
-                                <label for="editDepartmentLocation">Location</label>
-                            </div>
-                        </form>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="editDepartmentName" placeholder="First name" required>
+                                    <label for="editDepartmentName">Department</label>
+                                </div>
+                                <div class="form-floating">
+                                    <select class="form-select" id="editDepartmentLocation" placeholder="Department"></select>
+                                    <label for="editDepartmentLocation">Location</label>
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
-                        <button id="editPersonnelFormSubmit" type="submit" form="editDepartmentForm" class="btn btn-outline-primary btn-sm myBtn">SAVE</button>
-                        <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                            <button id="editPersonnelFormSubmit" type="submit" form="editDepartmentForm" class="btn btn-outline-primary btn-sm myBtn">SAVE</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
                         </div>
                     </div>
                 </div>
@@ -408,51 +396,41 @@
                         <div class="modal-body">
                         <input type="hidden" id="deleteDepartmentID">
 
-                        <div id="departmentDependancy" class="d-none">
-                            <p>Unable to delete <strong><span class="text-center strong" id="deleteDepartmentName"></span></strong> due to associated dependancys below:</p>
+                        <div id="departmentDependency" class="d-none">
+                            <p>Unable to delete <strong><span class="text-center strong" id="deleteDepartmentName"></span></strong> because of the employees assigned to it below:</p>
 
                             <div>
-                                <a class="btn btn-light w-100" data-bs-toggle="collapse" href="#departmentDependancyList" role="button" aria-expanded="false" aria-controls="departmentDependancyList">
-                                    <span id="dependancysAmount" class="badge bg-primary rounded-pill"></span> Employees
+                                <a class="btn btn-light w-100" data-bs-toggle="collapse" href="#departmentDependencyList" role="button" aria-expanded="false" aria-controls="departmentDependencyList">
+                                    <span id="dependencysAmount" class="badge bg-primary rounded-pill"></span> Employees
                                 </a>
 
-                                <div class="collapse" id="departmentDependancyList">
+                                <div class="collapse" id="departmentDependencyList">
                                     <ul class="list-group list-group-flush"></ul>
                                 </div>
                             </div>                        
-
-                            <p class="mt-2">Please make sure that these are resolved before you can delete this department</p>
                         </div>
 
-                        <div id="departmentNoDependancy" class="d-none">
+                        <div id="departmentNoDependency" class="d-none">
                             <form id="deleteDepartmentForm">
 
                                 <input type="hidden" id="deleteDepartmentID">
 
-                                <p>Are you sure you want to <strong>perminantly delete</strong>:</p>
-                                <p span class="text-center" id="deleteDepartmentName"></p>
-                                
-                                <div class="d-flex justify-content-around w-50 mx-auto">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="departmentRadios" id="deleteDepartmentRadio1" value="YES">
-                                        <label class="form-check-label" for="exampleRadios1">YES</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="departmentRadios" id="deleteDepartmentRadio2" value="NO" checked>
-                                        <label class="form-check-label" for="exampleRadios2">NO</label>
-                                    </div>
-                                </div>
+                                <p>Are you sure that you want to remove the entry for <strong id="deleteDepartmentName"></strong>?</p>
                                 
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button id="deleteDepartmentBtn" type="submit" form="deleteDepartmentForm" class="btn btn-outline-primary btn-sm myBtn">DELETE</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+
+                            <button id="deleteDepartmentBtn" type="submit" form="deleteDepartmentForm" class="btn btn-outline-primary btn-sm myBtn">YES</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">NO</button>
+                          
                         </div>
                     </div>  
                 </div>
             </div>
         </div>
+
+        
 
 
     <!-- Location Modal -->
@@ -520,48 +498,35 @@
 
                         <input type="hidden" id="deleteLocationID">
 
-                        <div id="locationDependancy" class="d-none">
-                            <p>Unable to delete <strong><span class="text-center strong" id="deleteLocationName"></span></strong> due to associated dependancys below:</p>
+                        <div id="locationDependency" class="d-none">
+                            <p>Unable to delete <strong><span class="text-center strong" id="deleteLocationName"></span></strong> beause of the departments assigned to it below:</p>
 
                             <div>
-                                <a class="btn btn-light w-100" data-bs-toggle="collapse" href="#locationDependancyList" role="button" aria-expanded="false" aria-controls="locationDependancyList">
-                                    <span id="locationDependancysAmount" class="badge bg-primary rounded-pill"></span> Departments
+                                <a class="btn btn-light w-100" data-bs-toggle="collapse" href="#locationDependencyList" role="button" aria-expanded="false" aria-controls="locationDependencyList">
+                                    <span id="locationDependencysAmount" class="badge bg-primary rounded-pill"></span> Departments
                                 </a>
 
-                                <div class="collapse" id="locationDependancyList">
+                                <div class="collapse" id="locationDependencyList">
                                     <ul class="list-group list-group-flush"></ul>
                                 </div>
                             </div>                        
 
-                            <p class="mt-2">Please make sure that these are resolved before you can delete this location</p>
                         </div>
 
-                        <div id="locationNoDependancy" class="d-none">
+                        <div id="locationNoDependency" class="d-none">
                             <form id="deleteLocationForm">
 
                                 <input type="hidden" id="deleteLocationID">
 
-                                <p>Are you sure you want to <strong>perminantly delete</strong>:</p>
-                                <p span class="text-center" id="deleteLocationName"></p>
-                                
-                                <div class="d-flex justify-content-around w-50 mx-auto">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="locationRadios" id="deleteLocationRadio1" value="YES">
-                                        <label class="form-check-label" for="deleteLocationRadio1">YES</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="locationRadios" id="deleteLocationRadio2" value="NO" checked>
-                                        <label class="form-check-label" for="deleteLocationRadio2">NO</label>
-                                    </div>
-                                </div>
+                                <p>Are you sure that you want to remove the entry for <strong id="deleteLocationName"></strong></p>                                
                                 
                             </form>
                         </div>
                         </div>
 
                         <div class="modal-footer">
-                            <button id="deleteLocationBtn" type="submit" form="deleteLocationForm" class="btn btn-outline-primary btn-sm myBtn">DELETE</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                            <button id="deleteLocationBtn" type="submit" form="deleteLocationForm" class="btn btn-outline-primary btn-sm myBtn">YES</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">NO</button>
                         </div>
                     </div>  
                 </div>

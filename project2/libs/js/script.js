@@ -737,58 +737,42 @@ $('#editDepartmentForm').on('submit', function(e) {
 $('#deleteDepartmentModal').on("show.bs.modal", function(e) {
   $('#deleteDepartmentID').val($(e.relatedTarget).attr("data-id"))
 
-  $('#departmentDependancyList ul').html('');
+  $('#departmentDependencyList ul').html('');
 
   $('#deleteDepartmentRadio2').prop( "checked", true );
 
-  $('#departmentDependancyList').collapse('hide')
+  $('#departmentDependencyList').collapse('hide')
 
   $.ajax({
-    url: 'libs/php/getDepartmentByID.php',
+    url: 'libs/php/dependencyCheckPersonnel.php',
     type: 'POST',
     dataType: 'json',
     data: {
       id: $('#deleteDepartmentID').val()
     },
     success: function(result) {
-      $('#deleteDepartmentName').html(result.data[0].name)
-    
-      $.ajax({
-        url: 'libs/php/getAllPersonnelByDepartmentID.php',
-        method: 'POST',
-        dataType: 'json',
-        data: {
-          id: $('#deleteDepartmentID').val()
-        },
-        success: function(result) {
-          if(result.status.code == 200){ 
-            if(result.data.length > 0) {
-              console.log(result.data)
-              $('#departmentDependancy').removeClass('d-none');
-              $('#deleteDepartmentBtn').addClass('disabled')
+      // only one result, no first name, no last name
+      if(!result.data[0].firstName && !result.data[0].lastName && result.data.length == 1) {
+        $('#departmentNoDependency').removeClass('d-none');
+        $('#deleteDepartmentBtn').removeClass('disabled')
+      } else {
+        $('#departmentDependency').removeClass('d-none');
+        $('#deleteDepartmentBtn').addClass('disabled')
 
-              $('#dependancysAmount').html(`${result.data.length}`)
+        $('#dependencysAmount').html(`${result.data.length}`)
 
-              result.data.forEach((dependancy) => {
-                $('#departmentDependancyList ul').append(`<li class="list-group-item">${dependancy.firstName + " " + dependancy.lastName}</li>`);
-              })
-
-            } else {
-              $('#departmentNoDependancy').removeClass('d-none');
-              $('#deleteDepartmentBtn').removeClass('disabled')
-            }
-          }
-        }
-      })
+        result.data.forEach((dependency) => {
+          $('#departmentDependencyList ul').append(`<li class="list-group-item">${dependency.firstName + " " + dependency.lastName}</li>`);
+        })
+      }
     }
   })
-
 })
 
 $('#deleteDepartmentModal').on("hide.bs.modal", function(e) {
   setTimeout(() => {
-    $('#departmentDependancy').addClass('d-none');
-    $('#departmentNoDependancy').addClass('d-none');
+    $('#departmentDependency').addClass('d-none');
+    $('#departmentNoDependency').addClass('d-none');
   }, 500)
   
 })
@@ -796,23 +780,19 @@ $('#deleteDepartmentModal').on("hide.bs.modal", function(e) {
 $('#deleteDepartmentForm').on("submit", function(e) {
   e.preventDefault();
 
-  console.log($('#departmentDependancy').hasClass('d-none'))
+  $.ajax({
+    url: 'libs/php/deleteDepartmentByID.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: $('#deleteDepartmentID').val(),
+    },
+    success: function(result) {
+      $('#deleteDepartmentModal').modal('hide');
 
-  if($('#deleteDepartmentRadio1').is(':checked') && $('#departmentDependancy').hasClass('d-none')){
-    $.ajax({
-      url: 'libs/php/deleteDepartmentByID.php',
-      type: 'POST',
-      dataType: 'json',
-      data: {
-        id: $('#deleteDepartmentID').val(),
-      },
-      success: function(result) {
-        $('#deleteDepartmentModal').modal('hide');
-
-        refreshTable();
-      }
-    })
-  }
+      refreshTable();
+    }
+  })
 })
 
 // Location Modals
@@ -872,14 +852,12 @@ $('#editLocationForm').on('submit', function(e) {
 $('#deleteLocationModal').on('show.bs.modal', function(e) {
   $('#deleteLocationID').val($(e.relatedTarget).attr("data-id"))
 
-  $('#locationDependancyList ul').html('');
+  $('#locationDependencyList ul').html('');
 
-  $('#deleteLocationRadio2').prop( "checked", true );
-
-  $('#locationDependancyList').collapse('hide')
+  $('#locationDependencyList').collapse('hide')
 
   $.ajax({
-    url: 'libs/php/getLocationByID.php',
+    url: 'libs/php/dependencyCheckDepartment.php',
     type: 'POST',
     dataType: 'json',
     data: {
@@ -887,63 +865,47 @@ $('#deleteLocationModal').on('show.bs.modal', function(e) {
     },
     success: function(result) {
       $('#deleteLocationName').html(result.data[0].name)
+      console.log(result.data[0].name)
+      // only one result, no department name
+      if(!result.data[0].department && result.data.length == 1) {
+        $('#locationNoDependency').removeClass('d-none');
+        $('#deleteLocationBtn').removeClass('disabled');
+      } else {
+        $('#locationDependency').removeClass('d-none');
+        $('#deleteLocationBtn').addClass('disabled')
 
-      $.ajax({
-        url: 'libs/php/getAllDepartmentsByLocationID.php',
-        method: 'POST',
-        dataType: 'json',
-        data: {
-          id: $('#deleteLocationID').val()
-        },
-        success: function(result) {
-          console.log(result)
-          if(result.status.code == 200){
-            if(result.data.length > 0) {
-              console.log(result.data)
-              $('#locationDependancy').removeClass('d-none');
-              $('#deleteLocationBtn').addClass('disabled')
+        $('#locationDependencysAmount').html(`${result.data.length}`)
 
-              $('#locationDependancysAmount').html(`${result.data.length}`)
-
-              result.data.forEach((dependancy) => {
-                $('#locationDependancyList ul').append(`<li class="list-group-item">${dependancy.name}</li>`);
-              })
-
-            } else {
-              $('#locationNoDependancy').removeClass('d-none');
-              $('#deleteLocationBtn').removeClass('disabled')
-            }
-          }
-        }      
-      })
+        result.data.forEach((dependency) => {
+          $('#locationDependencyList ul').append(`<li class="list-group-item">${dependency.department}</li>`);
+        })
+      }
     }
   })
 })
 
 $('#deleteLocationModal').on("hide.bs.modal", function(e) {
   setTimeout(() => {
-    $('#locationDependancy').addClass('d-none');
-    $('#locationNoDependancy').addClass('d-none');
+    $('#locationDependency').addClass('d-none');
+    $('#locationNoDependency').addClass('d-none');
   }, 500)
-  
 })
 
 $('#deleteLocationForm').on("submit", function(e) {
   e.preventDefault();
 
-  if($('#deleteLocationRadio1').is(':checked')){
-    $.ajax({
-      url: 'libs/php/deleteLocationByID.php',
-      type: 'POST',
-      dataType: 'json',
-      data: {
-        id: $('#deleteLocationID').val(),
-      },
-      success: function(result) {
-        $('#deleteLocationModal').modal('hide');
+  $.ajax({
+    url: 'libs/php/deleteLocationByID.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: $('#deleteLocationID').val(),
+    },
+    success: function(result) {
+      $('#deleteLocationModal').modal('hide');
 
-        refreshTable();
-      }
-    })
-  }
+      refreshTable();
+    }
+  })
+
 })
