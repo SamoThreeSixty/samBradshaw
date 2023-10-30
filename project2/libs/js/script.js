@@ -443,7 +443,7 @@ $('#locationsBtn').on('click', function() {
 })
 
 // Refresh Button Function
-$('#refreshBtn').on("click", function() { 
+$('.refreshBtn').on("click", function() { 
   refreshTable();
 });
 
@@ -581,8 +581,6 @@ $("#editPersonnelForm").on("submit", function (e) {
 $("#deletePersonnelModal").on("show.bs.modal", function (e) {
   $('#deletePersonnelEmployeeID').val($(e.relatedTarget).attr("data-id"))
 
-  $('#deletePersonnelRadio2').prop( "checked", true );
-
   $.ajax({
     url: 'libs/php/getPersonnelByID.php',
     type: 'POST',
@@ -599,21 +597,19 @@ $("#deletePersonnelModal").on("show.bs.modal", function (e) {
 $('#deletePersonnelForm').on('submit', function(e) {
   e.preventDefault()
 
-  if($('#deletePersonnelRadio1').is(':checked')){
-    $.ajax({
-      url: 'libs/php/deleteEmployeeByID.php',
-      type: 'POST',
-      dataType: 'json',
-      data: {
-        id: $('#deletePersonnelEmployeeID').val(),
-      },
-      success: function(result) {
-        $('#deletePersonnelModal').modal('hide');
+  $.ajax({
+    url: 'libs/php/deleteEmployeeByID.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: $('#deletePersonnelEmployeeID').val(),
+    },
+    success: function(result) {
+      $('#deletePersonnelModal').modal('hide');
 
-        refreshTable();
-      }
-    })
-  }
+      refreshTable();
+    }
+  })
 })
 
 
@@ -751,6 +747,9 @@ $('#deleteDepartmentModal').on("show.bs.modal", function(e) {
       id: $('#deleteDepartmentID').val()
     },
     success: function(result) {
+      console.log(result.data[0].name)
+      $('#deleteDepartmentName').html(result.data[0].name)
+
       // only one result, no first name, no last name
       if(!result.data[0].firstName && !result.data[0].lastName && result.data.length == 1) {
         $('#departmentNoDependency').removeClass('d-none');

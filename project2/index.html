@@ -153,7 +153,7 @@
                             <th class="d-none d-md-table-cell">Email</th>
                             <th class="d-none d-md-table-cell">Job Title</th>
                             <th class="d-flex justify-content-end p-1 border-0">
-                                <button id="refreshBtn" class="btn">
+                                <button class="refreshBtn" class="btn">
                                     <i class="fa-solid fa-refresh fa-fw"></i>
                                 </button>       
                                 <button id="addBtn" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#addPersonnelModal">
@@ -175,7 +175,7 @@
                         <th>Department</th>
                         <th class="d-none d-md-table-cell">Location</th>
                         <th class="d-flex justify-content-end p-1">
-                            <button id="refreshBtn" class="btn">
+                            <button class="refreshBtn" class="btn">
                                 <i class="fa-solid fa-refresh fa-fw"></i>
                             </button>   
                             <button id="addBtn" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
@@ -196,7 +196,7 @@
                         <tr>
                             <th>Location</th>
                             <th class="d-flex justify-content-end p-1">
-                                <button id="refreshBtn" class="btn">
+                                <button class="refreshBtn" class="btn">
                                     <i class="fa-solid fa-refresh fa-fw"></i>
                                 </button>       
                                 <button id="addBtn" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#addLocationModal">
@@ -397,7 +397,7 @@
                         <input type="hidden" id="deleteDepartmentID">
 
                         <div id="departmentDependency" class="d-none">
-                            <p>Unable to delete <strong><span class="text-center strong" id="deleteDepartmentName"></span></strong> because of the employees assigned to it below:</p>
+                            <p>Unable to delete <strong id="deleteDepartmentName"></strong> because of the employees assigned to it below:</p>
 
                             <div>
                                 <a class="btn btn-light w-100" data-bs-toggle="collapse" href="#departmentDependencyList" role="button" aria-expanded="false" aria-controls="departmentDependencyList">
@@ -499,7 +499,7 @@
                         <input type="hidden" id="deleteLocationID">
 
                         <div id="locationDependency" class="d-none">
-                            <p>Unable to delete <strong><span class="text-center strong" id="deleteLocationName"></span></strong> beause of the departments assigned to it below:</p>
+                            <p>Unable to delete <strong id="deleteLocationName"></strong> beause of the departments assigned to it below:</p>
 
                             <div>
                                 <a class="btn btn-light w-100" data-bs-toggle="collapse" href="#locationDependencyList" role="button" aria-expanded="false" aria-controls="locationDependencyList">
