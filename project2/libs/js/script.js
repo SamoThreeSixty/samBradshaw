@@ -194,9 +194,9 @@ const insertEmployeeTable = (employee) => {
             <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id="${employee.id}">
               <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p> 
             </li>
-            <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id="${employee.id}">
-              <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
-            </li>
+            // <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id="${employee.id}">
+            //   <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
+            // </li>
           </ul>
         </div>
       </td>
@@ -222,7 +222,7 @@ const insertDepartmentsTable = (departments) => {
             <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" data-id="${departments.id}">
               <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p>
             </li>
-            <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteDepartmentModal" data-id="${departments.id}">
+            <li class="dropdown-item | deleteDepartmentBtn" value="${departments.id}">
               <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
             </li>
           </ul>
@@ -247,7 +247,7 @@ const insertLocationsTable = (locations) => {
             <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editLocationModal" data-id="${locations.id}">
               <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p>
             </li>
-            <li class="dropdown-item m-0" data-bs-toggle="modal" data-bs-target="#deleteLocationModal" data-id="${locations.id}">
+            <li class="dropdown-item m-0 | deleteLocationBtn" value="${locations.id}">
               <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
             </li>
           </ul>
@@ -730,50 +730,40 @@ $('#editDepartmentForm').on('submit', function(e) {
 
 })
 
-$('#deleteDepartmentModal').on("show.bs.modal", function(e) {
-  $('#deleteDepartmentID').val($(e.relatedTarget).attr("data-id"))
 
-  $('#departmentDependencyList ul').html('');
-
-  $('#deleteDepartmentRadio2').prop( "checked", true );
-
-  $('#departmentDependencyList').collapse('hide')
+$(document.body).on('click', '.deleteDepartmentBtn', function(e) {
+  $('#deleteDepartmentID').val($(this).attr("value"));
 
   $.ajax({
     url: 'libs/php/dependencyCheckPersonnel.php',
     type: 'POST',
     dataType: 'json',
     data: {
-      id: $('#deleteDepartmentID').val()
+      id:  $('#deleteDepartmentID').val()
     },
     success: function(result) {
-      console.log(result.data[0].name)
-      $('#deleteDepartmentName').html(result.data[0].name)
+      console.log(result)
 
       // only one result, no first name, no last name
       if(!result.data[0].firstName && !result.data[0].lastName && result.data.length == 1) {
-        $('#departmentNoDependency').removeClass('d-none');
-        $('#deleteDepartmentBtn').removeClass('disabled')
+        // No Dependencys
+        $('#deleteDepartmentForm strong').html(result.data[0].name)
+
+        $('#deleteDepartmentModal').modal("show")
       } else {
-        $('#departmentDependency').removeClass('d-none');
-        $('#deleteDepartmentBtn').addClass('disabled')
+        // Dependencys
+        $('#departmentDependencyList ul').html('');
 
         $('#dependencysAmount').html(`${result.data.length}`)
 
         result.data.forEach((dependency) => {
           $('#departmentDependencyList ul').append(`<li class="list-group-item">${dependency.firstName + " " + dependency.lastName}</li>`);
         })
+        
+        $('#unableToDeleteDepartmentModal').modal("show")
       }
     }
   })
-})
-
-$('#deleteDepartmentModal').on("hide.bs.modal", function(e) {
-  setTimeout(() => {
-    $('#departmentDependency').addClass('d-none');
-    $('#departmentNoDependency').addClass('d-none');
-  }, 500)
-  
 })
 
 $('#deleteDepartmentForm').on("submit", function(e) {
@@ -848,12 +838,8 @@ $('#editLocationForm').on('submit', function(e) {
   })
 })
 
-$('#deleteLocationModal').on('show.bs.modal', function(e) {
-  $('#deleteLocationID').val($(e.relatedTarget).attr("data-id"))
-
-  $('#locationDependencyList ul').html('');
-
-  $('#locationDependencyList').collapse('hide')
+$(document.body).on('click', '.deleteLocationBtn', function(e) {
+  $('#deleteLocationID').val($(this).attr("value"))
 
   $.ajax({
     url: 'libs/php/dependencyCheckDepartment.php',
@@ -863,31 +849,27 @@ $('#deleteLocationModal').on('show.bs.modal', function(e) {
       id: $('#deleteLocationID').val()
     },
     success: function(result) {
-      $('#deleteLocationName').html(result.data[0].name)
-      console.log(result.data[0].name)
+      // only one result, no first name, no last name
+
+      console.log(result)
       // only one result, no department name
       if(!result.data[0].department && result.data.length == 1) {
-        $('#locationNoDependency').removeClass('d-none');
-        $('#deleteLocationBtn').removeClass('disabled');
-      } else {
-        $('#locationDependency').removeClass('d-none');
-        $('#deleteLocationBtn').addClass('disabled')
+        // No Dependencys
+        $('#deleteLocationForm strong').html(result.data[0].name)
 
+        $('#deleteLocationModal').modal("show")
+      } else {
+        // Dependencys
         $('#locationDependencysAmount').html(`${result.data.length}`)
 
         result.data.forEach((dependency) => {
           $('#locationDependencyList ul').append(`<li class="list-group-item">${dependency.department}</li>`);
         })
+
+        $('#unableToDeleteLocationModal').modal("show")
       }
     }
   })
-})
-
-$('#deleteLocationModal').on("hide.bs.modal", function(e) {
-  setTimeout(() => {
-    $('#locationDependency').addClass('d-none');
-    $('#locationNoDependency').addClass('d-none');
-  }, 500)
 })
 
 $('#deleteLocationForm').on("submit", function(e) {
