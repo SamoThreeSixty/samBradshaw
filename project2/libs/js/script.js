@@ -194,9 +194,9 @@ const insertEmployeeTable = (employee) => {
             <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id="${employee.id}">
               <p class="m-0"><i class="fa-solid fa-pencil fa-fw"></i> Edit</p> 
             </li>
-            // <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id="${employee.id}">
-            //   <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
-            // </li>
+            <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id="${employee.id}">
+              <p class="m-0"><i class="fa-solid fa-trash fa-fw"></i> Delete</p>
+            </li>
           </ul>
         </div>
       </td>
@@ -372,23 +372,34 @@ $('.filterDropdown').on('click', function() {
 
 $('#menu-toggle').on("click", function() {
   if($('#sidebar-wrapper').hasClass('hide-sidebar-on-load')) {
+    $('#sidebar-shadow').removeClass('d-none')
     $('#sidebar-wrapper').removeClass('hide-sidebar-on-load')
     $('#sidebar-wrapper').addClass("show-sidebar")
     $('#sidebar-content').removeClass('hidden')
   } else if ($('#sidebar-wrapper').hasClass('show-sidebar-on-load')) {
+    $('#sidebar-shadow').removeClass('d-none')
     $('#sidebar-wrapper').removeClass('show-sidebar-on-load')
     $('#sidebar-content').addClass('hidden')
     $('#sidebar-wrapper').removeClass("show-sidebar")
     $('#sidebar-wrapper').addClass('hide-sidebar')
   } else if($('#sidebar-wrapper').hasClass('hide-sidebar')) {
+    $('#sidebar-shadow').removeClass('d-none')
     $('#sidebar-wrapper').removeClass('hide-sidebar')
     $('#sidebar-wrapper').addClass("show-sidebar")
     $('#sidebar-content').removeClass('hidden')
   } else {
+    $('#sidebar-shadow').addClass('d-none')
     $('#sidebar-content').addClass('hidden')
     $('#sidebar-wrapper').removeClass("show-sidebar")
     $('#sidebar-wrapper').addClass('hide-sidebar')
   }
+})
+
+$('#sidebar-shadow').on('click', function() {
+  $('#sidebar-shadow').addClass('d-none')
+  $('#sidebar-content').addClass('hidden')
+  $('#sidebar-wrapper').removeClass("show-sidebar")
+  $('#sidebar-wrapper').addClass('hide-sidebar')
 })
 
 $("#searchInp").on("keyup", function () {
@@ -418,6 +429,7 @@ $("#searchInp").on("keyup", function () {
 $('#personnelBtn').on('click', function() {
   refreshTable();
   if(document.documentElement.clientWidth <= 1280) {
+    $('#sidebar-shadow').addClass('d-none')
     $('#sidebar-content').addClass('hidden')
     $('#sidebar-wrapper').removeClass("show-sidebar")
     $('#sidebar-wrapper').addClass('hide-sidebar')
@@ -427,6 +439,7 @@ $('#personnelBtn').on('click', function() {
 $('#departmentsBtn').on('click', function() {
   refreshTable();
   if(document.documentElement.clientWidth <= 1280) {
+    $('#sidebar-shadow').addClass('d-none')
     $('#sidebar-content').addClass('hidden')
     $('#sidebar-wrapper').removeClass("show-sidebar")
     $('#sidebar-wrapper').addClass('hide-sidebar')
@@ -436,6 +449,7 @@ $('#departmentsBtn').on('click', function() {
 $('#locationsBtn').on('click', function() {
   refreshTable();
   if(document.documentElement.clientWidth <= 1280) {
+    $('#sidebar-shadow').addClass('d-none')
     $('#sidebar-content').addClass('hidden')
     $('#sidebar-wrapper').removeClass("show-sidebar")
     $('#sidebar-wrapper').addClass('hide-sidebar')
@@ -861,6 +875,8 @@ $(document.body).on('click', '.deleteLocationBtn', function(e) {
       } else {
         // Dependencys
         $('#locationDependencysAmount').html(`${result.data.length}`)
+
+        $('#locationDependencyList ul').html('');
 
         result.data.forEach((dependency) => {
           $('#locationDependencyList ul').append(`<li class="list-group-item">${dependency.department}</li>`);

@@ -170,9 +170,7 @@ thead {
     min-width: 300px;
     max-width: 60%;
   }
-  .show-sidebar::after{
-    transition : all .5s linear;
-    content: "";
+  #sidebar-shadow{
     width: 5000px;
     height: 100vh;
     background: rgba(0,0,0,0.075);
