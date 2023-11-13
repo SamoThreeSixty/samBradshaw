@@ -297,16 +297,14 @@ $('#newsModal').on('show.bs.modal', function(btn, map){
             } else {
                 let newsCount = 0;
 
-                // Configure to be an array
-                const resultArry = Object.entries(result.data);
-            
-                result.data.forEach((news) => {
-                    // Only works if there is an image
-                    if(news.image !== null){
-                        //only returns 6 news articles
-                        if(newsCount === 8){
-                            return;
-                        } else {
+                for (newsCount; newsCount < 8;) {
+                    const news = result.data[newsCount];
+
+                    if(!news) {
+                        break
+                    }
+                    
+                    if(news.image_url !== null){
                         $('#noNews').attr('style', "display: none;")
                         $(`#news${newsCount}`).attr('style', 'display: block-inline;')
 
@@ -316,9 +314,8 @@ $('#newsModal').on('show.bs.modal', function(btn, map){
                         $(`#newsTitle${newsCount}`).html(news.title);
                         $(`#newsLink${newsCount}`).attr('href', news.link);
                         newsCount++;
-                        }
                     }
-                })
+                }
 
                 $('#news-modal-loader').addClass('fadeOut');
             }
